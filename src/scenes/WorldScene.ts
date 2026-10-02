@@ -6,6 +6,7 @@ export class WorldScene extends Phaser.Scene {
   private keys!: Record<'W'|'A'|'S'|'D', Phaser.Input.Keyboard.Key>;
   private playerLabel!: Phaser.GameObjects.Text;
   private touchTarget?: Phaser.Math.Vector2;
+  private ambientLights: Phaser.GameObjects.Arc[] = [];
 
   constructor() { super('WorldScene'); }
 
@@ -18,6 +19,7 @@ export class WorldScene extends Phaser.Scene {
     this.drawNexusRift();
     this.drawVertexRuins();
     this.drawWaterAndBridge();
+    this.addAtmosphere();
 
     const tex=this.add.graphics();
     tex.fillStyle(0x111827); tex.fillEllipse(18,31,30,13);
@@ -105,6 +107,40 @@ export class WorldScene extends Phaser.Scene {
     for(let i=0;i<10;i++){g.lineStyle(2,0x3ac7dd,.15);g.lineBetween(150,995+i*19,690,995+i*19);}
     g.fillStyle(0x493827);g.fillRect(470,1050,520,75);
     for(let i=0;i<13;i++){g.fillStyle(i%2?0x6b5133:0x594129);g.fillRect(480+i*38,1057,30,60);}
+  }
+
+  private addAtmosphere(){
+    // Layered light pools and drifting motes create depth without baking lighting into the map.
+    const lights=[
+      {x:300,y:250,c:0xffb75e,r:105,a:.09},
+      {x:1640,y:360,c:0xa958ff,r:190,a:.10},
+      {x:1600,y:960,c:0x48e8df,r:120,a:.07},
+      {x:780,y:720,c:0x4fd7e4,r:75,a:.035}
+    ];
+    lights.forEach((l,i)=>{
+      const halo=this.add.circle(l.x,l.y,l.r,l.c,l.a).setBlendMode(Phaser.BlendModes.ADD).setDepth(18);
+      this.ambientLights.push(halo);
+      this.tweens.add({targets:halo,alpha:l.a*.45,scale:1.08+(i*.015),duration:1800+i*370,yoyo:true,repeat:-1,ease:'Sine.InOut'});
+    });
+
+    for(let i=0;i<34;i++){
+      const x=170+((i*211)%1830), y=130+((i*157)%1080);
+      const cyan=i%3!==0;
+      const mote=this.add.circle(x,y,1+(i%3),cyan?0x73f5ed:0xd49aff,.18+(i%4)*.07)
+        .setBlendMode(Phaser.BlendModes.ADD).setDepth(25);
+      this.tweens.add({
+        targets:mote,x:x-18+(i%5)*9,y:y-18-(i%4)*7,alpha:.05,
+        duration:2400+(i%7)*310,yoyo:true,repeat:-1,ease:'Sine.InOut'
+      });
+    }
+
+    // Foreground silhouettes reinforce parallax/depth as the camera travels.
+    const fg=this.add.graphics().setDepth(52);
+    fg.fillStyle(0x02070b,.62);
+    for(let i=0;i<16;i++){
+      const x=40+i*145, h=34+(i%5)*15;
+      fg.fillTriangle(x,1400,x+34,1400-h,x+68,1400);
+    }
   }
 
   private label(x:number,y:number,title:string,sub:string,color:number){
