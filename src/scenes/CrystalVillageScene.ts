@@ -131,6 +131,14 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-tree',1990,1350,230,1340);
     placeSized('village-tree',1750,1570,215,1560,true);
 
+    // Small clusters reuse the existing tree asset at varied scales. This keeps
+    // the pass cheap while softening the hard paved/terrain boundary from the master.
+    const foliage=(x:number,y:number,width:number,flipX=false,alpha=.96)=>{
+      const img=placeSized('village-tree',x,y,width,y-8,flipX);
+      img.setAlpha(alpha);
+      return img;
+    };
+
     // Environmental integration pass (Master reference): vegetation hugs the urban
     // footprint and breaks the clean polygon edge without moving validated landmarks.
     // North gate shoulders.
@@ -151,6 +159,24 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-tree',1980,1710,250,1700,true);
     placeSized('village-tree',1020,1880,270,1870,true);
     placeSized('village-tree',2070,1900,280,1890);
+
+    // Secondary foliage rhythm: smaller masses conceal the straight pavement-mask
+    // segments and create the layered edge seen in the master, without blocking routes.
+    foliage(960,690,150,true,.92);
+    foliage(2080,720,160,false,.92);
+    foliage(770,1080,145,true,.90);
+    foliage(820,1510,155,false,.92);
+    foliage(1040,1580,135,true,.90);
+    foliage(2080,1510,145,false,.92);
+    foliage(2210,1440,155,true,.90);
+    foliage(1230,1780,135,false,.90);
+    foliage(1880,1785,140,true,.90);
+
+    // River-side vegetation stays on the west bank. It masks the ruler-straight
+    // shoreline visually while never covering the validated water or bridge deck.
+    foliage(2490,870,175,false,.92);
+    foliage(2480,1510,190,true,.92);
+    foliage(2500,1760,180,false,.92);
 
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
@@ -173,7 +199,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 20 · PASSE AMBIENTAL',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 20 · PASSE AMBIENTAL B',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
