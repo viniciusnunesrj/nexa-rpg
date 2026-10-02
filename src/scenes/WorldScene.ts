@@ -16,9 +16,9 @@ export class WorldScene extends Phaser.Scene {
   private depthProps: { object: Phaser.GameObjects.GameObject; baseY: number }[] = [];
   private artTestRock?: Phaser.GameObjects.Image;
   private artTestSortY=620;
-  private artTestDepthLine:DepthLine={left:{x:1010,y:603},right:{x:1175,y:628}};
+  private artTestDepthLine:DepthLine={left:{x:1018,y:596},right:{x:1168,y:620}};
   private artTestFootprint:Point[]=[
-    {x:1024,y:594},{x:1156,y:610},{x:1170,y:634},{x:1087,y:650},{x:1015,y:628}
+    {x:1028,y:600},{x:1154,y:613},{x:1164,y:632},{x:1088,y:646},{x:1020,y:627}
   ];
   private artDebug?: Phaser.GameObjects.Graphics;
   private cameraZoom=1.18;
@@ -151,8 +151,8 @@ export class WorldScene extends Phaser.Scene {
       const minX=Math.min(...fp.map(p=>p.x)),maxX=Math.max(...fp.map(p=>p.x));
       const minY=Math.min(...fp.map(p=>p.y)),maxY=Math.max(...fp.map(p=>p.y));
       // Keep physical blocking tight to the actual ground contact. Visual occlusion is handled separately.
-      const collisionW=(maxX-minX)*.66, collisionH=(maxY-minY)*.52;
-      this.artTestCollision=this.add.zone(x+2,maxY-collisionH*.48,collisionW,collisionH);
+      const collisionW=(maxX-minX)*.61, collisionH=(maxY-minY)*.46;
+      this.artTestCollision=this.add.zone(x+1,maxY-collisionH*.44,collisionW,collisionH);
       this.physics.add.existing(this.artTestCollision,true);
       rock.setData('visual-test','Aurora Art Test 01');
       this.artDebug=this.add.graphics().setDepth(9999).setVisible(false);
@@ -294,8 +294,8 @@ export class WorldScene extends Phaser.Scene {
       this.artTestRock.setDepth(behind?this.player.y+2:this.player.y-2);
       const dx=Math.abs(this.player.x-this.artTestRock.x);
       const dy=Math.abs(this.player.y-switchY);
-      const occluded=behind&&dx<this.artTestRock.displayWidth*.48&&dy<this.artTestRock.displayHeight*.62;
-      const targetAlpha=occluded?.42:1;
+      const occluded=behind&&dx<this.artTestRock.displayWidth*.39&&dy<this.artTestRock.displayHeight*.48;
+      const targetAlpha=occluded?.63:1;
       this.artTestRock.alpha=Phaser.Math.Linear(this.artTestRock.alpha,targetAlpha,.14);
     }
     this.cameras.main.setZoom(Phaser.Math.Linear(this.cameras.main.zoom,this.cameraZoom,.12));
