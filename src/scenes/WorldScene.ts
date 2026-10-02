@@ -1,5 +1,8 @@
 import Phaser from 'phaser';
 
+const TEST_ASSET_KEY='aurora-rock-test';
+const TEST_ASSET_PATH='/assets/aurora/nature/rock-test.png';
+
 export class WorldScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -11,6 +14,14 @@ export class WorldScene extends Phaser.Scene {
 
   constructor() { super('WorldScene'); }
 
+  preload(){
+    // Micro-test only: a missing asset must never break the scene.
+    this.load.image(TEST_ASSET_KEY,TEST_ASSET_PATH);
+    this.load.once(Phaser.Loader.Events.LOAD_ERROR,(file:Phaser.Loader.File)=>{
+      if(file.key===TEST_ASSET_KEY) this.textures.remove(TEST_ASSET_KEY);
+    });
+  }
+
   create() {
     const W=2200,H=1400;
     this.physics.world.setBounds(0,0,W,H);
@@ -20,6 +31,7 @@ export class WorldScene extends Phaser.Scene {
     this.drawNexusRift();
     this.drawVertexRuins();
     this.drawWaterAndBridge();
+    this.placeArtTest();
     this.buildWorldDepth();
     this.addAtmosphere();
 
@@ -110,6 +122,21 @@ export class WorldScene extends Phaser.Scene {
     for(let i=0;i<10;i++){g.lineStyle(2,0x3ac7dd,.15);g.lineBetween(150,995+i*19,690,995+i*19);}
     g.fillStyle(0x493827);g.fillRect(470,1050,520,75);
     for(let i=0;i<13;i++){g.fillStyle(i%2?0x6b5133:0x594129);g.fillRect(480+i*38,1057,30,60);}
+  }
+
+  private placeArtTest(){
+    const x=1015,y=655;
+    if(this.textures.exists(TEST_ASSET_KEY)){
+      const rock=this.add.image(x,y,TEST_ASSET_KEY).setOrigin(.5,.82).setDepth(34);
+      const max=112;
+      if(rock.width>max) rock.setScale(max/rock.width);
+      rock.setData('visual-test','Aurora Art Test 01');
+    }else{
+      // Current procedural placeholder remains until the approved PNG is supplied.
+      const g=this.add.graphics().setDepth(34);
+      g.fillStyle(0x34433f,.95);g.fillEllipse(x,y,92,48);
+      g.fillStyle(0x53635c,.65);g.fillEllipse(x-12,y-10,58,27);
+    }
   }
 
   private buildWorldDepth(){
