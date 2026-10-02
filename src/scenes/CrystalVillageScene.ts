@@ -92,7 +92,9 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-cliff',720,500,1200,470);
     placeSized('village-cliff',2230,500,1180,470,true);
     placeSized('village-cliff',360,1320,1200,1290);
-    placeSized('village-cliff',2390,2180,1300,2150,true);
+    // Keep the lower-right cliff on the west bank only; the previous 1300px piece
+    // extended across the river and its opaque dirt top looked like a dry strip.
+    placeSized('village-cliff',2180,2180,900,2150,true);
     placeSized('village-cliff',1040,2300,1300,2270);
     placeSized('village-cliff',1960,2300,1300,2270,true);
 
@@ -130,7 +132,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 10',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 11',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
