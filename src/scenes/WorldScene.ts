@@ -7,7 +7,8 @@ const DESERT_ASSETS={
   ground:'/assets/aurora/nature/solo-aurora-base.png',
   path:'/assets/aurora/nature/caminho-aurora.png',
   water:'/assets/aurora/nature/agua-aurora-base.png',
-  bank:'/assets/aurora/nature/margem-rio-aurora-01.png'
+  bank:'/assets/aurora/nature/margem-rio-aurora-01.png',
+  bridge:'/assets/aurora/nature/ponte-aurora-01.png'
 } as const;
 
 export class WorldScene extends Phaser.Scene {
@@ -103,14 +104,31 @@ export class WorldScene extends Phaser.Scene {
       this.add.image(riverX+bankOffset,y,'desert-bank')
         .setOrigin(.5).setScale(bankScale).setFlipX(true).setDepth(-18);
     }
+
+    // First functional crossing: preserve the generated bridge proportions and
+    // size it from the river width rather than stretching the asset.
+    const bridge=this.add.image(riverX,1100,'desert-bridge').setOrigin(.5).setDepth(-10);
+    const bridgeTargetW=360;
+    if(bridge.width>bridgeTargetW)bridge.setScale(bridgeTargetW/bridge.width);
   }
 
 
 
   private buildWorldDepth(){
     this.occluders=this.physics.add.staticGroup();
-    // The first desert pass stays deliberately open. Individual footprints are
-    // added only after visual scale is validated in-game.
+
+    // The river is solid terrain except at the bridge opening. Two long invisible
+    // barriers keep Kael out of the water while leaving the crossing walkable.
+    const riverX=2100, bridgeY=1100, openingH=92, barrierW=250;
+    const addBarrier=(top:number,bottom:number)=>{
+      const h=bottom-top;
+      if(h<=0)return;
+      const zone=this.add.zone(riverX,top+h/2,barrierW,h);
+      this.physics.add.existing(zone,true);
+      this.occluders.add(zone);
+    };
+    addBarrier(0,bridgeY-openingH/2);
+    addBarrier(bridgeY+openingH/2,AURORA_DESERT.height);
   }
 
 
