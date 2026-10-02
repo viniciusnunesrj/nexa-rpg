@@ -17,7 +17,7 @@ export class WorldScene extends Phaser.Scene {
   preload(){
     // Micro-test only: a missing asset must never break the scene.
     this.load.image(TEST_ASSET_KEY,TEST_ASSET_PATH);
-    this.load.once(Phaser.Loader.Events.LOAD_ERROR,(file:Phaser.Loader.File)=>{
+    this.load.once(Phaser.Loader.Events.FILE_LOAD_ERROR,(file:Phaser.Loader.File)=>{
       if(file.key===TEST_ASSET_KEY) this.textures.remove(TEST_ASSET_KEY);
     });
   }
