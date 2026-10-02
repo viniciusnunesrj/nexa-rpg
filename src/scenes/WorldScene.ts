@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { interpolateDepthY, type DepthLine, type Point } from '../world/depthGeometry';
+import { AURORA_DESERT } from '../world/auroraDesert';
 
 const TEST_ASSET_KEY='aurora-rock-test';
 const TEST_ASSET_PATH='/assets/aurora/nature/rock-test.png';
@@ -35,7 +36,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create() {
-    const W=2200,H=1400;
+    const {width:W,height:H}=AURORA_DESERT;
     this.physics.world.setBounds(0,0,W,H);
     this.cameras.main.setBounds(0,0,W,H);
     this.drawTerrain(W,H);
@@ -56,7 +57,7 @@ export class WorldScene extends Phaser.Scene {
     tex.fillStyle(0x63e6ed); tex.fillRect(6,23,3,7);
     tex.generateTexture('kael',36,40); tex.destroy();
 
-    this.player=this.physics.add.sprite(1040,760,'kael').setDepth(40);
+    this.player=this.physics.add.sprite(AURORA_DESERT.spawn.x,AURORA_DESERT.spawn.y,'kael').setDepth(40);
     this.player.setCollideWorldBounds(true);
     this.player.body?.setSize(20,18).setOffset(8,20);
     this.physics.add.collider(this.player,this.occluders);
@@ -82,26 +83,26 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private drawTerrain(W:number,H:number) {
+    const p=AURORA_DESERT.palette;
     const g=this.add.graphics();
-    g.fillGradientStyle(0x07111a,0x0b1721,0x08131b,0x101924,1); g.fillRect(0,0,W,H);
-    // broad ground masses
-    g.fillStyle(0x17231f); g.fillEllipse(1050,720,1760,980);
-    g.fillStyle(0x1c2b25); g.fillEllipse(920,690,1200,690);
-    g.fillStyle(0x253229,.65); g.fillEllipse(1050,740,620,330);
-    // warm traversable path
-    g.lineStyle(118,0x6d5a3c,.30); g.beginPath(); g.moveTo(330,310); g.lineTo(650,470); g.lineTo(970,690); g.lineTo(1210,850); g.lineTo(1540,1040); g.strokePath();
-    g.lineStyle(76,0x9a7950,.18); g.strokePath();
-    // stones, bushes, cyan flora
-    for(let i=0;i<95;i++){
-      const x=90+((i*197)%1980), y=80+((i*263)%1240);
-      const r=7+(i%6)*3;
-      g.fillStyle(i%9===0?0x2c706b:i%4===0?0x365244:0x243a32,.72);
-      g.fillCircle(x,y,r);
-      if(i%11===0){g.fillStyle(0x52d9cf,.42);g.fillCircle(x+5,y-3,4);}
+    g.fillStyle(p.void); g.fillRect(0,0,W,H);
+    // Desert macro-shapes: intentionally simple until the final ground tiles arrive.
+    g.fillStyle(p.sandDark); g.fillRoundedRect(90,110,W-180,H-220,170);
+    AURORA_DESERT.regions.forEach((r,i)=>{
+      g.fillStyle(i===1?p.sand:p.sandLight,i===1?.88:.42);
+      g.fillEllipse(r.x+r.w/2,r.y+r.h/2,r.w,r.h);
+    });
+    AURORA_DESERT.paths.forEach(path=>{
+      g.lineStyle(150,p.sandLight,.34); g.beginPath();
+      path.forEach((pt,i)=>i?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y)); g.strokePath();
+      g.lineStyle(86,p.sand,.52); g.strokePath();
+    });
+    // Sparse texture only: enough to read scale without turning this into final art.
+    for(let i=0;i<70;i++){
+      const x=130+((i*347)%2940),y=130+((i*521)%1940);
+      g.fillStyle(i%7===0?p.rock:p.sandLight,i%7===0?.48:.18);
+      g.fillEllipse(x,y,18+(i%5)*8,8+(i%3)*5);
     }
-    // cliff shadows for depth
-    g.fillStyle(0x03090e,.7); g.fillRoundedRect(80,930,620,260,45);
-    g.fillStyle(0x101d22); g.fillRoundedRect(110,890,570,230,40);
   }
 
   private drawAuroraOutpost(){
