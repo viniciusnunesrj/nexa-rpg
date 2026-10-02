@@ -80,23 +80,29 @@ export class WorldScene extends Phaser.Scene {
     // One approved path segment only: this pass validates material/scale before
     // building a complete modular road network.
     const path=this.add.image(930,1120,'desert-path').setOrigin(.5).setDepth(-20);
-    if(path.width>560)path.setScale(560/path.width);
+    if(path.width>280)path.setScale(280/path.width);
   }
 
   private drawWaterAndBridge(){
     // Straight test corridor first. Banks overlap the ground while animated water
     // lives below them. The right bank reuses the same art mirrored horizontally.
-    const riverX=2100,riverY=1100,riverW=430,riverH=1900;
+    const riverX=2100,riverY=1100,riverW=210,riverH=2500;
     this.riverWater=this.add.tileSprite(riverX,riverY,riverW,riverH,'desert-water')
-      .setTileScale(.34).setDepth(-24);
+      .setTileScale(.22).setDepth(-24);
 
-    const bankW=360;
-    const left=this.add.image(riverX-riverW/2+70,riverY,'desert-bank')
-      .setOrigin(.5).setDisplaySize(bankW,riverH).setDepth(-18);
-    const right=this.add.image(riverX+riverW/2-70,riverY,'desert-bank')
-      .setOrigin(.5).setDisplaySize(bankW,riverH).setFlipX(true).setDepth(-18);
-    left.setData('river-bank','left');
-    right.setData('river-bank','right');
+    // Preserve the bank PNG aspect ratio. Repeating modules avoids the canyon-like
+    // vertical stretching from the first test and extends beyond camera bounds.
+    const bankScale=.24;
+    const source=this.textures.get('desert-bank').getSourceImage() as HTMLImageElement;
+    const bankH=source.height*bankScale;
+    const bankOffset=riverW/2+source.width*bankScale*.18;
+    const firstY=-bankH/2;
+    for(let y=firstY;y<2400+bankH;y+=bankH*.94){
+      this.add.image(riverX-bankOffset,y,'desert-bank')
+        .setOrigin(.5).setScale(bankScale).setDepth(-18);
+      this.add.image(riverX+bankOffset,y,'desert-bank')
+        .setOrigin(.5).setScale(bankScale).setFlipX(true).setDepth(-18);
+    }
   }
 
 
