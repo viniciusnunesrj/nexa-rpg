@@ -21,6 +21,7 @@ export class WorldScene extends Phaser.Scene {
     {x:1024,y:594},{x:1156,y:610},{x:1170,y:634},{x:1087,y:650},{x:1015,y:628}
   ];
   private artDebug?: Phaser.GameObjects.Graphics;
+  private cameraZoom=1.18;
 
   constructor() { super('WorldScene'); }
 
@@ -70,7 +71,10 @@ export class WorldScene extends Phaser.Scene {
     });
 
     this.cameras.main.startFollow(this.player,true,.07,.07);
-    this.cameras.main.setZoom(1.18);
+    this.cameras.main.setZoom(this.cameraZoom);
+    this.input.on('wheel',(_p:Phaser.Input.Pointer,_go:unknown,_dx:number,dy:number)=>{
+      this.cameraZoom=Phaser.Math.Clamp(this.cameraZoom-dy*.001,0.72,1.55);
+    });
     this.cameras.main.fadeIn(600,4,9,18);
 
     this.hud();
@@ -146,7 +150,9 @@ export class WorldScene extends Phaser.Scene {
       const fp=this.artTestFootprint;
       const minX=Math.min(...fp.map(p=>p.x)),maxX=Math.max(...fp.map(p=>p.x));
       const minY=Math.min(...fp.map(p=>p.y)),maxY=Math.max(...fp.map(p=>p.y));
-      this.artTestCollision=this.add.zone((minX+maxX)/2,(minY+maxY)/2,maxX-minX,maxY-minY);
+      // Keep physical blocking tight to the actual ground contact. Visual occlusion is handled separately.
+      const collisionW=(maxX-minX)*.66, collisionH=(maxY-minY)*.52;
+      this.artTestCollision=this.add.zone(x+2,maxY-collisionH*.48,collisionW,collisionH);
       this.physics.add.existing(this.artTestCollision,true);
       rock.setData('visual-test','Aurora Art Test 01');
       this.artDebug=this.add.graphics().setDepth(9999).setVisible(false);
@@ -280,11 +286,19 @@ export class WorldScene extends Phaser.Scene {
     this.player.setVelocity(v.x,v.y);
     // Y-sorting is the base rule for future 2.5D props/actors.
     this.player.setDepth(this.player.y);
-    this.playerLabel.setDepth(this.player.y+1);
+    // World-space identity remains readable even while scenery fades over the actor.
+    this.playerLabel.setDepth(100000);
     if(this.artTestRock){
       const switchY=interpolateDepthY(this.artTestDepthLine,this.player.x);
-      this.artTestRock.setDepth(this.player.y<switchY?this.player.y+2:this.player.y-2);
+      const behind=this.player.y<switchY;
+      this.artTestRock.setDepth(behind?this.player.y+2:this.player.y-2);
+      const dx=Math.abs(this.player.x-this.artTestRock.x);
+      const dy=Math.abs(this.player.y-switchY);
+      const occluded=behind&&dx<this.artTestRock.displayWidth*.48&&dy<this.artTestRock.displayHeight*.62;
+      const targetAlpha=occluded?.42:1;
+      this.artTestRock.alpha=Phaser.Math.Linear(this.artTestRock.alpha,targetAlpha,.14);
     }
+    this.cameras.main.setZoom(Phaser.Math.Linear(this.cameras.main.zoom,this.cameraZoom,.12));
     this.playerLabel.setPosition(this.player.x,this.player.y-38);
   }
 }
