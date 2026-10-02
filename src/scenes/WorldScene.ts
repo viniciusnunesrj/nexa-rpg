@@ -13,6 +13,7 @@ export class WorldScene extends Phaser.Scene {
   private ambientLights: Phaser.GameObjects.Arc[] = [];
   private occluders!: Phaser.Physics.Arcade.StaticGroup;
   private artTestCollision?: Phaser.GameObjects.Zone;
+  private artTestCollisions: Phaser.GameObjects.Zone[]=[];
   private depthProps: { object: Phaser.GameObjects.GameObject; baseY: number }[] = [];
   private artTestRock?: Phaser.GameObjects.Image;
   private artTestSortY=620;
@@ -59,7 +60,7 @@ export class WorldScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.player.body?.setSize(20,18).setOffset(8,20);
     this.physics.add.collider(this.player,this.occluders);
-    if(this.artTestCollision) this.physics.add.collider(this.player,this.artTestCollision);
+    this.artTestCollisions.forEach(zone=>this.physics.add.collider(this.player,zone));
     this.playerLabel=this.add.text(this.player.x,this.player.y-38,'Kael · Rank E',{
       fontFamily:'monospace',fontSize:'13px',color:'#eefeff',stroke:'#071018',strokeThickness:5
     }).setOrigin(.5).setDepth(41);
@@ -161,8 +162,11 @@ export class WorldScene extends Phaser.Scene {
         const visible=!this.artDebug.visible;
         this.artDebug.clear().setVisible(visible);
         if(visible){
-          const body=this.artTestCollision.body as Phaser.Physics.Arcade.StaticBody;
-          this.artDebug.lineStyle(2,0x43ff7a,.95).strokeRect(body.x,body.y,body.width,body.height);
+          this.artDebug.lineStyle(2,0x43ff7a,.95);
+          this.artTestCollisions.forEach(zone=>{
+            const body=zone.body as Phaser.Physics.Arcade.StaticBody;
+            this.artDebug!.strokeRect(body.x,body.y,body.width,body.height);
+          });
           this.artDebug.lineStyle(2,0x43ff7a,.95).strokePoints(this.artTestFootprint,true);
           this.artDebug.lineStyle(2,0xffd84a,.95).lineBetween(
             this.artTestDepthLine.left.x,this.artTestDepthLine.left.y,
