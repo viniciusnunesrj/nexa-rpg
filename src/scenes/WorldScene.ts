@@ -11,6 +11,7 @@ export class WorldScene extends Phaser.Scene {
   private touchTarget?: Phaser.Math.Vector2;
   private ambientLights: Phaser.GameObjects.Arc[] = [];
   private occluders!: Phaser.Physics.Arcade.StaticGroup;
+  private artTestCollision?: Phaser.GameObjects.Zone;
 
   constructor() { super('WorldScene'); }
 
@@ -48,6 +49,7 @@ export class WorldScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.player.body?.setSize(20,18).setOffset(8,20);
     this.physics.add.collider(this.player,this.occluders);
+    if(this.artTestCollision) this.physics.add.collider(this.player,this.artTestCollision);
     this.playerLabel=this.add.text(this.player.x,this.player.y-38,'Kael · Rank E',{
       fontFamily:'monospace',fontSize:'13px',color:'#eefeff',stroke:'#071018',strokeThickness:5
     }).setOrigin(.5).setDepth(41);
@@ -125,11 +127,14 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private placeArtTest(){
-    const x=1015,y=655;
+    const x=1095,y=610;
     if(this.textures.exists(TEST_ASSET_KEY)){
-      const rock=this.add.image(x,y,TEST_ASSET_KEY).setOrigin(.5,.82).setDepth(34);
-      const max=112;
+      const rock=this.add.image(x,y,TEST_ASSET_KEY).setOrigin(.5,.88).setDepth(y);
+      const max=185;
       if(rock.width>max) rock.setScale(max/rock.width);
+      // Collision uses only the visual footprint, allowing Kael to pass behind the tall formation.
+      this.artTestCollision=this.add.zone(x,y-4,Math.max(74,rock.displayWidth*.56),Math.max(30,rock.displayHeight*.18));
+      this.physics.add.existing(this.artTestCollision,true);
       rock.setData('visual-test','Aurora Art Test 01');
     }else{
       // Current procedural placeholder remains until the approved PNG is supplied.
@@ -242,6 +247,9 @@ export class WorldScene extends Phaser.Scene {
     }
     const v=new Phaser.Math.Vector2(x,y); if(v.lengthSq()>0)v.normalize().scale(speed);
     this.player.setVelocity(v.x,v.y);
+    // Y-sorting is the base rule for future 2.5D props/actors.
+    this.player.setDepth(this.player.y);
+    this.playerLabel.setDepth(this.player.y+1);
     this.playerLabel.setPosition(this.player.x,this.player.y-38);
   }
 }
