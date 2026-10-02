@@ -102,8 +102,10 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-bank',2650,1780,760,-70);
     placeSized('village-bank',3070,720,760,-70,true);
     placeSized('village-bank',3070,1780,760,-70,true);
-    const bridge=placeSized('village-bridge',2860,1120,420,1120);
-    bridge.setRotation(Math.PI/2);
+    // The bridge PNG is already authored vertically in image space; in the game's
+    // top-down composition that vertical axis is the crossing direction here.
+    // Keep it unrotated so its deck stays intact and centered over the river.
+    placeSized('village-bridge',2860,1120,420,1120);
 
     // Large vegetation masses soften the perimeter and hide joins between relief pieces.
     placeSized('village-tree',430,1120,360,1110);
@@ -131,7 +133,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 04',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 05',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
