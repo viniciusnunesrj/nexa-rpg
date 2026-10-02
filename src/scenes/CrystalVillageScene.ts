@@ -15,7 +15,7 @@ const ASSETS={
   market:'/assets/aurora/nature/vila-barraca-mercado-01.png',
   water:'/assets/aurora/nature/vila-agua-base-01.png',
   bank:'/assets/aurora/nature/vila-margem-canal-reta-01.png',
-  bridge:'/assets/aurora/nature/ponte-aurora-01.png',
+  bridge:'/assets/aurora/nature/ponte-vila-01.png',
   tree:'/assets/aurora/nature/vila-arvore-01.png',
   decor:'/assets/aurora/nature/vila-kit-decoracao-01.png',
   cliff:'/assets/aurora/nature/vila-paredao-rochoso-01.png'
@@ -102,8 +102,9 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-bank',2650,1780,760,-70);
     placeSized('village-bank',3070,720,760,-70,true);
     placeSized('village-bank',3070,1780,760,-70,true);
-    // Reuse the proven Aurora bridge: its horizontal deck already matches this east-west crossing.
-    placeSized('village-bridge',2860,1120,500,1120);
+    // Production bridge: keep the proven east-west anchor/orientation from the Aurora test,
+    // but use the wider village asset that matches the master composition.
+    placeSized('village-bridge',2860,1120,760,1120);
 
     // Large vegetation masses soften the perimeter and hide joins between relief pieces.
     placeSized('village-tree',430,1120,360,1110);
@@ -131,7 +132,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 06',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 07',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
