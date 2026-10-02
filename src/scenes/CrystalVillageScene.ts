@@ -76,8 +76,8 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.add.image(720,1020,'village-forge').setDisplaySize(760,Math.round(760*this.textures.get('village-forge').getSourceImage().height/this.textures.get('village-forge').getSourceImage().width)).setOrigin(.5,1).setDepth(1020);
     this.add.image(2260,1010,'village-market').setDisplaySize(520,Math.round(520*this.textures.get('village-market').getSourceImage().height/this.textures.get('village-market').getSourceImage().width)).setOrigin(.5,1).setDepth(1010);
 
-    // Composition 02: frame the settlement with relief and establish the river corridor.
-    // These are scenery layers only; navigation/collision will be authored separately.
+    // Composition 03: rebuild the right side to match the master layout.
+    // The river is a natural vertical channel at the far right; the bridge crosses it horizontally.
     const placeSized=(key:string,x:number,y:number,width:number,depth:number,flipX=false)=>{
       const src=this.textures.get(key).getSourceImage();
       const img=this.add.image(x,y,key).setDisplaySize(width,Math.round(width*src.height/src.width)).setOrigin(.5,1).setDepth(depth);
@@ -85,26 +85,28 @@ export class CrystalVillageScene extends Phaser.Scene{
       return img;
     };
 
-    // Right-side river: water stays behind every bank/cliff/bridge element.
-    this.water=this.add.tileSprite(2735,1370,500,1900,'village-water').setDepth(-82);
+    this.water=this.add.tileSprite(2860,1280,410,2050,'village-water').setDepth(-82);
     this.water.setTileScale(.58);
-    placeSized('village-bank',2490,1370,1900,-70);
-    placeSized('village-bank',2980,1370,1900,-70,true);
-    placeSized('village-bridge',2735,1280,500,1280);
 
-    // Rocky frame. Overlap segments on purpose so the terrain reads as one mass,
-    // not as repeated standalone sprites.
-    placeSized('village-cliff',770,500,1450,470);
-    placeSized('village-cliff',2210,500,1450,470,true);
-    placeSized('village-cliff',360,1420,1450,1390);
-    placeSized('village-cliff',2450,2140,1500,2110,true);
-    placeSized('village-cliff',1080,2290,1500,2260);
-    placeSized('village-cliff',2050,2290,1500,2260,true);
+    // Relief follows the outside perimeter instead of cutting through the plaza.
+    placeSized('village-cliff',720,500,1200,470);
+    placeSized('village-cliff',2230,500,1180,470,true);
+    placeSized('village-cliff',360,1320,1200,1290);
+    placeSized('village-cliff',2390,2180,1300,2150,true);
+    placeSized('village-cliff',1040,2300,1300,2270);
+    placeSized('village-cliff',1960,2300,1300,2270,true);
 
-    // A few large trees break the hard stone/dirt boundary before detail dressing.
+    // River banks hug the channel. The bridge asset is vertical by default,
+    // so rotate it 90 degrees to actually cross the water like the master.
+    placeSized('village-bank',2635,1280,1850,-70);
+    placeSized('village-bank',3085,1280,1850,-70,true);
+    const bridge=placeSized('village-bridge',2860,1120,420,1120);
+    bridge.setRotation(Math.PI/2);
+
+    // Large vegetation masses soften the perimeter and hide joins between relief pieces.
     placeSized('village-tree',430,1120,360,1110);
-    placeSized('village-tree',2380,720,330,710,true);
-    placeSized('village-tree',2280,1940,360,1930);
+    placeSized('village-tree',2410,720,330,710,true);
+    placeSized('village-tree',2370,1940,360,1930);
 
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
@@ -127,7 +129,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 02',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 03',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
