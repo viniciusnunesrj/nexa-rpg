@@ -20,6 +20,9 @@ export class WorldScene extends Phaser.Scene {
   private occluders!: Phaser.Physics.Arcade.StaticGroup;
   private cameraZoom=1.18;
   private riverWater?: Phaser.GameObjects.TileSprite;
+  private collisionDebug?: Phaser.GameObjects.Graphics;
+  private collisionDebugVisible=false;
+  private collisionRects: Phaser.Geom.Rectangle[]=[];
 
   constructor() { super('WorldScene'); }
 
@@ -53,12 +56,14 @@ export class WorldScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.player.body?.setSize(20,18).setOffset(8,20);
     this.physics.add.collider(this.player,this.occluders);
+    this.createCollisionDebug();
     this.playerLabel=this.add.text(this.player.x,this.player.y-38,'Kael · Rank E',{
       fontFamily:'monospace',fontSize:'13px',color:'#eefeff',stroke:'#071018',strokeThickness:5
     }).setOrigin(.5).setDepth(41);
 
     this.cursors=this.input.keyboard!.createCursorKeys();
     this.keys=this.input.keyboard!.addKeys('W,A,S,D') as typeof this.keys;
+    this.input.keyboard!.on('keydown-F2',()=>this.toggleCollisionDebug());
     this.input.on('pointerdown',(p:Phaser.Input.Pointer)=>{
       this.touchTarget=new Phaser.Math.Vector2(p.worldX,p.worldY);
     });
@@ -114,26 +119,61 @@ export class WorldScene extends Phaser.Scene {
 
 
 
+  private addSolidRect(x:number,y:number,w:number,h:number){
+    const zone=this.add.zone(x,y,w,h).setOrigin(.5);
+    this.physics.add.existing(zone,true);
+    const body=zone.body as Phaser.Physics.Arcade.StaticBody;
+    body.setSize(w,h);
+    body.updateFromGameObject();
+    this.occluders.add(zone);
+    this.collisionRects.push(new Phaser.Geom.Rectangle(x-w/2,y-h/2,w,h));
+  }
+
   private buildWorldDepth(){
     this.occluders=this.physics.add.staticGroup();
+    this.collisionRects=[];
 
-    // Robust river collision: explicit static bodies, with one opening matching
-    // the horizontal bridge deck. Zone bodies are sized/refreshed explicitly so
-    // their physics footprint cannot fall back to Phaser's default zone size.
+    // Navigation layer, independent from the artwork.
+    // WATER is solid. The bridge deck is a deliberate walkable cut through it.
     const riverX=2100, riverW=250;
-    const bridgeY=1108, crossingH=104;
-    const addBarrier=(top:number,bottom:number)=>{
-      const h=bottom-top;
-      if(h<=0)return;
-      const zone=this.add.zone(riverX,top+h/2,riverW,h).setOrigin(.5);
-      this.physics.add.existing(zone,true);
-      const body=zone.body as Phaser.Physics.Arcade.StaticBody;
-      body.setSize(riverW,h);
-      body.updateFromGameObject();
-      this.occluders.add(zone);
-    };
-    addBarrier(0,bridgeY-crossingH/2);
-    addBarrier(bridgeY+crossingH/2,AURORA_DESERT.height);
+    const bridgeY=1100, deckH=72;
+    this.addSolidRect(riverX,(bridgeY-deckH/2)/2,riverW,bridgeY-deckH/2);
+    const lowerTop=bridgeY+deckH/2;
+    this.addSolidRect(riverX,lowerTop+(AURORA_DESERT.height-lowerTop)/2,riverW,AURORA_DESERT.height-lowerTop);
+
+    // Bridge pillars/abutments are explicit solid footprints. They can be tuned
+    // visually without changing the river or bridge-deck navigation rule.
+    const pillarW=30,pillarH=34,pillarDX=128,pillarDY=42;
+    this.addSolidRect(riverX-pillarDX,bridgeY-pillarDY,pillarW,pillarH);
+    this.addSolidRect(riverX+pillarDX,bridgeY-pillarDY,pillarW,pillarH);
+    this.addSolidRect(riverX-pillarDX,bridgeY+pillarDY,pillarW,pillarH);
+    this.addSolidRect(riverX+pillarDX,bridgeY+pillarDY,pillarW,pillarH);
+  }
+
+  private createCollisionDebug(){
+    this.collisionDebug=this.add.graphics().setDepth(99990).setVisible(false);
+    this.redrawCollisionDebug();
+  }
+
+  private redrawCollisionDebug(){
+    if(!this.collisionDebug)return;
+    this.collisionDebug.clear();
+    this.collisionDebug.fillStyle(0xff3344,.30);
+    this.collisionDebug.lineStyle(2,0xff6677,.95);
+    this.collisionRects.forEach(rect=>{
+      this.collisionDebug!.fillRect(rect.x,rect.y,rect.width,rect.height);
+      this.collisionDebug!.strokeRect(rect.x,rect.y,rect.width,rect.height);
+    });
+    // Green shows the intended walkable bridge deck.
+    this.collisionDebug.fillStyle(0x35ff88,.28);
+    this.collisionDebug.lineStyle(2,0x75ffaa,.95);
+    this.collisionDebug.fillRect(1970,1064,260,72);
+    this.collisionDebug.strokeRect(1970,1064,260,72);
+  }
+
+  private toggleCollisionDebug(){
+    this.collisionDebugVisible=!this.collisionDebugVisible;
+    this.collisionDebug?.setVisible(this.collisionDebugVisible);
   }
 
 
