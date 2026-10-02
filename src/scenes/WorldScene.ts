@@ -120,7 +120,7 @@ export class WorldScene extends Phaser.Scene {
     // Simple modular rule: vertical river + horizontal bridge. The river is solid
     // everywhere except for one rectangular opening aligned with the bridge deck.
     const riverX=2100, riverW=250;
-    const bridgeY=1100, crossingH=76;
+    const bridgeY=1100, crossingH=112;
     const addBarrier=(top:number,bottom:number)=>{
       const h=bottom-top;
       if(h<=0)return;
