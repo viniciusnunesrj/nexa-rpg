@@ -5,12 +5,10 @@ import { AURORA_DESERT } from '../world/auroraDesert';
 const TEST_ASSET_KEY='aurora-rock-test';
 const TEST_ASSET_PATH='/assets/aurora/nature/rock-test.png';
 const DESERT_ASSETS={
-  ground:'/assets/aurora/nature/terreno-rochoso.png',
-  rock:'/assets/aurora/nature/rocha-deserto-01.png',
-  plant:'/assets/aurora/nature/vegetacao-seca-01.png',
-  tree:'/assets/aurora/nature/arvore-seca-01.png',
-  ruin:'/assets/aurora/nature/ruina-nexa-01.png',
-  crystal:'/assets/aurora/nature/cristal-nexa-01.png'
+  ground:'/assets/aurora/nature/solo-aurora-base.png',
+  path:'/assets/aurora/nature/caminho-aurora.png',
+  water:'/assets/aurora/nature/agua-aurora-base.png',
+  bank:'/assets/aurora/nature/margem-rio-aurora-01.png'
 } as const;
 
 export class WorldScene extends Phaser.Scene {
@@ -32,6 +30,7 @@ export class WorldScene extends Phaser.Scene {
   ];
   private artDebug?: Phaser.GameObjects.Graphics;
   private cameraZoom=1.18;
+  private riverWater?: Phaser.GameObjects.TileSprite;
 
   constructor() { super('WorldScene'); }
 
@@ -49,13 +48,8 @@ export class WorldScene extends Phaser.Scene {
     this.physics.world.setBounds(0,0,W,H);
     this.cameras.main.setBounds(0,0,W,H);
     this.drawTerrain(W,H);
-    this.drawAuroraOutpost();
-    this.drawNexusRift();
-    this.drawVertexRuins();
     this.drawWaterAndBridge();
-    this.placeArtTest();
     this.buildWorldDepth();
-    this.addAtmosphere();
 
     const tex=this.add.graphics();
     tex.fillStyle(0x111827); tex.fillEllipse(18,31,30,13);
@@ -93,109 +87,32 @@ export class WorldScene extends Phaser.Scene {
 
   private drawTerrain(W:number,H:number) {
     const p=AURORA_DESERT.palette;
-    this.add.rectangle(W/2,H/2,W,H,p.void).setDepth(-20);
-    if(this.textures.exists('desert-ground')){
-      this.add.tileSprite(W/2,H/2,W-140,H-140,'desert-ground')
-        .setTileScale(.42).setDepth(-18);
-      // Unifies the photographic material with the colder Aurora palette.
-      this.add.rectangle(W/2,H/2,W-140,H-140,0x101820,.22).setDepth(-17);
-    }
-    const g=this.add.graphics().setDepth(-16);
-    g.lineStyle(120,p.sandLight,.10);
-    AURORA_DESERT.paths.forEach(path=>{
-      g.beginPath();
-      path.forEach((pt,i)=>i?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y));
-      g.strokePath();
-    });
-  }
+    this.add.rectangle(W/2,H/2,W,H,p.void).setDepth(-30);
+    this.add.tileSprite(W/2,H/2,W,H,'desert-ground').setTileScale(.36).setDepth(-28);
 
-  private drawAuroraOutpost(){
-    this.placeDesertProp('desert-ruin',620,570,210);
-    this.placeDesertProp('desert-plant',820,690,82);
-    this.placeDesertProp('desert-rock',930,780,120);
-  }
-
-  private drawNexusRift(){
-    this.placeDesertProp('desert-crystal',2530,720,105);
-    this.placeDesertProp('desert-rock',2400,830,110);
-    this.placeDesertProp('desert-plant',2670,900,76);
-  }
-
-  private drawVertexRuins(){
-    this.placeDesertProp('desert-tree',1840,1280,235);
-    this.placeDesertProp('desert-rock',2050,1380,135);
-    this.placeDesertProp('desert-plant',1720,1430,78);
+    // One approved path segment only: this pass validates material/scale before
+    // building a complete modular road network.
+    const path=this.add.image(930,1120,'desert-path').setOrigin(.5).setDepth(-20);
+    if(path.width>560)path.setScale(560/path.width);
   }
 
   private drawWaterAndBridge(){
-    this.placeDesertProp('desert-tree',1180,1580,220);
-    this.placeDesertProp('desert-rock',1320,1690,105);
-    this.placeDesertProp('desert-plant',1040,1720,72);
-    this.placeDesertProp('desert-crystal',1480,1760,76);
+    // Straight test corridor first. Banks overlap the ground while animated water
+    // lives below them. The right bank reuses the same art mirrored horizontally.
+    const riverX=2100,riverY=1100,riverW=430,riverH=1900;
+    this.riverWater=this.add.tileSprite(riverX,riverY,riverW,riverH,'desert-water')
+      .setTileScale(.34).setDepth(-24);
+
+    const bankW=360;
+    const left=this.add.image(riverX-riverW/2+70,riverY,'desert-bank')
+      .setOrigin(.5).setDisplaySize(bankW,riverH).setDepth(-18);
+    const right=this.add.image(riverX+riverW/2-70,riverY,'desert-bank')
+      .setOrigin(.5).setDisplaySize(bankW,riverH).setFlipX(true).setDepth(-18);
+    left.setData('river-bank','left');
+    right.setData('river-bank','right');
   }
 
-  private placeDesertProp(key:string,x:number,y:number,maxWidth:number){
-    if(!this.textures.exists(key))return;
-    const image=this.add.image(x,y,key).setOrigin(.5,1);
-    if(image.width>maxWidth)image.setScale(maxWidth/image.width);
-    image.setDepth(y);
-    this.depthProps.push({object:image,baseY:y});
-  }
 
-  private placeArtTest(){
-    const x=1095,y=610;
-    if(this.textures.exists(TEST_ASSET_KEY)){
-      const rock=this.add.image(x,y,TEST_ASSET_KEY).setOrigin(.5,.88).setDepth(this.artTestSortY);
-      this.artTestRock=rock;
-      const max=185;
-      if(rock.width>max) rock.setScale(max/rock.width);
-      // Solid ground mass follows the same diagonal perspective as the art.
-      // Staggered narrow bodies approximate a sloped rear/front footprint without a flat invisible wall.
-      const collisionDefs=[
-        {x:x-55,y:586,w:30,h:18},
-        {x:x-34,y:592,w:34,h:22},
-        {x:x-12,y:599,w:36,h:25},
-        {x:x+11,y:606,w:38,h:27},
-        {x:x+34,y:613,w:36,h:25},
-        {x:x+55,y:620,w:30,h:20},
-        {x:x-42,y:612,w:34,h:22},
-        {x:x-18,y:620,w:38,h:25},
-        {x:x+7,y:628,w:40,h:27},
-        {x:x+32,y:636,w:36,h:23}
-      ];
-      this.artTestCollisions=collisionDefs.map(d=>{
-        const zone=this.add.zone(d.x,d.y,d.w,d.h);
-        this.physics.add.existing(zone,true);
-        return zone;
-      });
-      this.artTestCollision=this.artTestCollisions[1];
-      rock.setData('visual-test','Aurora Art Test 01');
-      this.artDebug=this.add.graphics().setDepth(9999).setVisible(false);
-      this.input.keyboard?.on('keydown-F2',()=>{
-        if(!this.artDebug||!this.artTestCollision)return;
-        const visible=!this.artDebug.visible;
-        this.artDebug.clear().setVisible(visible);
-        if(visible){
-          this.artDebug.lineStyle(2,0x43ff7a,.95);
-          this.artTestCollisions.forEach(zone=>{
-            const body=zone.body as Phaser.Physics.Arcade.StaticBody;
-            this.artDebug!.strokeRect(body.x,body.y,body.width,body.height);
-          });
-          this.artDebug.lineStyle(2,0x43ff7a,.95).strokePoints(this.artTestFootprint,true);
-          this.artDebug.lineStyle(2,0xffd84a,.95).lineBetween(
-            this.artTestDepthLine.left.x,this.artTestDepthLine.left.y,
-            this.artTestDepthLine.right.x,this.artTestDepthLine.right.y
-          );
-          this.artDebug.fillStyle(0xffd84a,1).fillCircle(x,interpolateDepthY(this.artTestDepthLine,x),4);
-        }
-      });
-    }else{
-      // Current procedural placeholder remains until the approved PNG is supplied.
-      const g=this.add.graphics().setDepth(34);
-      g.fillStyle(0x34433f,.95);g.fillEllipse(x,y,92,48);
-      g.fillStyle(0x53635c,.65);g.fillEllipse(x-12,y-10,58,27);
-    }
-  }
 
   private buildWorldDepth(){
     this.occluders=this.physics.add.staticGroup();
@@ -203,39 +120,6 @@ export class WorldScene extends Phaser.Scene {
     // added only after visual scale is validated in-game.
   }
 
-  private addAtmosphere(){
-    // Layered light pools and drifting motes create depth without baking lighting into the map.
-    const lights=[
-      {x:300,y:250,c:0xffb75e,r:105,a:.09},
-      {x:1640,y:360,c:0xa958ff,r:190,a:.10},
-      {x:1600,y:960,c:0x48e8df,r:120,a:.07},
-      {x:780,y:720,c:0x4fd7e4,r:75,a:.035}
-    ];
-    lights.forEach((l,i)=>{
-      const halo=this.add.circle(l.x,l.y,l.r,l.c,l.a).setBlendMode(Phaser.BlendModes.ADD).setDepth(18);
-      this.ambientLights.push(halo);
-      this.tweens.add({targets:halo,alpha:l.a*.45,scale:1.08+(i*.015),duration:1800+i*370,yoyo:true,repeat:-1,ease:'Sine.InOut'});
-    });
-
-    for(let i=0;i<34;i++){
-      const x=170+((i*211)%1830), y=130+((i*157)%1080);
-      const cyan=i%3!==0;
-      const mote=this.add.circle(x,y,1+(i%3),cyan?0x73f5ed:0xd49aff,.18+(i%4)*.07)
-        .setBlendMode(Phaser.BlendModes.ADD).setDepth(25);
-      this.tweens.add({
-        targets:mote,x:x-18+(i%5)*9,y:y-18-(i%4)*7,alpha:.05,
-        duration:2400+(i%7)*310,yoyo:true,repeat:-1,ease:'Sine.InOut'
-      });
-    }
-
-    // Foreground silhouettes reinforce parallax/depth as the camera travels.
-    const fg=this.add.graphics().setDepth(52);
-    fg.fillStyle(0x02070b,.62);
-    for(let i=0;i<16;i++){
-      const x=40+i*145, h=34+(i%5)*15;
-      fg.fillTriangle(x,1400,x+34,1400-h,x+68,1400);
-    }
-  }
 
 
   private hud(){
@@ -259,6 +143,7 @@ export class WorldScene extends Phaser.Scene {
     }
     const v=new Phaser.Math.Vector2(x,y); if(v.lengthSq()>0)v.normalize().scale(speed);
     this.player.setVelocity(v.x,v.y);
+    if(this.riverWater)this.riverWater.tilePositionY-=0.22;
     // Y-sorting is the base rule for future 2.5D props/actors.
     this.player.setDepth(this.player.y);
     // World-space identity remains readable even while scenery fades over the actor.
