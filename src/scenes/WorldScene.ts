@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import { interpolateDepthY, type DepthLine, type Point } from '../world/depthGeometry';
 import { AURORA_DESERT } from '../world/auroraDesert';
 
 const TEST_ASSET_KEY='aurora-rock-test';
@@ -17,18 +16,7 @@ export class WorldScene extends Phaser.Scene {
   private keys!: Record<'W'|'A'|'S'|'D', Phaser.Input.Keyboard.Key>;
   private playerLabel!: Phaser.GameObjects.Text;
   private touchTarget?: Phaser.Math.Vector2;
-  private ambientLights: Phaser.GameObjects.Arc[] = [];
   private occluders!: Phaser.Physics.Arcade.StaticGroup;
-  private artTestCollision?: Phaser.GameObjects.Zone;
-  private artTestCollisions: Phaser.GameObjects.Zone[]=[];
-  private depthProps: { object: Phaser.GameObjects.GameObject; baseY: number }[] = [];
-  private artTestRock?: Phaser.GameObjects.Image;
-  private artTestSortY=620;
-  private artTestDepthLine:DepthLine={left:{x:1018,y:596},right:{x:1168,y:620}};
-  private artTestFootprint:Point[]=[
-    {x:1028,y:600},{x:1154,y:613},{x:1164,y:632},{x:1088,y:646},{x:1020,y:627}
-  ];
-  private artDebug?: Phaser.GameObjects.Graphics;
   private cameraZoom=1.18;
   private riverWater?: Phaser.GameObjects.TileSprite;
 
@@ -64,7 +52,6 @@ export class WorldScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.player.body?.setSize(20,18).setOffset(8,20);
     this.physics.add.collider(this.player,this.occluders);
-    this.artTestCollisions.forEach(zone=>this.physics.add.collider(this.player,zone));
     this.playerLabel=this.add.text(this.player.x,this.player.y-38,'Kael · Rank E',{
       fontFamily:'monospace',fontSize:'13px',color:'#eefeff',stroke:'#071018',strokeThickness:5
     }).setOrigin(.5).setDepth(41);
@@ -148,16 +135,6 @@ export class WorldScene extends Phaser.Scene {
     this.player.setDepth(this.player.y);
     // World-space identity remains readable even while scenery fades over the actor.
     this.playerLabel.setDepth(100000);
-    if(this.artTestRock){
-      const switchY=interpolateDepthY(this.artTestDepthLine,this.player.x);
-      const behind=this.player.y<switchY;
-      this.artTestRock.setDepth(behind?this.player.y+2:this.player.y-2);
-      const dx=Math.abs(this.player.x-this.artTestRock.x);
-      const dy=Math.abs(this.player.y-switchY);
-      const occluded=behind&&dx<this.artTestRock.displayWidth*.39&&dy<this.artTestRock.displayHeight*.48;
-      const targetAlpha=occluded?.63:1;
-      this.artTestRock.alpha=Phaser.Math.Linear(this.artTestRock.alpha,targetAlpha,.14);
-    }
     this.cameras.main.setZoom(Phaser.Math.Linear(this.cameras.main.zoom,this.cameraZoom,.12));
     this.playerLabel.setPosition(this.player.x,this.player.y-38);
   }
