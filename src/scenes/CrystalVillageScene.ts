@@ -13,7 +13,7 @@ const ASSETS={
   workshop:'/assets/aurora/nature/vila-oficina-nexa-01.png',
   monument:'/assets/aurora/nature/vila-monumento-nexa-01.png',
   market:'/assets/aurora/nature/vila-barraca-mercado-01.png',
-  water:'/assets/aurora/nature/vila-agua-base-01.png',
+  water:'/assets/aurora/nature/agua-aurora-base.png',
   bank:'/assets/aurora/nature/vila-margem-canal-reta-01.png',
   bridge:'/assets/aurora/nature/ponte-vila-01.png',
   tree:'/assets/aurora/nature/vila-arvore-01.png',
@@ -136,7 +136,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 12',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · TESTE ÁGUA AURORA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
