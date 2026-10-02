@@ -147,17 +147,19 @@ export class WorldScene extends Phaser.Scene {
       this.artTestRock=rock;
       const max=185;
       if(rock.width>max) rock.setScale(max/rock.width);
-      // Collision uses only the visual footprint, allowing Kael to pass behind the tall formation.
-      // Approximate the irregular ground footprint with three small Arcade bodies.
+      // Solid ground mass follows the same diagonal perspective as the art.
+      // Staggered narrow bodies approximate a sloped rear/front footprint without a flat invisible wall.
       const collisionDefs=[
-        // Rear shoulder: prevents walking deep into the formation while preserving a narrow path behind it.
-        {x:x-32,y:594,w:54,h:22},
-        {x:x+2,y:601,w:72,h:24},
-        {x:x+36,y:610,w:50,h:20},
-        // Ground-contact/front footprint.
-        {x:x-35,y:620,w:58,h:18},
-        {x:x+1,y:631,w:76,h:22},
-        {x:x+38,y:641,w:48,h:18}
+        {x:x-55,y:586,w:30,h:18},
+        {x:x-34,y:592,w:34,h:22},
+        {x:x-12,y:599,w:36,h:25},
+        {x:x+11,y:606,w:38,h:27},
+        {x:x+34,y:613,w:36,h:25},
+        {x:x+55,y:620,w:30,h:20},
+        {x:x-42,y:612,w:34,h:22},
+        {x:x-18,y:620,w:38,h:25},
+        {x:x+7,y:628,w:40,h:27},
+        {x:x+32,y:636,w:36,h:23}
       ];
       this.artTestCollisions=collisionDefs.map(d=>{
         const zone=this.add.zone(d.x,d.y,d.w,d.h);
