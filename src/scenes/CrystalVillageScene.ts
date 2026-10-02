@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 const WORLD={width:3200,height:2400};
 const ASSETS={
   ground:'/assets/aurora/nature/vila-terreno-base-01.png',
+  stone:'/assets/aurora/nature/vila-piso-pedra-base-01.png',
   plaza:'/assets/aurora/nature/vila-praca-central-01.png',
   road:'/assets/aurora/nature/vila-caminho-reto-01.png',
   curve:'/assets/aurora/nature/vila-caminho-curva-01.png',
@@ -40,28 +41,36 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.cameras.main.setBounds(0,0,w,h);
     this.add.tileSprite(w/2,h/2,w,h,'village-ground').setDepth(-100);
 
-    // V0.1 macro composition: establish the village silhouette before collision tuning.
-    this.place('village-plaza',1550,1260,820,-70);
-    this.place('village-road',1550,1880,330,-68);
-    this.place('village-junction',1550,1610,430,-67);
-    this.place('village-gate',1550,430,650,420);
+    // Ground-material validation pass.
+    // The old plaza/road/junction PNGs deliberately stay loaded but are NOT rendered:
+    // they contain their own dirt and were creating visible rectangular patches.
+    const paved=this.add.tileSprite(1550,1250,2050,1650,'village-stone')
+      .setTileScale(.34)
+      .setDepth(-90);
 
-    this.water=this.add.tileSprite(2630,1330,420,1900,'village-water').setDepth(-75);
-    this.place('village-bank',2390,1330,1900,-62);
-    this.place('village-bank',2870,1330,1900,-62,true);
-    this.place('village-bridge',2630,1280,520,90);
+    // Irregular urban footprint: one continuous stone material instead of several
+    // pre-rendered floor plates. Later props/vegetation will soften this boundary.
+    const pavementMask=this.make.graphics({x:0,y:0});
+    pavementMask.fillStyle(0xffffff);
+    pavementMask.beginPath();
+    pavementMask.moveTo(650,520);
+    pavementMask.lineTo(1180,360);
+    pavementMask.lineTo(1810,390);
+    pavementMask.lineTo(2390,560);
+    pavementMask.lineTo(2520,980);
+    pavementMask.lineTo(2440,1450);
+    pavementMask.lineTo(2210,1960);
+    pavementMask.lineTo(1700,2110);
+    pavementMask.lineTo(1110,2050);
+    pavementMask.lineTo(650,1780);
+    pavementMask.lineTo(520,1300);
+    pavementMask.lineTo(560,850);
+    pavementMask.closePath();
+    pavementMask.fillPath();
+    paved.setMask(pavementMask.createGeometryMask());
 
-    this.place('village-forge',760,830,820,760);
-    this.place('village-workshop',760,1650,650,1650);
-    this.place('village-market',2220,760,560,760);
-    this.place('village-monument',1550,1190,560,1190);
-
-    this.place('village-cliff',1000,220,1900,180);
-    this.place('village-cliff',2050,220,1900,180,true);
-    this.place('village-cliff',700,2220,1500,2180);
-    this.place('village-cliff',2150,2220,1500,2180,true);
-    this.place('village-tree',430,1320,430,1320);
-    this.place('village-tree',2300,1860,360,1860,true);
+    // Keep this pass intentionally clean: no plaza, roads, buildings or scenery.
+    // We first validate scale, repetition and the stone/dirt relationship.
 
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
@@ -71,7 +80,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     g.fillStyle(0x17202e);g.fillRect(5,21,26,12);
     g.generateTexture('village-kael',36,40);g.destroy();
 
-    this.player=this.physics.add.sprite(1550,1840,'village-kael').setCollideWorldBounds(true);
+    this.player=this.physics.add.sprite(1550,1680,'village-kael').setCollideWorldBounds(true);
     this.player.body?.setSize(20,18).setOffset(8,20);
     this.label=this.add.text(this.player.x,this.player.y-38,'Kael · Rank E',{
       fontFamily:'monospace',fontSize:'13px',color:'#eefeff',stroke:'#071018',strokeThickness:5
@@ -84,7 +93,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · V0.1',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · TESTE DE PISO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   private place(key:string,x:number,y:number,targetWidth:number,depth:number,flipX=false){
