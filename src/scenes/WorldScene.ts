@@ -237,13 +237,6 @@ export class WorldScene extends Phaser.Scene {
     }
   }
 
-  private label(x:number,y:number,title:string,sub:string,color:number){
-    const box=this.add.graphics().setDepth(60);
-    box.fillStyle(0x061019,.88);box.fillRoundedRect(x-155,y-31,310,62,9);
-    box.lineStyle(2,color,.72);box.strokeRoundedRect(x-155,y-31,310,62,9);
-    this.add.text(x,y-10,title,{fontFamily:'monospace',fontSize:'14px',color:'#f1fdff',fontStyle:'bold'}).setOrigin(.5).setDepth(61);
-    this.add.text(x,y+13,sub,{fontFamily:'monospace',fontSize:'10px',color:'#a9c2c7'}).setOrigin(.5).setDepth(61);
-  }
 
   private hud(){
     this.add.text(18,18,'SETOR AURORA',{fontFamily:'monospace',fontSize:'15px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:11,y:8}}).setScrollFactor(0).setDepth(100);
