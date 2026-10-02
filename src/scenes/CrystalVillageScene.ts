@@ -85,7 +85,7 @@ export class CrystalVillageScene extends Phaser.Scene{
       return img;
     };
 
-    this.water=this.add.tileSprite(2860,1280,410,2050,'village-water').setDepth(-82);
+    this.water=this.add.tileSprite(2860,1200,410,2400,'village-water').setDepth(-82);
     this.water.setTileScale(.58);
 
     // Relief follows the outside perimeter instead of cutting through the plaza.
@@ -132,7 +132,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 07',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 08',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
