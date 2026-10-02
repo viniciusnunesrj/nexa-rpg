@@ -44,7 +44,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Ground-material validation pass.
     // The old plaza/road/junction PNGs deliberately stay loaded but are NOT rendered:
     // they contain their own dirt and were creating visible rectangular patches.
-    const paved=this.add.tileSprite(1550,1250,2050,1650,'village-stone')
+    const paved=this.add.tileSprite(1550,1170,1720,1430,'village-stone')
       .setTileScale(.34)
       .setDepth(-90);
 
@@ -53,18 +53,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     const pavementMask=this.make.graphics({x:0,y:0});
     pavementMask.fillStyle(0xffffff);
     pavementMask.beginPath();
-    pavementMask.moveTo(650,520);
-    pavementMask.lineTo(1180,360);
-    pavementMask.lineTo(1810,390);
-    pavementMask.lineTo(2390,560);
-    pavementMask.lineTo(2520,980);
-    pavementMask.lineTo(2440,1450);
-    pavementMask.lineTo(2210,1960);
-    pavementMask.lineTo(1700,2110);
-    pavementMask.lineTo(1110,2050);
-    pavementMask.lineTo(650,1780);
-    pavementMask.lineTo(520,1300);
-    pavementMask.lineTo(560,850);
+    pavementMask.moveTo(760,560);
+    pavementMask.lineTo(1220,430);
+    pavementMask.lineTo(1780,430);
+    pavementMask.lineTo(2290,590);
+    pavementMask.lineTo(2380,930);
+    pavementMask.lineTo(2280,1390);
+    pavementMask.lineTo(2050,1810);
+    pavementMask.lineTo(1680,1940);
+    pavementMask.lineTo(1160,1900);
+    pavementMask.lineTo(760,1660);
+    pavementMask.lineTo(650,1260);
+    pavementMask.lineTo(650,850);
     pavementMask.closePath();
     pavementMask.fillPath();
     paved.setMask(pavementMask.createGeometryMask());
@@ -73,8 +73,8 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Floor-piece PNGs remain disabled; all architecture sits on the continuous stone material.
     this.add.image(1550,470,'village-gate').setDisplaySize(650,Math.round(650*this.textures.get('village-gate').getSourceImage().height/this.textures.get('village-gate').getSourceImage().width)).setOrigin(.5,1).setDepth(470);
     this.add.image(1550,1210,'village-monument').setDisplaySize(560,Math.round(560*this.textures.get('village-monument').getSourceImage().height/this.textures.get('village-monument').getSourceImage().width)).setOrigin(.5,1).setDepth(1210);
-    this.add.image(720,1020,'village-forge').setDisplaySize(760,Math.round(760*this.textures.get('village-forge').getSourceImage().height/this.textures.get('village-forge').getSourceImage().width)).setOrigin(.5,1).setDepth(1020);
-    this.add.image(2260,1010,'village-market').setDisplaySize(520,Math.round(520*this.textures.get('village-market').getSourceImage().height/this.textures.get('village-market').getSourceImage().width)).setOrigin(.5,1).setDepth(1010);
+    this.add.image(820,990,'village-forge').setDisplaySize(700,Math.round(760*this.textures.get('village-forge').getSourceImage().height/this.textures.get('village-forge').getSourceImage().width)).setOrigin(.5,1).setDepth(1020);
+    this.add.image(2160,990,'village-market').setDisplaySize(500,Math.round(520*this.textures.get('village-market').getSourceImage().height/this.textures.get('village-market').getSourceImage().width)).setOrigin(.5,1).setDepth(1010);
 
     // Composition 03: rebuild the right side to match the master layout.
     // The river is a natural vertical channel at the far right; the bridge crosses it horizontally.
@@ -118,18 +118,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Master-reference infill pass: occupy the large empty southern half with the
     // same functional zones visible in the reference, without changing the validated river/bridge.
     // Southwest = second civic/workshop building; southeast = market cluster.
-    placeSized('village-workshop',920,1570,560,1560);
-    placeSized('village-market',1940,1510,400,1500,true);
+    placeSized('village-workshop',1000,1460,520,1450);
+    placeSized('village-market',1880,1435,390,1425,true);
 
     // South entrance mirrors the reference's lower access. Keep it well inside the
     // paved footprint so the later path/dock layer can connect to it cleanly.
-    placeSized('village-gate',1550,1875,440,1865);
+    placeSized('village-gate',1550,1690,420,1680);
 
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
-    placeSized('village-tree',690,1540,270,1530,true);
-    placeSized('village-tree',2180,1435,245,1425);
-    placeSized('village-tree',1810,1800,230,1790,true);
+    placeSized('village-tree',790,1450,250,1440,true);
+    placeSized('village-tree',2070,1375,235,1365);
+    placeSized('village-tree',1780,1630,220,1620,true);
 
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
@@ -139,7 +139,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     g.fillStyle(0x17202e);g.fillRect(5,21,26,12);
     g.generateTexture('village-kael',36,40);g.destroy();
 
-    this.player=this.physics.add.sprite(1550,1680,'village-kael').setCollideWorldBounds(true);
+    this.player=this.physics.add.sprite(1550,1530,'village-kael').setCollideWorldBounds(true);
     this.player.body?.setSize(20,18).setOffset(8,20);
     this.label=this.add.text(this.player.x,this.player.y-38,'Kael · Rank E',{
       fontFamily:'monospace',fontSize:'13px',color:'#eefeff',stroke:'#071018',strokeThickness:5
@@ -152,7 +152,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 14',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 15',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
