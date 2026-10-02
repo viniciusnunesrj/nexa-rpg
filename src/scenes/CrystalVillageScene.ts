@@ -131,6 +131,27 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-tree',1990,1350,230,1340);
     placeSized('village-tree',1750,1570,215,1560,true);
 
+    // Environmental integration pass (Master reference): vegetation hugs the urban
+    // footprint and breaks the clean polygon edge without moving validated landmarks.
+    // North gate shoulders.
+    placeSized('village-tree',1120,650,230,640,true);
+    placeSized('village-tree',1960,660,245,650);
+
+    // Northwest forge pocket: dense greenery between building, cliff and plaza.
+    placeSized('village-tree',650,870,255,860);
+    placeSized('village-tree',720,1220,220,1210,true);
+
+    // Northeast market/bridge approach. Keep the actual bridge deck unobstructed.
+    placeSized('village-tree',2250,1010,225,1000,true);
+    placeSized('village-tree',2350,1320,250,1310);
+
+    // South transition: break the large paved field into the narrower corridor
+    // visible in the master while preserving a clear route to the south gate.
+    placeSized('village-tree',1130,1690,240,1680);
+    placeSized('village-tree',1980,1710,250,1700,true);
+    placeSized('village-tree',1020,1880,270,1870,true);
+    placeSized('village-tree',2070,1900,280,1890);
+
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
     g.fillStyle(0x28364b);g.fillRoundedRect(7,8,22,27,6);
@@ -152,7 +173,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 20 · PASSE AMBIENTAL',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
