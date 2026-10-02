@@ -13,6 +13,9 @@ export class WorldScene extends Phaser.Scene {
   private occluders!: Phaser.Physics.Arcade.StaticGroup;
   private artTestCollision?: Phaser.GameObjects.Zone;
   private depthProps: { object: Phaser.GameObjects.GameObject; baseY: number }[] = [];
+  private artTestRock?: Phaser.GameObjects.Image;
+  private artTestSortY=620;
+  private artDebug?: Phaser.GameObjects.Graphics;
 
   constructor() { super('WorldScene'); }
 
@@ -130,13 +133,26 @@ export class WorldScene extends Phaser.Scene {
   private placeArtTest(){
     const x=1095,y=610;
     if(this.textures.exists(TEST_ASSET_KEY)){
-      const rock=this.add.image(x,y,TEST_ASSET_KEY).setOrigin(.5,.88).setDepth(y);
+      const rock=this.add.image(x,y,TEST_ASSET_KEY).setOrigin(.5,.88).setDepth(this.artTestSortY);
+      this.artTestRock=rock;
       const max=185;
       if(rock.width>max) rock.setScale(max/rock.width);
       // Collision uses only the visual footprint, allowing Kael to pass behind the tall formation.
-      this.artTestCollision=this.add.zone(x,y-4,Math.max(74,rock.displayWidth*.56),Math.max(30,rock.displayHeight*.18));
+      this.artTestCollision=this.add.zone(x,y+2,Math.max(62,rock.displayWidth*.43),Math.max(24,rock.displayHeight*.12));
       this.physics.add.existing(this.artTestCollision,true);
       rock.setData('visual-test','Aurora Art Test 01');
+      this.artDebug=this.add.graphics().setDepth(9999).setVisible(false);
+      this.input.keyboard?.on('keydown-F2',()=>{
+        if(!this.artDebug||!this.artTestCollision)return;
+        const visible=!this.artDebug.visible;
+        this.artDebug.clear().setVisible(visible);
+        if(visible){
+          const body=this.artTestCollision.body as Phaser.Physics.Arcade.StaticBody;
+          this.artDebug.lineStyle(2,0x43ff7a,.95).strokeRect(body.x,body.y,body.width,body.height);
+          this.artDebug.lineStyle(2,0xffd84a,.95).lineBetween(x-rock.displayWidth*.6,this.artTestSortY,x+rock.displayWidth*.6,this.artTestSortY);
+          this.artDebug.fillStyle(0xffd84a,1).fillCircle(x,this.artTestSortY,4);
+        }
+      });
     }else{
       // Current procedural placeholder remains until the approved PNG is supplied.
       const g=this.add.graphics().setDepth(34);
@@ -253,6 +269,7 @@ export class WorldScene extends Phaser.Scene {
     // Y-sorting is the base rule for future 2.5D props/actors.
     this.player.setDepth(this.player.y);
     this.playerLabel.setDepth(this.player.y+1);
+    if(this.artTestRock) this.artTestRock.setDepth(this.artTestSortY);
     this.playerLabel.setPosition(this.player.x,this.player.y-38);
   }
 }
