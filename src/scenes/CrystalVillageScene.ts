@@ -85,6 +85,10 @@ export class CrystalVillageScene extends Phaser.Scene{
       return img;
     };
 
+    // Opaque river bed: the current water PNG has translucent edge pixels, so the
+    // brown world ground was leaking through at every repeated tile boundary.
+    // A solid deep-water layer underneath prevents any terrain from appearing in-channel.
+    this.add.rectangle(2860,1200,610,2400,0x07566b,1).setDepth(-83);
     this.water=this.add.tileSprite(2860,1200,610,2400,'village-water').setDepth(-82);
     this.water.setTileScale(.58);
 
@@ -132,7 +136,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 11',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 12',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
