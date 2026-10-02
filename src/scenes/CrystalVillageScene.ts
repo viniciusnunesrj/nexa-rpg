@@ -76,6 +76,36 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.add.image(720,1020,'village-forge').setDisplaySize(760,Math.round(760*this.textures.get('village-forge').getSourceImage().height/this.textures.get('village-forge').getSourceImage().width)).setOrigin(.5,1).setDepth(1020);
     this.add.image(2260,1010,'village-market').setDisplaySize(520,Math.round(520*this.textures.get('village-market').getSourceImage().height/this.textures.get('village-market').getSourceImage().width)).setOrigin(.5,1).setDepth(1010);
 
+    // Composition 02: frame the settlement with relief and establish the river corridor.
+    // These are scenery layers only; navigation/collision will be authored separately.
+    const placeSized=(key:string,x:number,y:number,width:number,depth:number,flipX=false)=>{
+      const src=this.textures.get(key).getSourceImage();
+      const img=this.add.image(x,y,key).setDisplaySize(width,Math.round(width*src.height/src.width)).setOrigin(.5,1).setDepth(depth);
+      img.setFlipX(flipX);
+      return img;
+    };
+
+    // Right-side river: water stays behind every bank/cliff/bridge element.
+    this.water=this.add.tileSprite(2735,1370,500,1900,'village-water').setDepth(-82);
+    this.water.setTileScale(.58);
+    placeSized('village-bank',2490,1370,1900,-70);
+    placeSized('village-bank',2980,1370,1900,-70,true);
+    placeSized('village-bridge',2735,1280,500,1280);
+
+    // Rocky frame. Overlap segments on purpose so the terrain reads as one mass,
+    // not as repeated standalone sprites.
+    placeSized('village-cliff',770,500,1450,470);
+    placeSized('village-cliff',2210,500,1450,470,true);
+    placeSized('village-cliff',360,1420,1450,1390);
+    placeSized('village-cliff',2450,2140,1500,2110,true);
+    placeSized('village-cliff',1080,2290,1500,2260);
+    placeSized('village-cliff',2050,2290,1500,2260,true);
+
+    // A few large trees break the hard stone/dirt boundary before detail dressing.
+    placeSized('village-tree',430,1120,360,1110);
+    placeSized('village-tree',2380,720,330,710,true);
+    placeSized('village-tree',2280,1940,360,1930);
+
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
     g.fillStyle(0x28364b);g.fillRoundedRect(7,8,22,27,6);
@@ -97,7 +127,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 01',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 02',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
