@@ -96,12 +96,10 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-cliff',1040,2300,1300,2270);
     placeSized('village-cliff',1960,2300,1300,2270,true);
 
-    // Keep the east side open around the bridge. In the master this is a river crossing,
-    // not a rock wall: plaza/path -> short land approach -> bridge -> east bank.
-    placeSized('village-bank',2650,720,760,-70);
-    placeSized('village-bank',2650,1780,760,-70);
-    placeSized('village-bank',3070,720,760,-70,true);
-    placeSized('village-bank',3070,1780,760,-70,true);
+    // Keep the east river visually continuous. The old bank PNG contains opaque
+    // ground inside the sprite, so placing it across the channel created false
+    // "dry" horizontal bands. River-edge relief will be rebuilt with dedicated
+    // edge assets that never cover the water surface.
     // Production bridge: keep the proven east-west anchor/orientation from the Aurora test,
     // but use the wider village asset that matches the master composition.
     placeSized('village-bridge',2860,1120,760,1120);
@@ -132,7 +130,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 08',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 09',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
