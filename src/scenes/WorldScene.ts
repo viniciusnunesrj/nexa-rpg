@@ -12,6 +12,7 @@ export class WorldScene extends Phaser.Scene {
   private ambientLights: Phaser.GameObjects.Arc[] = [];
   private occluders!: Phaser.Physics.Arcade.StaticGroup;
   private artTestCollision?: Phaser.GameObjects.Zone;
+  private depthProps: { object: Phaser.GameObjects.GameObject; baseY: number }[] = [];
 
   constructor() { super('WorldScene'); }
 
@@ -159,19 +160,21 @@ export class WorldScene extends Phaser.Scene {
     block(330,1060,300,170);     // cliff/water edge
 
     // Midground props: trunks/pillars sit below the player, crowns/tops can occlude it.
-    const trunks=this.add.graphics().setDepth(30);
-    const crowns=this.add.graphics().setDepth(48);
     const props=[
       {x:735,y:500,s:1.0},{x:880,y:430,s:.78},{x:1180,y:620,s:.92},
       {x:1320,y:820,s:.82},{x:720,y:860,s:.9},{x:1420,y:690,s:.72}
     ];
     props.forEach((p,i)=>{
-      trunks.fillStyle(0x17241f,.96);trunks.fillRect(p.x-7*p.s,p.y,14*p.s,38*p.s);
-      trunks.fillStyle(0x3a2d20,.8);trunks.fillRect(p.x-3*p.s,p.y+6,6*p.s,34*p.s);
-      crowns.fillStyle(i%3===0?0x294b3d:0x203d35,.98);
-      crowns.fillEllipse(p.x,p.y-16*p.s,72*p.s,58*p.s);
-      crowns.fillStyle(0x3b6953,.7);crowns.fillEllipse(p.x-14*p.s,p.y-28*p.s,38*p.s,28*p.s);
-      if(i%2===0){crowns.fillStyle(0x4dded1,.25);crowns.fillCircle(p.x+15*p.s,p.y-25*p.s,5*p.s);}
+      // Each tall prop owns its depth. One shared Graphics object cannot Y-sort individual trees.
+      const tree=this.add.graphics().setDepth(p.y);
+      tree.fillStyle(0x17241f,.96);tree.fillRect(-7*p.s,0,14*p.s,38*p.s);
+      tree.fillStyle(0x3a2d20,.8);tree.fillRect(-3*p.s,6,6*p.s,34*p.s);
+      tree.fillStyle(i%3===0?0x294b3d:0x203d35,.98);
+      tree.fillEllipse(0,-16*p.s,72*p.s,58*p.s);
+      tree.fillStyle(0x3b6953,.7);tree.fillEllipse(-14*p.s,-28*p.s,38*p.s,28*p.s);
+      if(i%2===0){tree.fillStyle(0x4dded1,.25);tree.fillCircle(15*p.s,-25*p.s,5*p.s);}
+      tree.setPosition(p.x,p.y);
+      this.depthProps.push({object:tree,baseY:p.y});
     });
 
     // Small architectural foreground pieces sell height when Kael walks behind them.
