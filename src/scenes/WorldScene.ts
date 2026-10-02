@@ -110,6 +110,13 @@ export class WorldScene extends Phaser.Scene {
     const bridge=this.add.image(riverX,1100,'desert-bridge').setOrigin(.5).setDepth(-10);
     const bridgeTargetW=360;
     if(bridge.width>bridgeTargetW)bridge.setScale(bridgeTargetW/bridge.width);
+    // Generated art is diagonal. Its walkable deck therefore needs a diagonal
+    // gameplay corridor instead of a horizontal opening through the river.
+    bridge.setData('crossing',{
+      ax:riverX-150, ay:1160,
+      bx:riverX+150, by:1040,
+      halfWidth:34
+    });
   }
 
 
@@ -117,18 +124,32 @@ export class WorldScene extends Phaser.Scene {
   private buildWorldDepth(){
     this.occluders=this.physics.add.staticGroup();
 
-    // The river is solid terrain except at the bridge opening. Two long invisible
-    // barriers keep Kael out of the water while leaving the crossing walkable.
-    const riverX=2100, bridgeY=1100, openingH=92, barrierW=250;
-    const addBarrier=(top:number,bottom:number)=>{
-      const h=bottom-top;
-      if(h<=0)return;
-      const zone=this.add.zone(riverX,top+h/2,barrierW,h);
+    // Approximate the diagonal bridge deck with a chain of small walkable gaps.
+    // Each river barrier row is split around the deck center at that Y, so Kael
+    // can cross only while following the visible bridge.
+    const riverX=2100, riverW=250;
+    const bridgeAx=riverX-150, bridgeAy=1160;
+    const bridgeBx=riverX+150, bridgeBy=1040;
+    const deckHalf=38, rowH=24;
+    const addZone=(x:number,y:number,w:number,h:number)=>{
+      if(w<=0)return;
+      const zone=this.add.zone(x,y,w,h);
       this.physics.add.existing(zone,true);
       this.occluders.add(zone);
     };
-    addBarrier(0,bridgeY-openingH/2);
-    addBarrier(bridgeY+openingH/2,AURORA_DESERT.height);
+    for(let y=rowH/2;y<AURORA_DESERT.height;y+=rowH){
+      const inBridgeY=y>=bridgeBy-deckHalf&&y<=bridgeAy+deckHalf;
+      if(!inBridgeY){
+        addZone(riverX,y,riverW,rowH);
+        continue;
+      }
+      const t=Phaser.Math.Clamp((y-bridgeAy)/(bridgeBy-bridgeAy),0,1);
+      const deckX=Phaser.Math.Linear(bridgeAx,bridgeBx,t);
+      const left=riverX-riverW/2, right=riverX+riverW/2;
+      const gapL=deckX-deckHalf, gapR=deckX+deckHalf;
+      addZone((left+gapL)/2,y,gapL-left,rowH);
+      addZone((gapR+right)/2,y,right-gapR,rowH);
+    }
   }
 
 
