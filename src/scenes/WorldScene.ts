@@ -148,9 +148,6 @@ export class WorldScene extends Phaser.Scene {
       const max=185;
       if(rock.width>max) rock.setScale(max/rock.width);
       // Collision uses only the visual footprint, allowing Kael to pass behind the tall formation.
-      const fp=this.artTestFootprint;
-      const minX=Math.min(...fp.map(p=>p.x)),maxX=Math.max(...fp.map(p=>p.x));
-      const minY=Math.min(...fp.map(p=>p.y)),maxY=Math.max(...fp.map(p=>p.y));
       // Approximate the irregular ground footprint with three small Arcade bodies.
       const collisionDefs=[
         {x:x-35,y:611,w:58,h:18},
