@@ -53,18 +53,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     const pavementMask=this.make.graphics({x:0,y:0});
     pavementMask.fillStyle(0xffffff);
     pavementMask.beginPath();
-    pavementMask.moveTo(760,560);
-    pavementMask.lineTo(1220,430);
-    pavementMask.lineTo(1780,430);
-    pavementMask.lineTo(2290,590);
-    pavementMask.lineTo(2380,930);
-    pavementMask.lineTo(2280,1390);
-    pavementMask.lineTo(2050,1810);
-    pavementMask.lineTo(1680,1940);
-    pavementMask.lineTo(1160,1900);
-    pavementMask.lineTo(760,1660);
-    pavementMask.lineTo(650,1260);
-    pavementMask.lineTo(650,850);
+    pavementMask.moveTo(850,610);
+    pavementMask.lineTo(1250,500);
+    pavementMask.lineTo(1750,500);
+    pavementMask.lineTo(2200,640);
+    pavementMask.lineTo(2300,930);
+    pavementMask.lineTo(2180,1360);
+    pavementMask.lineTo(1980,1690);
+    pavementMask.lineTo(1660,1810);
+    pavementMask.lineTo(1200,1780);
+    pavementMask.lineTo(850,1570);
+    pavementMask.lineTo(740,1240);
+    pavementMask.lineTo(740,850);
     pavementMask.closePath();
     pavementMask.fillPath();
     paved.setMask(pavementMask.createGeometryMask());
@@ -73,8 +73,8 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Floor-piece PNGs remain disabled; all architecture sits on the continuous stone material.
     this.add.image(1550,470,'village-gate').setDisplaySize(650,Math.round(650*this.textures.get('village-gate').getSourceImage().height/this.textures.get('village-gate').getSourceImage().width)).setOrigin(.5,1).setDepth(470);
     this.add.image(1550,1210,'village-monument').setDisplaySize(560,Math.round(560*this.textures.get('village-monument').getSourceImage().height/this.textures.get('village-monument').getSourceImage().width)).setOrigin(.5,1).setDepth(1210);
-    this.add.image(820,990,'village-forge').setDisplaySize(700,Math.round(760*this.textures.get('village-forge').getSourceImage().height/this.textures.get('village-forge').getSourceImage().width)).setOrigin(.5,1).setDepth(1020);
-    this.add.image(2160,990,'village-market').setDisplaySize(500,Math.round(520*this.textures.get('village-market').getSourceImage().height/this.textures.get('village-market').getSourceImage().width)).setOrigin(.5,1).setDepth(1010);
+    this.add.image(920,1010,'village-forge').setDisplaySize(700,Math.round(760*this.textures.get('village-forge').getSourceImage().height/this.textures.get('village-forge').getSourceImage().width)).setOrigin(.5,1).setDepth(1020);
+    this.add.image(2070,1010,'village-market').setDisplaySize(500,Math.round(520*this.textures.get('village-market').getSourceImage().height/this.textures.get('village-market').getSourceImage().width)).setOrigin(.5,1).setDepth(1010);
 
     // Composition 03: rebuild the right side to match the master layout.
     // The river is a natural vertical channel at the far right; the bridge crosses it horizontally.
@@ -118,18 +118,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Master-reference infill pass: occupy the large empty southern half with the
     // same functional zones visible in the reference, without changing the validated river/bridge.
     // Southwest = second civic/workshop building; southeast = market cluster.
-    placeSized('village-workshop',1000,1460,520,1450);
-    placeSized('village-market',1880,1435,390,1425,true);
+    placeSized('village-workshop',1090,1450,500,1440);
+    placeSized('village-market',1810,1425,380,1415,true);
 
     // South entrance mirrors the reference's lower access. Keep it well inside the
     // paved footprint so the later path/dock layer can connect to it cleanly.
-    placeSized('village-gate',1550,1690,420,1680);
+    placeSized('village-gate',1550,1630,400,1620);
 
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
-    placeSized('village-tree',790,1450,250,1440,true);
-    placeSized('village-tree',2070,1375,235,1365);
-    placeSized('village-tree',1780,1630,220,1620,true);
+    placeSized('village-tree',900,1410,245,1400,true);
+    placeSized('village-tree',1990,1350,230,1340);
+    placeSized('village-tree',1750,1570,215,1560,true);
 
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
@@ -152,7 +152,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 15',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 16',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
