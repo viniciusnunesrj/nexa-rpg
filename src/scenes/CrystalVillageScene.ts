@@ -178,6 +178,25 @@ export class CrystalVillageScene extends Phaser.Scene{
     foliage(2480,1510,190,true,.92);
     foliage(2500,1760,180,false,.92);
 
+    // Relief infill: smaller cliff fragments reinforce the north/south transitions
+    // instead of leaving the village as one flat stone plate. They stay outside the
+    // main circulation spine and never cross the river or bridge.
+    placeSized('village-cliff',900,620,420,605,true);
+    placeSized('village-cliff',2180,690,390,675);
+    placeSized('village-cliff',760,1740,430,1725);
+    placeSized('village-cliff',2250,1810,420,1795,true);
+    placeSized('village-cliff',1160,2060,390,2045,true);
+    placeSized('village-cliff',1960,2080,410,2065);
+
+    // Vegetation overlaps the relief seams so the repeated rock asset reads as one
+    // continuous landscape mass rather than a row of duplicated sprites.
+    foliage(980,650,130,false,.94);
+    foliage(2110,720,125,true,.94);
+    foliage(830,1770,145,true,.94);
+    foliage(2180,1830,150,false,.94);
+    foliage(1210,2070,140,false,.94);
+    foliage(1900,2090,145,true,.94);
+
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
     g.fillStyle(0x28364b);g.fillRoundedRect(7,8,22,27,6);
@@ -199,7 +218,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 20 · PASSE AMBIENTAL B',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 20 · PASSE AMBIENTAL C',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
