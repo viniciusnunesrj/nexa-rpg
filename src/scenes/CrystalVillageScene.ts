@@ -118,18 +118,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Master-reference infill pass: occupy the large empty southern half with the
     // same functional zones visible in the reference, without changing the validated river/bridge.
     // Southwest = second civic/workshop building; southeast = market cluster.
-    placeSized('village-workshop',760,1760,600,1750);
-    placeSized('village-market',2100,1650,430,1640,true);
+    placeSized('village-workshop',920,1570,560,1560);
+    placeSized('village-market',1940,1510,400,1500,true);
 
     // South entrance mirrors the reference's lower access. Keep it well inside the
     // paved footprint so the later path/dock layer can connect to it cleanly.
-    placeSized('village-gate',1550,2115,470,2105);
+    placeSized('village-gate',1550,1875,440,1865);
 
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
-    placeSized('village-tree',520,1710,300,1700,true);
-    placeSized('village-tree',2290,1490,270,1480);
-    placeSized('village-tree',1880,2050,250,2040,true);
+    placeSized('village-tree',690,1540,270,1530,true);
+    placeSized('village-tree',2180,1435,245,1425);
+    placeSized('village-tree',1810,1800,230,1790,true);
 
     const g=this.add.graphics();
     g.fillStyle(0x111827);g.fillEllipse(18,31,30,13);
@@ -152,7 +152,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 13',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 14',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
