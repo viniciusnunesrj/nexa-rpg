@@ -96,12 +96,6 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · TESTE DE PISO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
-  private place(key:string,x:number,y:number,targetWidth:number,depth:number,flipX=false){
-    const img=this.add.image(x,y,key).setOrigin(.5).setDepth(depth).setFlipX(flipX);
-    if(img.width>0)img.setScale(targetWidth/img.width);
-    return img;
-  }
-
   update(){
     const speed=205;let x=0,y=0;
     if(this.cursors.left.isDown||this.keys.A.isDown)x--;
