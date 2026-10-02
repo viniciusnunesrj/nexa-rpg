@@ -4,6 +4,14 @@ import { AURORA_DESERT } from '../world/auroraDesert';
 
 const TEST_ASSET_KEY='aurora-rock-test';
 const TEST_ASSET_PATH='/assets/aurora/nature/rock-test.png';
+const DESERT_ASSETS={
+  ground:'/assets/aurora/nature/terreno-rochoso.png',
+  rock:'/assets/aurora/nature/rocha-deserto-01.png',
+  plant:'/assets/aurora/nature/vegetacao-seca-01.png',
+  tree:'/assets/aurora/nature/arvore-seca-01.png',
+  ruin:'/assets/aurora/nature/ruina-nexa-01.png',
+  crystal:'/assets/aurora/nature/cristal-nexa-01.png'
+} as const;
 
 export class WorldScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
@@ -30,6 +38,7 @@ export class WorldScene extends Phaser.Scene {
   preload(){
     // Micro-test only: a missing asset must never break the scene.
     this.load.image(TEST_ASSET_KEY,TEST_ASSET_PATH);
+    Object.entries(DESERT_ASSETS).forEach(([key,path])=>this.load.image(`desert-${key}`,path));
     this.load.once(Phaser.Loader.Events.FILE_LOAD_ERROR,(file:Phaser.Loader.File)=>{
       if(file.key===TEST_ASSET_KEY) this.textures.remove(TEST_ASSET_KEY);
     });
@@ -84,61 +93,53 @@ export class WorldScene extends Phaser.Scene {
 
   private drawTerrain(W:number,H:number) {
     const p=AURORA_DESERT.palette;
-    const g=this.add.graphics();
-    g.fillStyle(p.void); g.fillRect(0,0,W,H);
-    // Desert macro-shapes: intentionally simple until the final ground tiles arrive.
-    g.fillStyle(p.sandDark); g.fillRoundedRect(90,110,W-180,H-220,170);
-    AURORA_DESERT.regions.forEach((r,i)=>{
-      g.fillStyle(i===1?p.sand:p.sandLight,i===1?.88:.42);
-      g.fillEllipse(r.x+r.w/2,r.y+r.h/2,r.w,r.h);
-    });
-    AURORA_DESERT.paths.forEach(path=>{
-      g.lineStyle(150,p.sandLight,.34); g.beginPath();
-      path.forEach((pt,i)=>i?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y)); g.strokePath();
-      g.lineStyle(86,p.sand,.52); g.strokePath();
-    });
-    // Sparse texture only: enough to read scale without turning this into final art.
-    for(let i=0;i<70;i++){
-      const x=130+((i*347)%2940),y=130+((i*521)%1940);
-      g.fillStyle(i%7===0?p.rock:p.sandLight,i%7===0?.48:.18);
-      g.fillEllipse(x,y,18+(i%5)*8,8+(i%3)*5);
+    this.add.rectangle(W/2,H/2,W,H,p.void).setDepth(-20);
+    if(this.textures.exists('desert-ground')){
+      this.add.tileSprite(W/2,H/2,W-140,H-140,'desert-ground')
+        .setTileScale(.42).setDepth(-18);
+      // Unifies the photographic material with the colder Aurora palette.
+      this.add.rectangle(W/2,H/2,W-140,H-140,0x101820,.22).setDepth(-17);
     }
+    const g=this.add.graphics().setDepth(-16);
+    g.lineStyle(120,p.sandLight,.10);
+    AURORA_DESERT.paths.forEach(path=>{
+      g.beginPath();
+      path.forEach((pt,i)=>i?g.lineTo(pt.x,pt.y):g.moveTo(pt.x,pt.y));
+      g.strokePath();
+    });
   }
 
   private drawAuroraOutpost(){
-    const g=this.add.graphics().setDepth(8);
-    g.fillStyle(0x080e14,.95); g.fillRoundedRect(190,150,440,250,18);
-    g.fillStyle(0x17252b); g.fillRoundedRect(215,175,390,195,12);
-    g.fillStyle(0xe8a44d,.25); g.fillCircle(300,245,88);
-    for(let i=0;i<4;i++){g.fillStyle(0xf3b45c,.88);g.fillRect(245+i*88,205,48,32);}
-    g.lineStyle(3,0x49dbe3,.8); g.strokeRoundedRect(430,270,120,70,5);
-    this.label(410,125,'POSTO AURORA','Comércio  ·  Missões  ·  Reparo',0x55e8ef);
+    this.placeDesertProp('desert-ruin',620,570,210);
+    this.placeDesertProp('desert-plant',820,690,82);
+    this.placeDesertProp('desert-rock',930,780,120);
   }
 
   private drawNexusRift(){
-    const g=this.add.graphics().setDepth(9);
-    const x=1640,y=360;
-    for(let r=180;r>45;r-=25){g.lineStyle(7,r%50===5?0xa95cff:0x7442df,.18+(180-r)/500);g.strokeEllipse(x,y,r*1.7,r*.75);}
-    g.fillStyle(0x6d36ce,.20);g.fillEllipse(x,y,270,105);
-    g.fillStyle(0xc273ff,.42);g.fillEllipse(x,y,145,55);
-    for(let i=0;i<8;i++){const a=i*Math.PI/4;const px=x+Math.cos(a)*150,py=y+Math.sin(a)*70;g.fillStyle(0x251746);g.fillRect(px-10,py-35,20,70);g.lineStyle(2,0xb765ff,.8);g.strokeRect(px-10,py-35,20,70);}
-    this.label(x,y+135,'FISSURA NEXUS','Desafios  ·  Recompensas  ·  Eventos',0xb96cff);
+    this.placeDesertProp('desert-crystal',2530,720,105);
+    this.placeDesertProp('desert-rock',2400,830,110);
+    this.placeDesertProp('desert-plant',2670,900,76);
   }
 
   private drawVertexRuins(){
-    const g=this.add.graphics().setDepth(12);
-    const x=1600,y=1010;
-    for(let i=0;i<7;i++){const px=x-180+i*58, h=70+(i%3)*38;g.fillStyle(0x27343a);g.fillRect(px,y-h,42,h);g.fillStyle(0x4ee9dd,.28);g.fillRect(px+7,y-h+12,4,h-25);}
-    g.fillStyle(0xeaa34d,.25);g.fillCircle(x+70,y-30,80);
-    this.label(x,y+70,'RUÍNAS DE VÉRTICE','Exploração  ·  Fragmentos  ·  Segredos',0x58e6df);
+    this.placeDesertProp('desert-tree',1840,1280,235);
+    this.placeDesertProp('desert-rock',2050,1380,135);
+    this.placeDesertProp('desert-plant',1720,1430,78);
   }
 
   private drawWaterAndBridge(){
-    const g=this.add.graphics().setDepth(5);
-    g.fillStyle(0x063448,.88);g.fillRoundedRect(120,970,620,250,50);
-    for(let i=0;i<10;i++){g.lineStyle(2,0x3ac7dd,.15);g.lineBetween(150,995+i*19,690,995+i*19);}
-    g.fillStyle(0x493827);g.fillRect(470,1050,520,75);
-    for(let i=0;i<13;i++){g.fillStyle(i%2?0x6b5133:0x594129);g.fillRect(480+i*38,1057,30,60);}
+    this.placeDesertProp('desert-tree',1180,1580,220);
+    this.placeDesertProp('desert-rock',1320,1690,105);
+    this.placeDesertProp('desert-plant',1040,1720,72);
+    this.placeDesertProp('desert-crystal',1480,1760,76);
+  }
+
+  private placeDesertProp(key:string,x:number,y:number,maxWidth:number){
+    if(!this.textures.exists(key))return;
+    const image=this.add.image(x,y,key).setOrigin(.5,1);
+    if(image.width>maxWidth)image.setScale(maxWidth/image.width);
+    image.setDepth(y);
+    this.depthProps.push({object:image,baseY:y});
   }
 
   private placeArtTest(){
@@ -198,44 +199,8 @@ export class WorldScene extends Phaser.Scene {
 
   private buildWorldDepth(){
     this.occluders=this.physics.add.staticGroup();
-
-    // Invisible collision footprints keep traversal believable while the visible art remains layered.
-    const block=(x:number,y:number,w:number,h:number)=>{
-      const zone=this.add.zone(x,y,w,h);
-      this.physics.add.existing(zone,true);
-      this.occluders.add(zone);
-    };
-    block(410,275,420,220);       // Aurora building
-    block(1640,350,330,150);     // Nexus core
-    block(1600,955,390,155);     // Vertex ruins
-    block(330,1060,300,170);     // cliff/water edge
-
-    // Midground props: trunks/pillars sit below the player, crowns/tops can occlude it.
-    const props=[
-      {x:735,y:500,s:1.0},{x:880,y:430,s:.78},{x:1180,y:620,s:.92},
-      {x:1320,y:820,s:.82},{x:720,y:860,s:.9},{x:1420,y:690,s:.72}
-    ];
-    props.forEach((p,i)=>{
-      // Each tall prop owns its depth. One shared Graphics object cannot Y-sort individual trees.
-      const tree=this.add.graphics().setDepth(p.y);
-      tree.fillStyle(0x17241f,.96);tree.fillRect(-7*p.s,0,14*p.s,38*p.s);
-      tree.fillStyle(0x3a2d20,.8);tree.fillRect(-3*p.s,6,6*p.s,34*p.s);
-      tree.fillStyle(i%3===0?0x294b3d:0x203d35,.98);
-      tree.fillEllipse(0,-16*p.s,72*p.s,58*p.s);
-      tree.fillStyle(0x3b6953,.7);tree.fillEllipse(-14*p.s,-28*p.s,38*p.s,28*p.s);
-      if(i%2===0){tree.fillStyle(0x4dded1,.25);tree.fillCircle(15*p.s,-25*p.s,5*p.s);}
-      tree.setPosition(p.x,p.y);
-      this.depthProps.push({object:tree,baseY:p.y});
-    });
-
-    // Small architectural foreground pieces sell height when Kael walks behind them.
-    const walls=this.add.graphics().setDepth(47);
-    const segments=[{x:1110,y:555},{x:1160,y:575},{x:1510,y:820},{x:1560,y:840}];
-    segments.forEach((p,i)=>{
-      walls.fillStyle(0x29383b,.98);walls.fillRect(p.x,p.y-54,42,62);
-      walls.fillStyle(0x405257,.8);walls.fillRect(p.x+4,p.y-49,34,9);
-      walls.fillStyle(i<2?0x4fe2dc:0xa858ff,.28);walls.fillRect(p.x+8,p.y-37,3,29);
-    });
+    // The first desert pass stays deliberately open. Individual footprints are
+    // added only after visual scale is validated in-game.
   }
 
   private addAtmosphere(){
