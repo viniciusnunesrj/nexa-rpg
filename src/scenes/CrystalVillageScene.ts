@@ -96,10 +96,12 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-cliff',1040,2300,1300,2270);
     placeSized('village-cliff',1960,2300,1300,2270,true);
 
-    // River banks hug the channel. The bridge asset is vertical by default,
-    // so rotate it 90 degrees to actually cross the water like the master.
-    placeSized('village-bank',2635,1280,1850,-70);
-    placeSized('village-bank',3085,1280,1850,-70,true);
+    // Keep the east side open around the bridge. In the master this is a river crossing,
+    // not a rock wall: plaza/path -> short land approach -> bridge -> east bank.
+    placeSized('village-bank',2650,720,760,-70);
+    placeSized('village-bank',2650,1780,760,-70);
+    placeSized('village-bank',3070,720,760,-70,true);
+    placeSized('village-bank',3070,1780,760,-70,true);
     const bridge=placeSized('village-bridge',2860,1120,420,1120);
     bridge.setRotation(Math.PI/2);
 
@@ -129,7 +131,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 03',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 04',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
