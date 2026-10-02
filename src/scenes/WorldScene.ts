@@ -150,9 +150,14 @@ export class WorldScene extends Phaser.Scene {
       // Collision uses only the visual footprint, allowing Kael to pass behind the tall formation.
       // Approximate the irregular ground footprint with three small Arcade bodies.
       const collisionDefs=[
-        {x:x-35,y:611,w:58,h:18},
-        {x:x+1,y:622,w:76,h:22},
-        {x:x+38,y:632,w:48,h:18}
+        // Rear shoulder: prevents walking deep into the formation while preserving a narrow path behind it.
+        {x:x-32,y:594,w:54,h:22},
+        {x:x+2,y:601,w:72,h:24},
+        {x:x+36,y:610,w:50,h:20},
+        // Ground-contact/front footprint.
+        {x:x-35,y:620,w:58,h:18},
+        {x:x+1,y:631,w:76,h:22},
+        {x:x+38,y:641,w:48,h:18}
       ];
       this.artTestCollisions=collisionDefs.map(d=>{
         const zone=this.add.zone(d.x,d.y,d.w,d.h);
