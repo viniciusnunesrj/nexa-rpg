@@ -117,15 +117,19 @@ export class WorldScene extends Phaser.Scene {
   private buildWorldDepth(){
     this.occluders=this.physics.add.staticGroup();
 
-    // Simple modular rule: vertical river + horizontal bridge. The river is solid
-    // everywhere except for one rectangular opening aligned with the bridge deck.
+    // Robust river collision: explicit static bodies, with one opening matching
+    // the horizontal bridge deck. Zone bodies are sized/refreshed explicitly so
+    // their physics footprint cannot fall back to Phaser's default zone size.
     const riverX=2100, riverW=250;
-    const bridgeY=1100, crossingH=112;
+    const bridgeY=1108, crossingH=104;
     const addBarrier=(top:number,bottom:number)=>{
       const h=bottom-top;
       if(h<=0)return;
-      const zone=this.add.zone(riverX,top+h/2,riverW,h);
+      const zone=this.add.zone(riverX,top+h/2,riverW,h).setOrigin(.5);
       this.physics.add.existing(zone,true);
+      const body=zone.body as Phaser.Physics.Arcade.StaticBody;
+      body.setSize(riverW,h);
+      body.updateFromGameObject();
       this.occluders.add(zone);
     };
     addBarrier(0,bridgeY-crossingH/2);
