@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import './style.css';
 import { WorldScene } from './scenes/WorldScene';
+import { CrystalVillageScene } from './scenes/CrystalVillageScene';
 
 new Phaser.Game({
   type: Phaser.AUTO,
@@ -17,5 +18,6 @@ new Phaser.Game({
     width: window.innerWidth,
     height: window.innerHeight
   },
-  scene: [WorldScene]
+  // The desert prototype remains available as WorldScene; production opens in the village.
+  scene: [CrystalVillageScene, WorldScene]
 });
