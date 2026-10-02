@@ -151,10 +151,18 @@ export class WorldScene extends Phaser.Scene {
       const fp=this.artTestFootprint;
       const minX=Math.min(...fp.map(p=>p.x)),maxX=Math.max(...fp.map(p=>p.x));
       const minY=Math.min(...fp.map(p=>p.y)),maxY=Math.max(...fp.map(p=>p.y));
-      // Keep physical blocking tight to the actual ground contact. Visual occlusion is handled separately.
-      const collisionW=(maxX-minX)*.61, collisionH=(maxY-minY)*.46;
-      this.artTestCollision=this.add.zone(x+1,maxY-collisionH*.44,collisionW,collisionH);
-      this.physics.add.existing(this.artTestCollision,true);
+      // Approximate the irregular ground footprint with three small Arcade bodies.
+      const collisionDefs=[
+        {x:x-35,y:611,w:58,h:18},
+        {x:x+1,y:622,w:76,h:22},
+        {x:x+38,y:632,w:48,h:18}
+      ];
+      this.artTestCollisions=collisionDefs.map(d=>{
+        const zone=this.add.zone(d.x,d.y,d.w,d.h);
+        this.physics.add.existing(zone,true);
+        return zone;
+      });
+      this.artTestCollision=this.artTestCollisions[1];
       rock.setData('visual-test','Aurora Art Test 01');
       this.artDebug=this.add.graphics().setDepth(9999).setVisible(false);
       this.input.keyboard?.on('keydown-F2',()=>{
