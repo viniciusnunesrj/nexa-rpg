@@ -743,6 +743,52 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-ambientKit',5,455,1800,105,1790);
     placeKit('village-marketForgeKit',1,545,1905,72,1900);
 
+    // Master 34: major terrain-form pass.
+    // The reference's remaining advantage is not more tiny props; it is strong
+    // large-scale silhouettes: a rocky northeast water source, a framed southern
+    // canyon approach and layered southwest ascent. Build those forms with the
+    // existing production kit while keeping the validated civic anchors untouched.
+
+    // Northeast headwater/cascade frame. All pieces stay on the west shoulder of
+    // the masked river so no trunk or opaque art is placed inside the channel.
+    placeKit('village-ambientKit',8,2460,260,300,250,true);
+    placeKit('village-ambientKit',2,2510,365,250,355);
+    placeSized('village-tree',2380,410,245,400,true);
+    placeKit('village-nexaKit',12,2470,430,92,425);
+    placeKit('village-nexaKit',4,2390,500,74,495,true);
+
+    // Upper gate shoulders: close the bare dirt wedges with asymmetrical rocky
+    // gardens, matching the Master's gate embedded in terrain rather than on a field.
+    placeKit('village-ambientKit',8,850,500,285,490);
+    placeKit('village-ambientKit',2,2250,505,285,495,true);
+    placeSized('village-tree',1010,510,220,500,true);
+    placeSized('village-tree',2090,515,220,505);
+    placeKit('village-nexaKit',12,1110,590,78,585);
+    placeKit('village-nexaKit',9,1990,590,78,585,true);
+
+    // Southwest second-level trail: make the climb leg visible from the plaza.
+    // A staggered line of stone/ruin accents traces the slope without blocking it.
+    placeKit('village-ambientKit',4,420,1510,225,1500);
+    placeKit('village-ambientKit',7,500,1595,180,1585,true);
+    placeKit('village-marketForgeKit',9,555,1700,78,1695);
+    placeKit('village-nexaKit',10,625,1760,72,1755,true);
+    placeKit('village-ambientKit',5,690,1830,105,1820);
+
+    // Southern canyon frame: the Master funnels the path between vegetation and
+    // rock before the lower gate. Reinforce both shoulders, leave x=1450..1650 open.
+    placeKit('village-ambientKit',8,1110,2260,285,2250);
+    placeKit('village-ambientKit',2,1990,2260,285,2250,true);
+    placeSized('village-tree',1030,2330,230,2320,true);
+    placeSized('village-tree',2070,2330,230,2320);
+    placeKit('village-nexaKit',12,1250,2310,82,2305);
+    placeKit('village-nexaKit',9,1850,2310,82,2305,true);
+
+    // East lower ravine: a heavier dry-bank silhouette makes the masked river feel
+    // carved into rock rather than pasted beside the terrain.
+    placeKit('village-ambientKit',8,2460,1980,245,1970,true);
+    placeKit('village-ambientKit',2,2500,2190,270,2180);
+    placeKit('village-nexaKit',4,2460,2280,84,2275,true);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -895,7 +941,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 33 · RIO ORGÂNICO E RELEVO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 34 · GRANDES FORMAS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
