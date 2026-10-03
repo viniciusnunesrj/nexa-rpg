@@ -390,21 +390,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',10,1215,1415,90,1410,true);
     placeKit('village-nexaKit',10,1885,1415,90,1410);
 
-    // Master 23: inhabited civic plaza.
-    // The Master gains life from sparse human-scale anchors around the monument,
-    // not from filling the circulation lanes. Use existing warm/cyan props to
-    // suggest meeting, trade and guard points while preserving the four-way cross.
-    placeKit('village-marketForgeKit',11,1045,1160,82,1155);
-    placeKit('village-marketForgeKit',9,2070,1165,84,1160,true);
-    placeKit('village-marketForgeKit',3,1170,1325,78,1320);
-    placeKit('village-marketForgeKit',8,1940,1330,80,1325,true);
+    // Master 24: east waterfront transition.
+    // Keep the bridge itself untouched; strengthen the approach so the market,
+    // civic plaza and river read as one connected district like the Master.
+    placeKit('village-marketForgeKit',6,2260,1055,92,1050);
+    placeKit('village-marketForgeKit',10,2360,1135,78,1130,true);
+    placeKit('village-nexaKit',8,2450,1200,72,1195);
+    placeKit('village-nexaKit',4,2320,1375,66,1370,true);
 
-    // Small NEXA markers establish the civic ring seen in the reference and
-    // visually connect the monument to the north/south axis.
-    placeKit('village-nexaKit',10,1430,1040,66,1035,true);
-    placeKit('village-nexaKit',10,1670,1040,66,1035);
-    placeKit('village-nexaKit',6,1435,1450,64,1445);
-    placeKit('village-nexaKit',6,1665,1450,64,1445,true);
+    // Sparse civic anchors around the monument. Keep the cross-shaped
+    // circulation lanes open instead of filling the plaza with clutter.
+    placeKit('village-marketForgeKit',11,1080,1190,74,1185);
+    placeKit('village-marketForgeKit',9,2020,1200,76,1195,true);
 
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
@@ -558,7 +555,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 23 · PRAÇA HABITADA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 24 · CONEXÃO LESTE',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
