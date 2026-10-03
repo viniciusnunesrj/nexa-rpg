@@ -789,6 +789,60 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-ambientKit',2,2500,2190,270,2180);
     placeKit('village-nexaKit',4,2460,2280,84,2275,true);
 
+    // Master 35: reference-structure pass.
+    // The remaining mismatch is the way the Master transitions between districts:
+    // architecture is connected by terraces, stairs and shoreline pockets rather
+    // than floating inside vegetation. Strengthen those connections in one pass.
+
+    // Northwest forge terrace: define the raised shoulder behind the forge and
+    // visually connect it to the north-west rocky route.
+    placeKit('village-ambientKit',4,560,690,260,680,true);
+    placeKit('village-ambientKit',8,690,620,235,610);
+    placeKit('village-marketForgeKit',10,760,760,105,755);
+    placeKit('village-nexaKit',4,865,700,76,695,true);
+
+    // Northeast market terrace: mirror the mass, but keep the river/bridge mouth
+    // open. This creates the narrow upper-right path visible in the Master.
+    placeKit('village-ambientKit',2,2320,640,235,630,true);
+    placeKit('village-ambientKit',7,2420,720,195,710);
+    placeKit('village-marketForgeKit',10,2290,785,105,780,true);
+    placeKit('village-nexaKit',4,2390,825,76,820);
+
+    // Southwest stepped route: three visual landings make the two stair flights
+    // read as an intentional climb rather than disconnected stair sprites.
+    placeKit('village-ambientKit',3,470,1660,145,1650);
+    placeKit('village-marketForgeKit',3,565,1745,82,1740);
+    placeKit('village-ambientKit',5,650,1815,115,1805,true);
+    placeKit('village-nexaKit',6,735,1875,78,1870);
+
+    // Dock shoreline: frame the pier with low rock/vegetation masses, keeping the
+    // southwest water basin itself clear for the future boat asset.
+    placeKit('village-ambientKit',4,260,1840,190,1830);
+    placeKit('village-ambientKit',7,820,2025,155,2015,true);
+    placeKit('village-nexaKit',12,760,1960,76,1955);
+    placeKit('village-marketForgeKit',9,365,1920,70,1915);
+
+    // Southeast rocky garden / crystal route from the lower market toward the
+    // south entrance, matching the Master's asymmetric lower-right shoulder.
+    placeKit('village-ambientKit',8,2200,1735,240,1725,true);
+    placeKit('village-ambientKit',4,2290,1880,215,1870);
+    placeKit('village-nexaKit',8,2180,1960,96,1955);
+    placeKit('village-nexaKit',12,2320,2050,82,2045,true);
+
+    // River-bank rhythm around the bridge. These are intentionally west of the
+    // channel mask and leave the horizontal bridge deck visually unobstructed.
+    placeKit('village-ambientKit',5,2490,1030,110,1020);
+    placeKit('village-nexaKit',10,2500,1080,72,1075,true);
+    placeKit('village-ambientKit',5,2490,1370,110,1360,true);
+    placeKit('village-nexaKit',10,2500,1430,72,1425);
+
+    // South-gate approach gets two strong side landmarks like the Master while
+    // the arch and the central path remain completely clear.
+    placeKit('village-nexaKit',6,1285,2075,100,2070);
+    placeKit('village-nexaKit',6,1815,2075,100,2070,true);
+    placeKit('village-marketForgeKit',3,1180,2140,88,2135);
+    placeKit('village-marketForgeKit',3,1920,2140,88,2135,true);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -941,7 +995,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 34 · GRANDES FORMAS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 35 · CONEXÕES DE TERRENO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
