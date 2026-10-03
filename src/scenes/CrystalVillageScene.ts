@@ -390,6 +390,32 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',10,1215,1415,90,1410,true);
     placeKit('village-nexaKit',10,1885,1415,90,1410);
 
+    // Master 20: carve the lower civic cross with asymmetric garden shoulders.
+    // In the reference the south route is a narrow stone avenue framed by dense
+    // vegetation, not a full-width paved rectangle.
+    placeSized('village-tree',1330,1665,285,1655);
+    placeSized('village-tree',1785,1660,300,1650,true);
+    placeSized('village-tree',1110,1735,250,1725,true);
+    placeSized('village-tree',2015,1735,255,1725);
+
+    placeKit('village-ambientKit',8,1260,1710,260,1700);
+    placeKit('village-ambientKit',4,1850,1715,260,1705,true);
+    placeKit('village-ambientKit',2,1090,1800,230,1790,true);
+    placeKit('village-ambientKit',8,2030,1800,230,1790);
+
+    // Build the irregular garden wedges seen below the plaza. The centre stays
+    // intentionally empty so the north-south circulation remains obvious.
+    placeKit('village-ambientKit',4,1370,1810,220,1800);
+    placeKit('village-ambientKit',2,1740,1815,220,1805,true);
+    placeKit('village-ambientKit',8,1220,1880,205,1870,true);
+    placeKit('village-ambientKit',4,1900,1885,205,1875);
+
+    // The reference has stronger vegetation seams beside the east/west arms too.
+    placeSized('village-tree',760,1120,235,1110);
+    placeSized('village-tree',2350,1135,245,1125,true);
+    placeKit('village-ambientKit',2,865,1190,205,1180);
+    placeKit('village-ambientKit',8,2240,1200,205,1190,true);
+
     // Master 19: structural landscape pass.
     // The reference does not surround the plaza with isolated trees: it uses
     // connected garden/rock shoulders that visually narrow the paved cross.
@@ -488,7 +514,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 19 · PAISAGISMO ESTRUTURAL',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 20 · EIXO SUL ORGÂNICO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
