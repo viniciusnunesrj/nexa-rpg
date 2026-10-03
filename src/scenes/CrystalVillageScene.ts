@@ -390,6 +390,20 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',10,1215,1415,90,1410,true);
     placeKit('village-nexaKit',10,1885,1415,90,1410);
 
+    // Master 22: restore the Master's middle-scale breathing room.
+    // The reference is dense at the perimeter, but the civic ring itself stays
+    // readable. Pull the strongest foliage away from the lower shop facades and
+    // use smaller landscape accents to form the transition instead.
+    placeKit('village-ambientKit',4,980,1580,145,1570,true);
+    placeKit('village-ambientKit',8,2120,1585,145,1575);
+    placeKit('village-ambientKit',2,1180,1740,155,1730);
+    placeKit('village-ambientKit',4,1930,1745,155,1735,true);
+
+    // Warm light/market punctuation around the plaza shoulders mirrors the
+    // reference's inhabited feel while preserving clear movement lanes.
+    placeKit('village-marketForgeKit',9,1125,1115,88,1110);
+    placeKit('village-marketForgeKit',3,1980,1120,86,1115,true);
+
     // Master 21: preserve the Master's readable architecture.
     // The previous south pass established the right silhouette, but its largest
     // canopies hid too much of the lower buildings. Keep the organic shoulders
@@ -528,7 +542,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 21 · LEITURA ARQUITETÔNICA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 22 · ESCALA INTERMEDIÁRIA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
