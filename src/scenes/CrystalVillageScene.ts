@@ -526,6 +526,66 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-ambientKit',7,2440,1320,145,1310,true);
     placeKit('village-nexaKit',4,2360,1400,86,1395,true);
 
+    // Master 29: large-form reference pass.
+    // Push the scene toward the Master's strongest missing silhouettes:
+    // framed north entrance, populated civic ring, stepped south approach,
+    // waterfront density and cyan landmarks. Preserve the validated anchors.
+
+    // North entrance should read as a destination, not a gate floating in dirt.
+    placeSized('village-tree',1120,560,260,550);
+    placeSized('village-tree',1990,560,260,550,true);
+    placeKit('village-ambientKit',2,980,600,260,590);
+    placeKit('village-ambientKit',8,2120,600,260,590,true);
+    placeKit('village-nexaKit',6,1280,650,100,645);
+    placeKit('village-nexaKit',6,1820,650,100,645,true);
+
+    // Upper civic avenue: introduce the Master's lamps / people-scale rhythm.
+    placeKit('village-marketForgeKit',3,1290,820,100,815);
+    placeKit('village-marketForgeKit',3,1810,820,100,815,true);
+    placeKit('village-nexaKit',10,1370,900,82,895);
+    placeKit('village-nexaKit',10,1730,900,82,895,true);
+
+    // Make the monument plaza feel inhabited and designed without crowding Kael.
+    placeKit('village-marketForgeKit',8,1110,1160,105,1155);
+    placeKit('village-marketForgeKit',8,1990,1160,105,1155,true);
+    placeKit('village-nexaKit',5,1070,1280,82,1275);
+    placeKit('village-nexaKit',5,2030,1280,82,1275,true);
+
+    // Southwest transition toward the dock: terraces, technology and vegetation.
+    placeKit('village-ambientKit',4,650,1710,260,1700);
+    placeSized('village-tree',820,1810,250,1800,true);
+    placeKit('village-nexaKit',4,930,1860,90,1855);
+    placeKit('village-marketForgeKit',10,1030,1760,120,1755);
+
+    // Southeast transition toward the lower rocky path.
+    placeKit('village-ambientKit',2,2450,1700,260,1690,true);
+    placeSized('village-tree',2260,1810,250,1800);
+    placeKit('village-nexaKit',4,2160,1860,90,1855,true);
+    placeKit('village-marketForgeKit',10,2060,1760,120,1755,true);
+
+    // South approach: frame the route with large shoulders while preserving
+    // the central walkable spine to the lower gate.
+    placeKit('village-ambientKit',8,1050,2050,300,2040);
+    placeKit('village-ambientKit',8,2050,2050,300,2040,true);
+    placeSized('village-tree',1190,2100,255,2090);
+    placeSized('village-tree',1910,2100,255,2090,true);
+    placeKit('village-nexaKit',6,1300,2110,95,2105);
+    placeKit('village-nexaKit',6,1800,2110,95,2105,true);
+
+    // Waterfront: strengthen the Master's cliff/technology cadence around the
+    // bridge entrance, but never place opaque art across the water itself.
+    placeKit('village-ambientKit',4,2540,900,220,890,true);
+    placeKit('village-nexaKit',6,2580,1010,100,1005);
+    placeKit('village-marketForgeKit',3,2570,1320,105,1315,true);
+    placeKit('village-ambientKit',7,2510,1510,185,1500);
+    placeKit('village-nexaKit',6,2480,1580,95,1575,true);
+
+    // Cyan landmark clusters echo the Master and visually connect ruins to NEXA.
+    placeKit('village-nexaKit',8,720,1220,105,1215);
+    placeKit('village-nexaKit',8,2380,1230,105,1225,true);
+    placeKit('village-nexaKit',4,930,2050,100,2045);
+    placeKit('village-nexaKit',4,2170,2050,100,2045,true);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -678,7 +738,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 28 · SILHUETA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 29 · ESTRUTURA VIVA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
