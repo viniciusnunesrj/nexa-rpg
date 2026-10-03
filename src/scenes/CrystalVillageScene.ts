@@ -268,6 +268,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',12,1170,2195,72,2190);
     placeKit('village-nexaKit',5,2060,2170,74,2165,true);
 
+    // Master 11: soften the lower edge of the stone plaza. The reference does
+    // not end in one clean geometric slab: small natural pockets nibble into the
+    // paving while the north-south circulation line remains completely open.
+    placeKit('village-ambientKit',3,1010,1545,125,1535);
+    placeKit('village-ambientKit',5,1135,1615,105,1605,true);
+    placeKit('village-ambientKit',7,1280,1665,95,1655);
+    placeKit('village-ambientKit',6,1825,1640,100,1630,true);
+    placeKit('village-ambientKit',3,1980,1570,120,1560,true);
+    placeKit('village-ambientKit',5,2070,1660,105,1650);
+    placeKit('village-nexaKit',9,1060,1665,66,1660);
+    placeKit('village-nexaKit',12,2020,1695,68,1690,true);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -295,7 +307,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 10',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 11',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
