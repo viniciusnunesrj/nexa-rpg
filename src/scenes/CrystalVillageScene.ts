@@ -223,6 +223,20 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-marketForgeKit',1,575,1980,82,1975);
     placeKit('village-marketForgeKit',3,735,2005,70,2000);
 
+    // Master 07: build the garden-like lower transition seen in the reference.
+    // The mass stays on both shoulders of the south axis, leaving the center
+    // readable and preparing the later dirt-path treatment toward the gate.
+    placeKit('village-ambientKit',2,820,1885,205,1875);
+    placeKit('village-ambientKit',4,1015,1840,185,1830,true);
+    placeKit('village-ambientKit',7,1165,1810,145,1800);
+    placeKit('village-ambientKit',1,1360,1785,180,1775,true);
+    placeKit('village-ambientKit',8,1545,1840,210,1830);
+    placeKit('village-ambientKit',3,1710,1915,170,1905,true);
+    placeKit('village-ambientKit',6,1840,2020,155,2010);
+    placeKit('village-ambientKit',5,1590,2115,130,2105,true);
+    placeKit('village-nexaKit',4,1760,2080,100,2075);
+    placeKit('village-nexaKit',9,1465,2140,85,2135,true);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -250,7 +264,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 06',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 07',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
