@@ -295,6 +295,25 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',9,870,1325,62,1320);
     placeKit('village-nexaKit',12,2180,1370,64,1365,true);
 
+    // Master 13: give the plaza functional life. The reference is not only greener:
+    // forge/market props and small NEXA fixtures create dense inhabited shoulders.
+    // Keep these tucked against façades so the four main plaza routes stay open.
+    placeKit('village-marketForgeKit',11,660,1040,145,1035);
+    placeKit('village-marketForgeKit',7,1115,1040,125,1035,true);
+    placeKit('village-marketForgeKit',5,1940,1045,120,1040);
+    placeKit('village-marketForgeKit',4,2210,1035,120,1030,true);
+    placeKit('village-marketForgeKit',2,990,1465,105,1460);
+    placeKit('village-marketForgeKit',6,1900,1445,110,1440,true);
+
+    // Cyan vertical accents around the plaza echo the Master's four pylons without
+    // competing with the central monument. Warm fixtures remain near commerce.
+    placeKit('village-nexaKit',6,1195,1100,78,1095);
+    placeKit('village-nexaKit',6,1905,1100,78,1095,true);
+    placeKit('village-nexaKit',10,1195,1345,72,1340,true);
+    placeKit('village-nexaKit',10,1905,1345,72,1340);
+    placeKit('village-nexaKit',5,735,1005,68,1000);
+    placeKit('village-nexaKit',5,2165,1000,68,995,true);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -322,7 +341,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 12',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 13',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
