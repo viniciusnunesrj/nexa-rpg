@@ -973,6 +973,64 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-ambientKit',4,250,1450,260,1440);
     placeKit('village-nexaKit',4,430,1260,78,1255);
 
+    // Master 42-44: bundled depth/readability pass.
+    // We are close enough that the next gains come from hierarchy: readable
+    // buildings in the middle, heavier terrain on the perimeter, and deliberate
+    // landmark transitions rather than uniform decoration.
+
+    // 42 — Pull visual weight away from the civic floor and toward district edges.
+    // Low props define the inner boundary while larger masses stay behind façades.
+    placeKit('village-marketForgeKit',3,1010,990,76,985);
+    placeKit('village-marketForgeKit',3,2090,990,76,985,true);
+    placeKit('village-nexaKit',5,1070,1170,68,1165);
+    placeKit('village-nexaKit',5,2030,1170,68,1165,true);
+    placeKit('village-marketForgeKit',9,1070,1470,76,1465);
+    placeKit('village-marketForgeKit',9,2030,1470,76,1465,true);
+
+    // 42 — Stronger background shoulders behind the four civic districts.
+    placeKit('village-ambientKit',8,610,820,270,810);
+    placeKit('village-ambientKit',2,2490,830,270,820,true);
+    placeKit('village-ambientKit',4,690,1510,235,1500,true);
+    placeKit('village-ambientKit',8,2410,1510,235,1500);
+    placeSized('village-tree',550,960,225,950,true);
+    placeSized('village-tree',2520,970,215,960);
+
+    // 43 — North-to-centre hierarchy: paired cyan/warm landmarks lead from the
+    // gate into the monument without filling the ceremonial avenue.
+    placeKit('village-nexaKit',6,1210,720,86,715);
+    placeKit('village-nexaKit',6,1890,720,86,715,true);
+    placeKit('village-marketForgeKit',10,1300,865,76,860);
+    placeKit('village-marketForgeKit',10,1800,865,76,860,true);
+
+    // 43 — South-to-centre hierarchy: echo that rhythm toward the lower gate.
+    placeKit('village-marketForgeKit',3,1280,1730,82,1725);
+    placeKit('village-marketForgeKit',3,1820,1730,82,1725,true);
+    placeKit('village-nexaKit',6,1350,2010,88,2005);
+    placeKit('village-nexaKit',6,1750,2010,88,2005,true);
+
+    // 44 — Southwest harbor silhouette. Keep the centre of the basin empty for
+    // the future boat, but make both banks and the stair landing feel intentional.
+    placeKit('village-ambientKit',8,170,1740,230,1730);
+    placeKit('village-ambientKit',2,260,1940,210,1930,true);
+    placeKit('village-ambientKit',4,790,2110,205,2100);
+    placeKit('village-nexaKit',8,650,2110,82,2105,true);
+    placeKit('village-marketForgeKit',9,480,2020,72,2015);
+
+    // 44 — Northeast source and lower river mouth get stronger terminal masses,
+    // making the channel read as water cutting through terrain.
+    placeKit('village-ambientKit',8,2390,160,320,150,true);
+    placeKit('village-ambientKit',4,2480,250,235,240);
+    placeKit('village-nexaKit',12,2440,350,86,345);
+    placeKit('village-ambientKit',2,2390,2310,300,2300);
+    placeKit('village-nexaKit',9,2440,2240,86,2235,true);
+
+    // 44 — Asymmetric foreground framing, matching the Master's denser bottom
+    // corners while keeping the lower gate and route readable.
+    placeKit('village-ambientKit',8,760,2310,280,2300,true);
+    placeKit('village-ambientKit',4,2260,2320,280,2310);
+    placeSized('village-tree',870,2360,215,2350);
+    placeSized('village-tree',2180,2360,215,2350,true);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -1125,7 +1183,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 41 · COMPOSIÇÃO AVANÇADA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 44 · HIERARQUIA E PROFUNDIDADE',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
