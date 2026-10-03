@@ -18,6 +18,9 @@ const ASSETS={
   bridge:'/assets/aurora/nature/ponte-vila-01.png',
   tree:'/assets/aurora/nature/vila-arvore-01.png',
   decor:'/assets/aurora/nature/vila-kit-decoracao-01.png',
+  stairs:'/assets/aurora/nature/vila-escadaria-pedra-01.png',
+  ledge:'/assets/aurora/nature/vila-desnivel-rochoso-01.png',
+  pier:'/assets/aurora/nature/vila-pier-sudoeste-01.png',
   cliff:'/assets/aurora/nature/vila-paredao-rochoso-01.png'
 } as const;
 
@@ -125,6 +128,14 @@ export class CrystalVillageScene extends Phaser.Scene{
     // paved footprint so the later path/dock layer can connect to it cleanly.
     placeSized('village-gate',1550,1900,680,1900);
 
+    // Southwest production pass: reproduce the master's lower-left transition as
+    // a real change of level instead of another flat decoration. The rocky ledge
+    // defines the terrace, the stair is the deliberate descent and the pier anchors
+    // the village to the water-side edge. Major Composition 19 landmarks stay fixed.
+    placeSized('village-ledge',650,1785,760,1765);
+    placeSized('village-stairs',850,1815,300,1805);
+    placeSized('village-pier',520,2050,620,2040);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -152,7 +163,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 01',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
