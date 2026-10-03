@@ -470,6 +470,62 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-marketForgeKit',10,2470,1285,105,1280,true);
     placeKit('village-nexaKit',4,2380,1390,82,1385,true);
 
+    // Master 28: accelerated silhouette pass — close the largest remaining
+    // visual gap with the Master in one deploy: architecture reads clearly,
+    // vegetation frames it, and the civic cross stays open.
+
+    // Upper-left: forge court enclosed by rocky/green shoulders, not empty paving.
+    placeSized('village-tree',620,760,230,750);
+    placeKit('village-ambientKit',8,720,790,250,780);
+    placeKit('village-ambientKit',4,930,760,180,750,true);
+    placeKit('village-marketForgeKit',7,780,925,175,920);
+    placeKit('village-marketForgeKit',11,930,965,135,960);
+
+    // Upper-right: create the Master's busy market edge and transition to river.
+    placeSized('village-tree',2440,770,230,760,true);
+    placeKit('village-ambientKit',2,2350,820,235,810);
+    placeKit('village-marketForgeKit',5,2190,900,210,895);
+    placeKit('village-marketForgeKit',6,2350,940,190,935);
+    placeKit('village-marketForgeKit',4,2460,1010,125,1005,true);
+
+    // Lower-left civic building: clear façade, then a dense garden/rock frame
+    // leading naturally toward the stair and southwest dock.
+    placeSized('village-tree',760,1470,230,1460,true);
+    placeKit('village-ambientKit',2,850,1540,240,1530);
+    placeKit('village-ambientKit',4,1060,1630,215,1620,true);
+    placeKit('village-marketForgeKit',10,940,1450,135,1445);
+    placeKit('village-nexaKit',6,1110,1510,92,1505);
+
+    // Lower-right market garden: readable stall frontage with the heavier
+    // vegetation pushed behind it, matching the Master's layered silhouette.
+    placeSized('village-tree',2320,1490,245,1480);
+    placeKit('village-ambientKit',8,2230,1570,250,1560,true);
+    placeKit('village-ambientKit',2,2040,1640,215,1630);
+    placeKit('village-marketForgeKit',6,2110,1450,205,1445,true);
+    placeKit('village-marketForgeKit',5,2250,1490,175,1485);
+
+    // Four strong civic shoulders around the monument. This gives the centre
+    // the same designed circular enclosure as the Master without touching its ring.
+    placeKit('village-nexaKit',6,1165,1080,108,1075);
+    placeKit('village-nexaKit',6,1935,1080,108,1075,true);
+    placeKit('village-nexaKit',10,1190,1435,102,1430,true);
+    placeKit('village-nexaKit',10,1910,1435,102,1430);
+
+    // Narrow the oversized southern stone field with two large asymmetric garden
+    // shoulders. Keep x≈1550 completely open from monument to south gate.
+    placeSized('village-tree',1210,1730,250,1720);
+    placeSized('village-tree',1910,1735,260,1725,true);
+    placeKit('village-ambientKit',8,1110,1810,270,1800);
+    placeKit('village-ambientKit',4,2010,1815,270,1805,true);
+    placeKit('village-ambientKit',2,1260,1900,225,1890,true);
+    placeKit('village-ambientKit',8,1850,1900,225,1890);
+
+    // East arm to bridge: continuous visual rhythm from plaza -> market -> bridge.
+    placeKit('village-marketForgeKit',10,2380,1120,110,1115,true);
+    placeKit('village-nexaKit',8,2490,1160,90,1155);
+    placeKit('village-ambientKit',7,2440,1320,145,1310,true);
+    placeKit('village-nexaKit',4,2360,1400,86,1395,true);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -622,7 +678,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 27 · PASSE COMPLETO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 28 · SILHUETA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
