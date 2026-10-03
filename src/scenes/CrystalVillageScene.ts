@@ -339,6 +339,32 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-marketForgeKit',4,2180,1135,78,1130,true);
     placeKit('village-marketForgeKit',2,2260,1160,72,1155);
 
+    // Master 15: break the oversized clean paving around the civic core.
+    // The reference has irregular green/rock pockets between the buildings and the
+    // monument; these medium clusters pull nature inward without closing any route.
+    placeKit('village-ambientKit',2,970,1110,155,1100);
+    placeKit('village-ambientKit',4,1060,950,145,940,true);
+    placeKit('village-ambientKit',8,2090,1115,150,1105,true);
+    placeKit('village-ambientKit',2,2020,950,145,940);
+    placeKit('village-ambientKit',4,1045,1460,150,1450);
+    placeKit('village-ambientKit',8,2050,1460,150,1450,true);
+
+    // Additional low pockets near façades make the architecture feel embedded in
+    // the terrain, like the Master, instead of placed on top of a rectangular floor.
+    placeKit('village-ambientKit',5,790,900,95,890,true);
+    placeKit('village-ambientKit',7,1010,860,105,850);
+    placeKit('village-ambientKit',5,2110,865,100,855);
+    placeKit('village-ambientKit',7,2260,930,100,920,true);
+    placeKit('village-ambientKit',3,890,1510,105,1500,true);
+    placeKit('village-ambientKit',3,2190,1510,105,1500);
+
+    // A few cyan mineral/ruin accents tie the natural pockets back into the NEXA
+    // language. Keep them subtle: the monument remains the strongest cyan source.
+    placeKit('village-nexaKit',12,985,1005,66,1000);
+    placeKit('village-nexaKit',9,2115,1005,66,1000,true);
+    placeKit('village-nexaKit',12,1015,1515,62,1510,true);
+    placeKit('village-nexaKit',9,2085,1515,62,1510);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -366,7 +392,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 14',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 15',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
