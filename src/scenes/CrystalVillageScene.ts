@@ -390,6 +390,34 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',10,1215,1415,90,1410,true);
     placeKit('village-nexaKit',10,1885,1415,90,1410);
 
+    // Master 18: reference-scale vegetation masses.
+    // The Master uses a few substantial trees/garden masses to frame the plaza;
+    // this is more important than adding more tiny scatter props.
+    placeSized('village-tree',790,1265,285,1255);
+    placeSized('village-tree',2250,1285,300,1275,true);
+    placeSized('village-tree',1180,1605,245,1595,true);
+    placeSized('village-tree',2050,1600,270,1590);
+
+    // Keep the north approach readable but visually enclosed, as in the Master.
+    placeSized('village-tree',790,700,250,690,true);
+    placeSized('village-tree',2290,720,260,710);
+
+    // Larger organic shoulders replace the remaining 'objects sprinkled on stone'
+    // feeling. They sit behind/alongside commerce and never cover the civic cross.
+    placeKit('village-ambientKit',2,720,930,220,920);
+    placeKit('village-ambientKit',8,2320,940,220,930,true);
+    placeKit('village-ambientKit',4,900,1370,190,1360,true);
+    placeKit('village-ambientKit',2,2200,1375,195,1365);
+    placeKit('village-ambientKit',8,1110,1575,180,1565);
+    placeKit('village-ambientKit',4,1990,1575,180,1565,true);
+
+    // Warm commercial anchors: fewer but larger readable objects, matching the
+    // forge/market density visible in the Master.
+    placeKit('village-marketForgeKit',9,760,1015,120,1010);
+    placeKit('village-marketForgeKit',11,860,1055,130,1050);
+    placeKit('village-marketForgeKit',5,2205,1015,165,1010);
+    placeKit('village-marketForgeKit',6,2290,1055,155,1050);
+
     // Master 16: the reference transitions from plaza stone into dense organic
     // borders much earlier. Build broad asymmetrical garden pockets around the
     // lower half of the civic core while preserving the north/south/east/west lanes.
@@ -438,7 +466,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 17 · PROPORÇÃO + ZONAS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 18 · MASSAS ORGÂNICAS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
