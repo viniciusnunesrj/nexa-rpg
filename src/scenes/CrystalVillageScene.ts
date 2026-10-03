@@ -255,6 +255,19 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',12,1965,2050,90,2045);
     placeKit('village-nexaKit',5,1030,2110,82,2105,true);
 
+    // Master 10: define the southern route itself, not only its vegetation.
+    // A narrow dirt corridor runs from the plaza toward the lower gate, while
+    // asymmetrical low clusters create the same enclosed garden feeling as the Master.
+    // Keep every placement outside the arch opening and player corridor.
+    placeKit('village-ambientKit',1,1180,2145,155,2135,true);
+    placeKit('village-ambientKit',8,1340,2180,145,2170);
+    placeKit('village-ambientKit',4,1765,2190,150,2180,true);
+    placeKit('village-ambientKit',2,1940,2210,170,2200);
+    placeKit('village-ambientKit',7,2145,2075,155,2065,true);
+    placeKit('village-ambientKit',3,2210,2190,135,2180);
+    placeKit('village-nexaKit',12,1170,2195,72,2190);
+    placeKit('village-nexaKit',5,2060,2170,74,2165,true);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -282,7 +295,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 09',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 10',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
