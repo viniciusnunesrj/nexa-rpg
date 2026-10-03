@@ -62,18 +62,25 @@ export class CrystalVillageScene extends Phaser.Scene{
     const pavementMask=this.make.graphics({x:0,y:0});
     pavementMask.fillStyle(0xffffff);
     pavementMask.beginPath();
-    pavementMask.moveTo(850,610);
-    pavementMask.lineTo(1250,500);
-    pavementMask.lineTo(1750,500);
-    pavementMask.lineTo(2200,640);
-    pavementMask.lineTo(2300,930);
-    pavementMask.lineTo(2180,1360);
-    pavementMask.lineTo(1980,1690);
-    pavementMask.lineTo(1660,1810);
-    pavementMask.lineTo(1200,1780);
-    pavementMask.lineTo(850,1570);
-    pavementMask.lineTo(740,1240);
-    pavementMask.lineTo(740,850);
+    // Master 52: civic stone is a hub with route arms, not a giant rectangular slab.
+    pavementMask.moveTo(1360,500);
+    pavementMask.lineTo(1740,500);
+    pavementMask.lineTo(1760,720);
+    pavementMask.lineTo(2050,760);
+    pavementMask.lineTo(2220,930);
+    pavementMask.lineTo(2180,1130);
+    pavementMask.lineTo(1960,1190);
+    pavementMask.lineTo(1940,1430);
+    pavementMask.lineTo(1780,1510);
+    pavementMask.lineTo(1720,1810);
+    pavementMask.lineTo(1380,1810);
+    pavementMask.lineTo(1320,1510);
+    pavementMask.lineTo(1110,1450);
+    pavementMask.lineTo(1060,1240);
+    pavementMask.lineTo(820,1190);
+    pavementMask.lineTo(760,930);
+    pavementMask.lineTo(950,760);
+    pavementMask.lineTo(1340,720);
     pavementMask.closePath();
     pavementMask.fillPath();
     paved.setMask(pavementMask.createGeometryMask());
@@ -216,18 +223,13 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Match the Master's southwest sequence: civic building -> terrace edge -> broad
     // stair -> lower landing -> dock. Keep the stair close to the workshop instead
     // of isolated in the middle of the southern dirt field.
-    placeSized('village-ledge',650,1745,760,1725);
-    placeSized('village-stairs',760,1835,350,1825);
 
     // Master 32: the reference has a second climbing leg after the dock stair.
     // Reuse the same architectural stair language as a smaller upper flight so
     // the southwest route reads as a continuous ascent instead of a dead end.
-    const upperSouthwestStair=placeSized('village-stairs',585,1650,285,1640);
-    upperSouthwestStair.setAngle(-7);
     placeKit('village-nexaKit',10,690,1600,72,1595);
     placeKit('village-ambientKit',7,500,1605,135,1595,true);
 
-    placeSized('village-pier',500,2040,650,2030);
 
     // Southwest Master density: clusters frame the stair/dock and southern
     // approach while the actual walking route stays visually open.
@@ -1085,10 +1087,10 @@ export class CrystalVillageScene extends Phaser.Scene{
     // 48 — Northwest elevated exit. Frames 2 + 1 form a raised terrace and a
     // readable stair connection beside/behind the forge; frame 3 continues the
     // route toward the upper-left map boundary.
-    placeKit('village-structureKit',2,420,700,470,690);
-    placeKit('village-structureKit',1,610,845,310,835);
-    const northwestRamp=placeKit('village-structureKit',3,285,545,390,535);
-    northwestRamp.setAngle(-5);
+    placeKit('village-structureKit',2,500,690,500,680);
+    placeKit('village-structureKit',1,690,850,300,840);
+    const northwestRamp=placeKit('village-structureKit',3,245,555,430,545);
+    northwestRamp.setAngle(-4);
 
     // North continuation behind the gate. A restrained raised path makes the arch
     // read as a transition to another zone instead of a decorative back wall.
@@ -1097,34 +1099,56 @@ export class CrystalVillageScene extends Phaser.Scene{
 
     // 49 — Northeast headwater. Use the generated source, waterfall and basin as
     // one vertical geological event. The existing animated river remains beneath.
-    placeKit('village-structureKit',7,2760,390,500,380);
-    placeKit('village-structureKit',8,2800,610,430,600);
-    placeKit('village-structureKit',9,2820,760,420,750);
+    placeKit('village-structureKit',7,2820,330,470,320);
+    placeKit('village-structureKit',8,2825,575,400,565);
+    placeKit('village-structureKit',9,2825,755,390,745);
 
     // 49 — East bridge destination. Frame 10 creates dry land beyond the bridge
     // and clearly communicates that the route continues off-map to the east.
-    const eastExit=placeKit('village-structureKit',10,3130,1125,520,1115);
+    const eastExit=placeKit('village-structureKit',10,3120,1120,610,1110);
     eastExit.setFlipX(false);
 
     // 50 — Southwest relief sequence. Build the missing reference logic:
     // upper terrace -> stair -> lower terrace -> second descent -> dock.
-    placeKit('village-structureKit',4,360,1450,520,1440);
-    placeKit('village-structureKit',1,500,1590,300,1580);
-    placeKit('village-structureKit',2,520,1735,390,1725);
-    placeKit('village-structureKit',11,590,1885,300,1875);
-    placeKit('village-structureKit',12,315,2160,300,2155);
+    placeKit('village-structureKit',4,380,1435,500,1425);
+    placeKit('village-structureKit',1,560,1580,290,1570);
+    placeKit('village-structureKit',2,500,1730,370,1720);
+    placeKit('village-structureKit',11,570,1880,285,1870);
+    placeSized('village-pier',420,2050,560,2040);
+    placeKit('village-structureKit',12,250,2190,260,2185);
 
     // 50 — Southeast secondary route beside the canyon. This is deliberately
     // offset from the south gate so the village no longer has only one lower exit.
-    placeKit('village-structureKit',2,2210,1900,390,1890,true);
-    placeKit('village-structureKit',11,2290,2070,285,2060,true);
-    const southeastRamp=placeKit('village-structureKit',3,2410,2240,360,2230,true);
+    placeKit('village-structureKit',2,2170,1850,360,1840,true);
+    placeKit('village-structureKit',11,2260,2015,270,2005,true);
+    const southeastRamp=placeKit('village-structureKit',3,2390,2180,350,2170,true);
     southeastRamp.setAngle(5);
 
     // 51 — South continuation. Preserve the gate itself, but extend terrain past
     // it so the arch visually leads somewhere beyond the current village.
-    placeKit('village-structureKit',10,1550,2130,430,2120);
-    placeKit('village-structureKit',3,1550,2350,350,2340);
+
+    // Master 53-56: route-opening and terrain-reading pass.
+    // Sparse structural cues replace clutter so each exit can be read at a glance.
+
+    // Northwest and north: keep elevated exits visibly open.
+    placeKit('village-nexaKit',4,390,760,64,755);
+    placeKit('village-marketForgeKit',9,780,880,66,875);
+    placeKit('village-nexaKit',6,1370,470,70,465);
+    placeKit('village-nexaKit',6,1730,470,70,465,true);
+
+    // East: a dry rocky threshold beyond the bridge, with no foliage on the deck.
+    placeKit('village-ambientKit',5,3090,980,105,970);
+    placeKit('village-ambientKit',5,3090,1260,105,1250,true);
+
+    // Southwest: low markers trace the S-shaped descent instead of hiding it.
+    placeKit('village-nexaKit',10,720,1515,62,1510);
+    placeKit('village-marketForgeKit',9,690,1760,62,1755,true);
+    placeKit('village-nexaKit',5,650,1950,62,1945);
+
+    // South: the gate now opens onto a simple dirt continuation; remove the former
+    // bridge-like frame that visually blocked the exit.
+    placeKit('village-nexaKit',4,1370,2030,64,2025);
+    placeKit('village-nexaKit',4,1730,2030,64,2025,true);
 
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
@@ -1276,7 +1300,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 51 · ROTAS E RELEVO ESTRUTURAIS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 56 · ROTAS ABERTAS E RELEVO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
