@@ -1108,44 +1108,16 @@ export class CrystalVillageScene extends Phaser.Scene{
     // North continuation behind the gate. A restrained raised path makes the arch
     // read as a transition to another zone instead of a decorative back wall.
 
-    // Master 63: dedicated northeast cliff mass.
-    // One continuous asset now establishes the entire headwall/canyon silhouette;
-    // the previous modular waterfall pieces are intentionally not drawn here.
-    const northeastCliff=placeSized('village-northeastWaterfallCliff',3040,810,1050,800);
+    // Master 64: dry northeast cliff validation.
+    // Validate geology before reintroducing waterfall FX. Pull the single cliff
+    // mass up/left so its upper shelf merges into terrain and its lower prong no
+    // longer reads as an island placed in the river.
+    const northeastCliff=placeSized('village-northeastWaterfallCliff',2865,720,1160,710);
     northeastCliff.setDepth(735);
 
-    // Keep the water independent from the geology. The fall occupies the asset's
-    // central transparent fissure and can now be tuned without touching the rocks.
-    const fallMask=this.make.graphics({x:0,y:0});
-    fallMask.fillStyle(0xffffff);
-    fallMask.beginPath();
-    fallMask.moveTo(2965,335);
-    fallMask.lineTo(3055,335);
-    fallMask.lineTo(3070,690);
-    fallMask.lineTo(2948,690);
-    fallMask.closePath();
-    fallMask.fillPath();
-
-    const liveFall=this.add.tileSprite(3010,510,132,390,'village-water')
-      .setTileScale(.42)
-      .setDepth(738)
-      .setAlpha(.98);
-    liveFall.setMask(fallMask.createGeometryMask());
-
-    // Strong downward ribbons make the fall read differently from the horizontal river.
-    const fallFx=this.add.container(3010,340).setDepth(740);
-    fallFx.setMask(fallMask.createGeometryMask());
-    [-38,-13,13,38].forEach((x,i)=>{
-      const ribbon=this.add.rectangle(x,-150,12+(i%2)*7,170+i*18,0xe7fcff,.50).setOrigin(.5,0);
-      fallFx.add(ribbon);
-      this.tweens.add({targets:ribbon,y:360,alpha:{from:.18,to:.72},duration:610+i*95,repeat:-1,delay:i*115});
-    });
-
-    // Compact animated impact inside the lower opening of the same cliff asset.
-    const foamA=this.add.ellipse(3010,704,170,46,0xe8fcff,.38).setDepth(744);
-    const foamB=this.add.ellipse(3010,720,122,30,0xbcefff,.27).setDepth(745);
-    this.tweens.add({targets:foamA,scaleX:{from:.78,to:1.10},scaleY:{from:.72,to:1.16},alpha:{from:.18,to:.44},duration:730,yoyo:true,repeat:-1});
-    this.tweens.add({targets:foamB,scaleX:{from:1.07,to:.79},scaleY:{from:1.10,to:.73},alpha:{from:.32,to:.10},duration:940,yoyo:true,repeat:-1,delay:150});
+    // Intentionally no waterfall ribbons, foam or extra water overlay in this pass.
+    // The existing animated river remains untouched so we can judge only the
+    // terrain silhouette, canyon mouth and relationship with the northeast bank.
 
     // 49 — East bridge destination. Frame 10 creates dry land beyond the bridge
     // and clearly communicates that the route continues off-map to the east.
@@ -1338,7 +1310,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 63 · PAREDÃO NORDESTE ÚNICO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 64 · VALIDAÇÃO DO PAREDÃO SECO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
