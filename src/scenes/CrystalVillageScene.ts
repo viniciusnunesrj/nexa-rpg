@@ -211,6 +211,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',5,675,1880,105,1875);
     placeKit('village-nexaKit',1,1110,2050,105,2045);
 
+    // Master 06: connect the dock terrace to the southern gate with smaller,
+    // irregular edge clusters. The central corridor remains deliberately open.
+    placeKit('village-ambientKit',2,560,1585,175,1575,true);
+    placeKit('village-ambientKit',7,1035,1660,155,1650);
+    placeKit('village-ambientKit',3,1285,1735,145,1725,true);
+    placeKit('village-ambientKit',6,1375,1865,130,1855);
+    placeKit('village-ambientKit',1,1490,2045,150,2035,true);
+    placeKit('village-ambientKit',5,910,2075,125,2065);
+    placeKit('village-nexaKit',9,1280,2100,95,2095);
+    placeKit('village-marketForgeKit',1,575,1980,82,1975);
+    placeKit('village-marketForgeKit',3,735,2005,70,2000);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -238,7 +250,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 05',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 06',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
