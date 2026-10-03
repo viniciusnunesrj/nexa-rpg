@@ -403,6 +403,19 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-marketForgeKit',11,1080,1190,74,1185);
     placeKit('village-marketForgeKit',9,2020,1200,76,1195,true);
 
+    // Master 25: northern civic corridor.
+    // The Master keeps the axis from the monument to the north gate readable,
+    // but frames it with small lived-in details instead of another vegetation wall.
+    placeKit('village-marketForgeKit',6,1220,735,82,730);
+    placeKit('village-marketForgeKit',10,1880,760,78,755,true);
+    placeKit('village-nexaKit',8,1335,845,64,840);
+    placeKit('village-nexaKit',4,1770,850,62,845,true);
+
+    // A few low props pull the forge/market fronts into the civic space while
+    // preserving the broad cross-shaped circulation visible in the reference.
+    placeKit('village-marketForgeKit',11,1060,900,68,895);
+    placeKit('village-marketForgeKit',9,2050,910,70,905,true);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -555,7 +568,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 24 · CONEXÃO LESTE',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 25 · EIXO NORTE',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
