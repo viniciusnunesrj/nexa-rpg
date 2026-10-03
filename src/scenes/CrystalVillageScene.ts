@@ -1130,21 +1130,21 @@ export class CrystalVillageScene extends Phaser.Scene{
 
     // Left shelf begins on dry ground and terminates at the waterfall throat.
     // Raising it also hides the previous exposed upper-water seam behind terrain.
-    const northeastLeft=this.add.image(2700,650,'village-northeastWaterfallCliff','left-bank')
+    this.add.image(2700,650,'village-northeastWaterfallCliff','left-bank')
       .setOrigin(.5,1)
       .setDisplaySize(790,Math.round(790*leftFrame.height/leftFrame.width))
       .setDepth(735);
 
     // Right wall is pushed toward/outside the world edge. Only its inner cliff face
     // remains visible, leaving a substantially wider water corridor between banks.
-    const northeastRight=this.add.image(3195,705,'village-northeastWaterfallCliff','right-bank')
+    this.add.image(3195,705,'village-northeastWaterfallCliff','right-bank')
       .setOrigin(.5,1)
       .setDisplaySize(470,Math.round(470*rightFrame.height/rightFrame.width))
       .setDepth(736);
 
     // Dry top closure: reuse the broad shelf crop behind both banks so the camera
     // never reveals an isolated patch of river above the future waterfall source.
-    const northeastTop=this.add.image(2940,300,'village-northeastWaterfallCliff','left-bank')
+    this.add.image(2940,300,'village-northeastWaterfallCliff','left-bank')
       .setOrigin(.5,1)
       .setDisplaySize(720,Math.round(720*leftFrame.height/leftFrame.width))
       .setDepth(728)
