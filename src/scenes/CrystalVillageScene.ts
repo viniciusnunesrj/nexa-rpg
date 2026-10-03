@@ -390,13 +390,27 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',10,1215,1415,90,1410,true);
     placeKit('village-nexaKit',10,1885,1415,90,1410);
 
+    // Master 21: preserve the Master's readable architecture.
+    // The previous south pass established the right silhouette, but its largest
+    // canopies hid too much of the lower buildings. Keep the organic shoulders
+    // while exposing roofs, shop fronts and the civic route again.
+    placeKit('village-ambientKit',4,1010,1515,170,1505,true);
+    placeKit('village-ambientKit',8,2085,1520,170,1510);
+    placeKit('village-nexaKit',6,1435,1595,72,1590);
+    placeKit('village-nexaKit',6,1665,1595,72,1590,true);
+
+    // A few readable commercial objects bridge the plaza and the two lower
+    // buildings, as in the reference, without turning the centre into clutter.
+    placeKit('village-marketForgeKit',3,1040,1385,92,1380);
+    placeKit('village-marketForgeKit',8,2055,1390,98,1385,true);
+
     // Master 20: carve the lower civic cross with asymmetric garden shoulders.
     // In the reference the south route is a narrow stone avenue framed by dense
     // vegetation, not a full-width paved rectangle.
-    placeSized('village-tree',1330,1665,285,1655);
-    placeSized('village-tree',1785,1660,300,1650,true);
-    placeSized('village-tree',1110,1735,250,1725,true);
-    placeSized('village-tree',2015,1735,255,1725);
+    placeSized('village-tree',1330,1665,225,1655);
+    placeSized('village-tree',1785,1660,235,1650,true);
+    placeSized('village-tree',1110,1735,195,1725,true);
+    placeSized('village-tree',2015,1735,200,1725);
 
     placeKit('village-ambientKit',8,1260,1710,260,1700);
     placeKit('village-ambientKit',4,1850,1715,260,1705,true);
@@ -411,8 +425,8 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-ambientKit',4,1900,1885,205,1875);
 
     // The reference has stronger vegetation seams beside the east/west arms too.
-    placeSized('village-tree',760,1120,235,1110);
-    placeSized('village-tree',2350,1135,245,1125,true);
+    placeSized('village-tree',760,1120,195,1110);
+    placeSized('village-tree',2350,1135,200,1125,true);
     placeKit('village-ambientKit',2,865,1190,205,1180);
     placeKit('village-ambientKit',8,2240,1200,205,1190,true);
 
@@ -514,7 +528,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 20 · EIXO SUL ORGÂNICO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 21 · LEITURA ARQUITETÔNICA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
