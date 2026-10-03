@@ -25,7 +25,8 @@ const ASSETS={
   nexaKit:'/assets/aurora/nature/vila-kit-nexa-iluminacao-01.png',
   marketForgeKit:'/assets/aurora/nature/vila-kit-mercado-forja-01.png',
   cliff:'/assets/aurora/nature/vila-paredao-rochoso-01.png',
-  structureKit:'/assets/aurora/nature/vila-kit-relevo-rotas-agua-01.png'
+  structureKit:'/assets/aurora/nature/vila-kit-relevo-rotas-agua-01.png',
+  waterfallDryKit:'/assets/aurora/nature/vila-kit-cachoeira-seca-01.png'
 } as const;
 
 export class CrystalVillageScene extends Phaser.Scene{
@@ -115,6 +116,18 @@ export class CrystalVillageScene extends Phaser.Scene{
     registerKitFrames('village-nexaKit');
     registerKitFrames('village-marketForgeKit');
     registerKitFrames('village-structureKit');
+
+    // The dry waterfall sheet is 4x2 rather than the standard 4x3 kits.
+    const registerWaterfallFrames=()=>{
+      const tex=this.textures.get('village-waterfallDryKit');
+      const src=tex.getSourceImage();
+      const cellW=Math.floor(src.width/4), cellH=Math.floor(src.height/2);
+      for(let row=0;row<2;row++) for(let col=0;col<4;col++){
+        const index=row*4+col+1, x=col*cellW, y=row*cellH;
+        if(!tex.has(String(index))) tex.add(String(index),0,x,y,col===3?src.width-x:cellW,row===1?src.height-y:cellH);
+      }
+    };
+    registerWaterfallFrames();
 
     const placeKit=(key:string,frame:number,x:number,y:number,width:number,depth:number,flipX=false)=>{
       const img=this.add.image(x,y,key,String(frame)).setOrigin(.5,1).setDepth(depth);
@@ -1094,62 +1107,48 @@ export class CrystalVillageScene extends Phaser.Scene{
     // North continuation behind the gate. A restrained raised path makes the arch
     // read as a transition to another zone instead of a decorative back wall.
 
-    // 49 — Northeast headwater. Use the generated source, waterfall and basin as
-    // one vertical geological event. The existing animated river remains beneath.
-    placeKit('village-structureKit',7,2820,330,470,320);
-    placeKit('village-structureKit',8,2825,575,400,565);
-    placeKit('village-structureKit',9,2825,755,390,745);
+    // Master 61: rebuild the northeast waterfall from dry geology.
+    // No painted water remains in the cliff art: frames 1/2/3 create the head and
+    // vertical walls, while frame 7 forms a dry basin around the animated flow.
+    placeKit('village-waterfallDryKit',1,2825,430,440,420);
+    placeKit('village-waterfallDryKit',2,2720,665,235,655);
+    placeKit('village-waterfallDryKit',3,2930,665,235,655);
+    placeKit('village-waterfallDryKit',7,2825,790,410,780);
 
-    // Master 60: replace the visually frozen waterfall face with moving water.
-    // The generated PNG still supplies the cliff silhouette; this opaque animated
-    // overlay sits only over the central fall, hiding most of its painted water.
-    const waterfallCover=this.add.rectangle(2825,585,188,250,0x238ca8,.86)
-      .setDepth(738);
-    const waterfallMask=this.make.graphics({x:0,y:0});
-    waterfallMask.fillStyle(0xffffff);
-    waterfallMask.beginPath();
-    waterfallMask.moveTo(2752,455);
-    waterfallMask.lineTo(2898,455);
-    waterfallMask.lineTo(2920,700);
-    waterfallMask.lineTo(2730,700);
-    waterfallMask.closePath();
-    waterfallMask.fillPath();
-    waterfallCover.setMask(waterfallMask.createGeometryMask());
+    // The waterfall itself is game-rendered. A masked moving tileSprite uses the
+    // same Aurora water texture as the river so both systems share one material.
+    const fallMask=this.make.graphics({x:0,y:0});
+    fallMask.fillStyle(0xffffff);
+    fallMask.beginPath();
+    fallMask.moveTo(2775,425);
+    fallMask.lineTo(2875,425);
+    fallMask.lineTo(2900,720);
+    fallMask.lineTo(2750,720);
+    fallMask.closePath();
+    fallMask.fillPath();
 
-    // Several overlapping streams move at different speeds so there is no single
-    // static white curtain. Their movement is deliberately stronger than Master 59.
-    const waterfallFx=this.add.container(2825,455).setDepth(740);
-    waterfallFx.setMask(waterfallMask.createGeometryMask());
-    const streams=[
-      {x:-72,w:28,h:180,d:0,s:620},{x:-42,w:22,h:220,d:130,s:760},
-      {x:-12,w:34,h:195,d:260,s:680},{x:22,w:24,h:235,d:70,s:820},
-      {x:52,w:30,h:205,d:210,s:700},{x:78,w:20,h:175,d:340,s:650}
-    ];
-    streams.forEach(({x,w,h,d,s})=>{
-      const stream=this.add.rectangle(x,-190,w,h,0xd6f7ff,.72).setOrigin(.5,0);
-      waterfallFx.add(stream);
-      this.tweens.add({
-        targets:stream,y:260,alpha:{from:.42,to:.88},
-        duration:s,repeat:-1,delay:d
-      });
+    const liveFall=this.add.tileSprite(2825,570,170,330,'village-water')
+      .setTileScale(.48)
+      .setDepth(738)
+      .setAlpha(.96);
+    liveFall.setMask(fallMask.createGeometryMask());
+
+    // Vertical highlights travel down the fall independently from the underlying
+    // water texture, breaking the flat tile pattern without covering the rocks.
+    const fallFx=this.add.container(2825,430).setDepth(740);
+    fallFx.setMask(fallMask.createGeometryMask());
+    [-55,-30,-5,20,45].forEach((x,i)=>{
+      const ribbon=this.add.rectangle(x,-130,14+(i%2)*8,155+(i%3)*28,0xe3fbff,.48).setOrigin(.5,0);
+      fallFx.add(ribbon);
+      this.tweens.add({targets:ribbon,y:310,alpha:{from:.22,to:.68},duration:640+i*85,repeat:-1,delay:i*105});
     });
 
-    // Moving translucent teal sheets reconnect the fall visually to the river.
-    for(let i=0;i<3;i++){
-      const sheet=this.add.rectangle(2825,500+i*72,150,105,0x55c9dc,.22).setDepth(741+i);
-      sheet.setMask(waterfallMask.createGeometryMask());
-      this.tweens.add({
-        targets:sheet,y:sheet.y+95,alpha:{from:.12,to:.38},
-        duration:700+i*130,repeat:-1,delay:i*180
-      });
-    }
-
-    // Base turbulence: two asynchronous foam pulses prevent the splash from
-    // reading as another static PNG element.
-    const foamA=this.add.ellipse(2825,720,245,62,0xe4fbff,.32).setDepth(746);
-    const foamB=this.add.ellipse(2825,738,185,42,0xbcefff,.22).setDepth(747);
-    this.tweens.add({targets:foamA,scaleX:{from:.78,to:1.12},scaleY:{from:.72,to:1.18},alpha:{from:.18,to:.42},duration:760,yoyo:true,repeat:-1});
-    this.tweens.add({targets:foamB,scaleX:{from:1.08,to:.78},scaleY:{from:1.12,to:.7},alpha:{from:.30,to:.10},duration:980,yoyo:true,repeat:-1,delay:170});
+    // Two foam layers make the impact area breathe, while the dry U-shaped basin
+    // remains visible around them.
+    const foamA=this.add.ellipse(2825,735,215,54,0xe8fcff,.38).setDepth(744);
+    const foamB=this.add.ellipse(2825,754,155,34,0xbcefff,.28).setDepth(745);
+    this.tweens.add({targets:foamA,scaleX:{from:.76,to:1.10},scaleY:{from:.72,to:1.16},alpha:{from:.20,to:.46},duration:720,yoyo:true,repeat:-1});
+    this.tweens.add({targets:foamB,scaleX:{from:1.08,to:.78},scaleY:{from:1.12,to:.72},alpha:{from:.34,to:.12},duration:920,yoyo:true,repeat:-1,delay:150});
 
     // 49 — East bridge destination. Frame 10 creates dry land beyond the bridge
     // and clearly communicates that the route continues off-map to the east.
@@ -1342,7 +1341,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 60 · CASCATA ANIMADA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 61 · CACHOEIRA SECA + ÁGUA VIVA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
