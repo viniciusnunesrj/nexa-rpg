@@ -38,6 +38,8 @@ export class CrystalVillageScene extends Phaser.Scene{
   private water?:Phaser.GameObjects.TileSprite;
   private southwestWater?:Phaser.GameObjects.TileSprite;
   private southwestWaterBed?:Phaser.GameObjects.Graphics;
+  private waterfallFlow?:Phaser.GameObjects.TileSprite;
+  private waterfallFoam?:Phaser.GameObjects.TileSprite;
   private zoom=0.82;
 
   constructor(){super('CrystalVillageScene');}
@@ -1150,8 +1152,40 @@ export class CrystalVillageScene extends Phaser.Scene{
       .setDepth(728)
       .setCrop(0,0,leftFrame.width,Math.round(leftFrame.height*.43));
 
-    // No waterfall/foam FX yet. First validate the dry canyon silhouette and the
-    // widened gap; the animated fall will be introduced only after this geometry holds.
+    // Master 66: animated waterfall built from the SAME moving Aurora water material.
+    // No painted/static waterfall artwork is used. The narrow source feeds a vertical
+    // fall between the validated dry banks, then a masked foam/turbulence patch blends
+    // the impact into the already animated east river.
+    const fallMask=this.make.graphics({x:0,y:0});
+    fallMask.fillStyle(0xffffff);
+    fallMask.beginPath();
+    fallMask.moveTo(2940,270);
+    fallMask.lineTo(3055,270);
+    fallMask.lineTo(3075,355);
+    fallMask.lineTo(3090,455);
+    fallMask.lineTo(3060,540);
+    fallMask.lineTo(2920,540);
+    fallMask.lineTo(2910,455);
+    fallMask.lineTo(2925,355);
+    fallMask.closePath();
+    fallMask.fillPath();
+
+    this.waterfallFlow=this.add.tileSprite(3000,405,190,300,'village-water')
+      .setDepth(731)
+      .setTileScale(.42);
+    this.waterfallFlow.setMask(fallMask.createGeometryMask());
+
+    // Impact pool: a short, wide moving patch at the foot of the fall. A translucent
+    // white overlay creates foam without requiring another static PNG.
+    const foamMask=this.make.graphics({x:0,y:0});
+    foamMask.fillStyle(0xffffff);
+    foamMask.fillEllipse(3000,545,250,92);
+    this.waterfallFoam=this.add.tileSprite(3000,545,260,100,'village-water')
+      .setDepth(737)
+      .setTileScale(.34)
+      .setAlpha(.9);
+    this.waterfallFoam.setMask(foamMask.createGeometryMask());
+    this.add.ellipse(3000,548,225,54,0xe8fbff,.24).setDepth(738);
 
     // 49 — East bridge destination. Frame 10 creates dry land beyond the bridge
     // and clearly communicates that the route continues off-map to the east.
@@ -1344,7 +1378,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 65 · CÂNION NORDESTE DIVIDIDO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 66 · CASCATA DINÂMICA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
@@ -1359,6 +1393,13 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.label.setPosition(this.player.x,this.player.y-38);
     this.water && (this.water.tilePositionY-=.18);
     this.southwestWater && (this.southwestWater.tilePositionY-=.14);
+    // Faster vertical motion sells the falling sheet; lateral foam drift prevents
+    // the impact pool from reading as a frozen copy of the river.
+    this.waterfallFlow && (this.waterfallFlow.tilePositionY-=1.15);
+    if(this.waterfallFoam){
+      this.waterfallFoam.tilePositionY-=.32;
+      this.waterfallFoam.tilePositionX+=.18;
+    }
     this.cameras.main.setZoom(Phaser.Math.Linear(this.cameras.main.zoom,this.zoom,.12));
   }
 }
