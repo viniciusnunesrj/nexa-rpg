@@ -390,6 +390,28 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',10,1215,1415,90,1410,true);
     placeKit('village-nexaKit',10,1885,1415,90,1410);
 
+    // Master 19: structural landscape pass.
+    // The reference does not surround the plaza with isolated trees: it uses
+    // connected garden/rock shoulders that visually narrow the paved cross.
+    placeSized('village-tree',1030,1215,255,1205);
+    placeSized('village-tree',2070,1225,265,1215,true);
+    placeSized('village-tree',1260,1510,225,1500);
+    placeSized('village-tree',1900,1515,235,1505,true);
+
+    // Dense organic seams around the lower civic axis, while keeping the
+    // monument-to-south-gate corridor completely readable.
+    placeKit('village-ambientKit',8,1080,1435,245,1425);
+    placeKit('village-ambientKit',2,2020,1440,245,1430,true);
+    placeKit('village-ambientKit',4,1210,1615,215,1605);
+    placeKit('village-ambientKit',8,1900,1620,215,1610,true);
+
+    // Stronger rocky shoulders beside the upper commercial zones. These make
+    // the buildings feel embedded in the terrain instead of floating on tiles.
+    placeKit('village-ambientKit',4,690,845,225,835,true);
+    placeKit('village-ambientKit',2,2390,865,225,855);
+    placeKit('village-ambientKit',8,820,1160,205,1150);
+    placeKit('village-ambientKit',4,2280,1170,205,1160,true);
+
     // Master 18: reference-scale vegetation masses.
     // The Master uses a few substantial trees/garden masses to frame the plaza;
     // this is more important than adding more tiny scatter props.
@@ -466,7 +488,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 18 · MASSAS ORGÂNICAS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 19 · PAISAGISMO ESTRUTURAL',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
