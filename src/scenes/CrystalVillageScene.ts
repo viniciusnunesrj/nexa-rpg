@@ -1087,15 +1087,12 @@ export class CrystalVillageScene extends Phaser.Scene{
     // 48 — Northwest elevated exit. Frames 2 + 1 form a raised terrace and a
     // readable stair connection beside/behind the forge; frame 3 continues the
     // route toward the upper-left map boundary.
-    placeKit('village-structureKit',2,500,690,500,680);
+    // Master 57: one elevated northwest terrace + one stair only, matching the reference.
+    placeKit('village-structureKit',2,430,650,410,640);
     placeKit('village-structureKit',1,690,850,300,840);
-    const northwestRamp=placeKit('village-structureKit',3,245,555,430,545);
-    northwestRamp.setAngle(-4);
 
     // North continuation behind the gate. A restrained raised path makes the arch
     // read as a transition to another zone instead of a decorative back wall.
-    placeKit('village-structureKit',2,1550,355,440,345);
-    placeKit('village-structureKit',3,1550,190,330,180);
 
     // 49 — Northeast headwater. Use the generated source, waterfall and basin as
     // one vertical geological event. The existing animated river remains beneath.
@@ -1103,9 +1100,28 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-structureKit',8,2825,575,400,565);
     placeKit('village-structureKit',9,2825,755,390,745);
 
+    // Master 59: the generated waterfall art is the rocky/static base only.
+    // Lightweight animated streaks and pulsing foam make the fall feel alive
+    // without moving the surrounding cliff PNG or requiring another asset.
+    const waterfallFx=this.add.container(2825,455).setDepth(735);
+    const fallMask=this.make.graphics({x:0,y:0});
+    fallMask.fillStyle(0xffffff).fillRect(2700,430,250,300);
+    waterfallFx.setMask(fallMask.createGeometryMask());
+    const streaks=[
+      {x:-82,w:18,h:150,d:0},{x:-48,w:12,h:205,d:180},{x:-15,w:20,h:175,d:80},
+      {x:22,w:14,h:220,d:260},{x:55,w:18,h:185,d:120},{x:84,w:11,h:155,d:330}
+    ];
+    streaks.forEach(({x,w,h,d})=>{
+      const s=this.add.rectangle(x,-80,w,h,0xbcefff,.20).setOrigin(.5,0);
+      waterfallFx.add(s);
+      this.tweens.add({targets:s,y:120,alpha:{from:.12,to:.38},duration:850+d,yoyo:false,repeat:-1,delay:d});
+    });
+    const foam=this.add.ellipse(2825,735,250,58,0xd9f8ff,.16).setDepth(740);
+    this.tweens.add({targets:foam,scaleX:{from:.88,to:1.08},scaleY:{from:.8,to:1.15},alpha:{from:.10,to:.28},duration:1250,yoyo:true,repeat:-1});
+
     // 49 — East bridge destination. Frame 10 creates dry land beyond the bridge
     // and clearly communicates that the route continues off-map to the east.
-    const eastExit=placeKit('village-structureKit',10,3120,1120,610,1110);
+    const eastExit=placeKit('village-structureKit',10,3100,1120,430,1110);
     eastExit.setFlipX(false);
 
     // 50 — Southwest relief sequence. Build the missing reference logic:
@@ -1119,10 +1135,8 @@ export class CrystalVillageScene extends Phaser.Scene{
 
     // 50 — Southeast secondary route beside the canyon. This is deliberately
     // offset from the south gate so the village no longer has only one lower exit.
-    placeKit('village-structureKit',2,2170,1850,360,1840,true);
-    placeKit('village-structureKit',11,2260,2015,270,2005,true);
-    const southeastRamp=placeKit('village-structureKit',3,2390,2180,350,2170,true);
-    southeastRamp.setAngle(5);
+    // Master 58: a single short canyon descent; no invented road around the map edge.
+    placeKit('village-structureKit',11,2210,1990,265,1980,true);
 
     // 51 — South continuation. Preserve the gate itself, but extend terrain past
     // it so the arch visually leads somewhere beyond the current village.
@@ -1131,14 +1145,10 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Sparse structural cues replace clutter so each exit can be read at a glance.
 
     // Northwest and north: keep elevated exits visibly open.
-    placeKit('village-nexaKit',4,390,760,64,755);
-    placeKit('village-marketForgeKit',9,780,880,66,875);
     placeKit('village-nexaKit',6,1370,470,70,465);
     placeKit('village-nexaKit',6,1730,470,70,465,true);
 
     // East: a dry rocky threshold beyond the bridge, with no foliage on the deck.
-    placeKit('village-ambientKit',5,3090,980,105,970);
-    placeKit('village-ambientKit',5,3090,1260,105,1250,true);
 
     // Southwest: low markers trace the S-shaped descent instead of hiding it.
     placeKit('village-nexaKit',10,720,1515,62,1510);
@@ -1300,7 +1310,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 56 · ROTAS ABERTAS E RELEVO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 59 · ROTAS FIÉIS E CASCATA VIVA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
