@@ -843,6 +843,74 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-marketForgeKit',3,1180,2140,88,2135);
     placeKit('village-marketForgeKit',3,1920,2140,88,2135,true);
 
+    // Master 36-38: bundled convergence pass.
+    // Work several reference zones in one deploy: north enclosure, civic district
+    // readability, southwest harbor ascent, southeast ravine and waterfront depth.
+
+    // 36 — North enclosure. The Master has a compact fortified garden around the
+    // gate; close the remaining bare shoulders without narrowing the central avenue.
+    placeKit('village-ambientKit',8,700,410,300,400);
+    placeKit('village-ambientKit',2,2380,420,300,410,true);
+    placeSized('village-tree',860,430,235,420,true);
+    placeSized('village-tree',2230,440,235,430);
+    placeKit('village-nexaKit',8,1040,515,92,510);
+    placeKit('village-nexaKit',8,2060,520,92,515,true);
+    placeKit('village-marketForgeKit',9,1180,650,76,645);
+    placeKit('village-marketForgeKit',9,1920,650,76,645,true);
+
+    // 36 — Forge and market forecourts. Create readable entrances rather than
+    // letting foliage visually swallow the building fronts.
+    placeKit('village-marketForgeKit',3,690,1030,92,1025);
+    placeKit('village-marketForgeKit',10,820,1060,98,1055,true);
+    placeKit('village-nexaKit',5,970,1050,72,1045);
+    placeKit('village-marketForgeKit',3,2410,1030,92,1025,true);
+    placeKit('village-marketForgeKit',10,2280,1060,98,1055);
+    placeKit('village-nexaKit',5,2130,1050,72,1045,true);
+
+    // 37 — Southwest harbor ascent. Build a stronger diagonal sequence from the
+    // civic terrace to the stairs and pier, while reserving open water for the boat.
+    placeKit('village-ambientKit',8,400,1430,230,1420,true);
+    placeKit('village-ambientKit',4,485,1550,190,1540);
+    placeKit('village-marketForgeKit',9,555,1640,78,1635);
+    placeKit('village-nexaKit',10,630,1715,72,1710,true);
+    placeKit('village-ambientKit',5,705,1795,110,1785);
+    placeKit('village-marketForgeKit',1,430,1880,78,1875);
+    placeKit('village-nexaKit',12,520,1950,72,1945);
+
+    // 37 — Lower civic gardens. Push mass outward and punctuate the path edges,
+    // reproducing the Master's narrow south avenue and asymmetric garden pockets.
+    placeKit('village-ambientKit',7,1040,1860,210,1850);
+    placeKit('village-ambientKit',2,2060,1860,210,1850,true);
+    placeSized('village-tree',940,1980,205,1970,true);
+    placeSized('village-tree',2160,1980,205,1970);
+    placeKit('village-nexaKit',4,1210,1940,82,1935);
+    placeKit('village-nexaKit',4,1890,1940,82,1935,true);
+
+    // 38 — Southeast ravine. Strengthen the cliff/crystal landmark visible in the
+    // reference and visually funnel the route toward the southern gate.
+    placeKit('village-ambientKit',8,2260,2050,245,2040,true);
+    placeKit('village-ambientKit',4,2380,2160,235,2150);
+    placeKit('village-nexaKit',8,2200,2140,110,2135);
+    placeKit('village-nexaKit',12,2350,2260,90,2255,true);
+    placeSized('village-tree',2180,2280,210,2270);
+
+    // 38 — Waterfront depth above and below the bridge. Keep every large opaque
+    // element on dry ground; the water mask and validated bridge stay untouched.
+    placeKit('village-ambientKit',8,2460,520,225,510,true);
+    placeKit('village-nexaKit',4,2475,650,80,645);
+    placeKit('village-ambientKit',7,2460,1600,190,1590);
+    placeKit('village-nexaKit',8,2480,1710,84,1705,true);
+    placeKit('village-ambientKit',4,2450,1880,205,1870);
+
+    // 38 — Human-scale civic rhythm. Small warm/cyan punctuation makes the plaza
+    // feel inhabited at gameplay zoom without obscuring the monument or Kael.
+    placeKit('village-marketForgeKit',9,1250,1010,78,1005);
+    placeKit('village-marketForgeKit',9,1850,1010,78,1005,true);
+    placeKit('village-nexaKit',10,1110,1340,70,1335);
+    placeKit('village-nexaKit',10,1990,1340,70,1335,true);
+    placeKit('village-marketForgeKit',3,1300,1540,78,1535);
+    placeKit('village-marketForgeKit',3,1800,1540,78,1535,true);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -995,7 +1063,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 35 · CONEXÕES DE TERRENO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 38 · CONVERGÊNCIA VISUAL',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
