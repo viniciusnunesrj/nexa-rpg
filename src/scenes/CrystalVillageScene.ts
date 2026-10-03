@@ -1171,8 +1171,8 @@ export class CrystalVillageScene extends Phaser.Scene{
     fallMask.fillPath();
 
     this.waterfallFlow=this.add.tileSprite(3000,405,190,300,'village-water')
-      .setDepth(731)
-      .setTileScale(.42);
+      .setDepth(740)
+      .setTileScale(.32);
     this.waterfallFlow.setMask(fallMask.createGeometryMask());
 
     // Impact pool: a short, wide moving patch at the foot of the fall. A translucent
@@ -1185,7 +1185,7 @@ export class CrystalVillageScene extends Phaser.Scene{
       .setTileScale(.34)
       .setAlpha(.9);
     this.waterfallFoam.setMask(foamMask.createGeometryMask());
-    this.add.ellipse(3000,548,225,54,0xe8fbff,.24).setDepth(738);
+    // Keep the impact natural: no geometric ellipse/"bubble" overlay.
 
     // 49 — East bridge destination. Frame 10 creates dry land beyond the bridge
     // and clearly communicates that the route continues off-map to the east.
@@ -1378,7 +1378,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 66 · CASCATA DINÂMICA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 67 · QUEDA VISÍVEL',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
