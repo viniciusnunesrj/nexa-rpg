@@ -93,6 +93,27 @@ export class CrystalVillageScene extends Phaser.Scene{
       return img;
     };
 
+    // Treat each approved 4x3 asset sheet as twelve addressable Phaser frames.
+    const registerKitFrames=(key:string)=>{
+      const tex=this.textures.get(key);
+      const src=tex.getSourceImage();
+      const cellW=Math.floor(src.width/4), cellH=Math.floor(src.height/3);
+      for(let row=0;row<3;row++) for(let col=0;col<4;col++){
+        const index=row*4+col+1, x=col*cellW, y=row*cellH;
+        if(!tex.has(String(index))) tex.add(String(index),0,x,y,col===3?src.width-x:cellW,row===2?src.height-y:cellH);
+      }
+    };
+    registerKitFrames('village-ambientKit');
+    registerKitFrames('village-nexaKit');
+    registerKitFrames('village-marketForgeKit');
+
+    const placeKit=(key:string,frame:number,x:number,y:number,width:number,depth:number,flipX=false)=>{
+      const img=this.add.image(x,y,key,String(frame)).setOrigin(.5,1).setDepth(depth);
+      img.setDisplaySize(width,Math.round(width*img.frame.height/img.frame.width));
+      img.setFlipX(flipX);
+      return img;
+    };
+
     // Opaque river bed: the current water PNG has translucent edge pixels, so the
     // brown world ground was leaking through at every repeated tile boundary.
     // A solid deep-water layer underneath prevents any terrain from appearing in-channel.
@@ -179,6 +200,17 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-stairs',760,1835,350,1825);
     placeSized('village-pier',500,2040,650,2030);
 
+    // Southwest Master density: clusters frame the stair/dock and southern
+    // approach while the actual walking route stays visually open.
+    placeKit('village-ambientKit',1,470,1705,190,1695);
+    placeKit('village-ambientKit',3,930,1760,170,1750);
+    placeKit('village-ambientKit',6,315,1875,170,1865);
+    placeKit('village-ambientKit',8,1010,1970,220,1960);
+    placeKit('village-ambientKit',4,1180,1900,180,1890);
+    placeKit('village-ambientKit',5,1260,2020,145,2010);
+    placeKit('village-nexaKit',5,675,1880,105,1875);
+    placeKit('village-nexaKit',1,1110,2050,105,2045);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -206,7 +238,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 04',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 05',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
