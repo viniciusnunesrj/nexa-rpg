@@ -81,8 +81,8 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Floor-piece PNGs remain disabled; all architecture sits on the continuous stone material.
     this.add.image(1550,620,'village-gate').setDisplaySize(740,Math.round(740*this.textures.get('village-gate').getSourceImage().height/this.textures.get('village-gate').getSourceImage().width)).setOrigin(.5,1).setDepth(620);
     this.add.image(1550,1210,'village-monument').setDisplaySize(560,Math.round(560*this.textures.get('village-monument').getSourceImage().height/this.textures.get('village-monument').getSourceImage().width)).setOrigin(.5,1).setDepth(1210);
-    this.add.image(920,1010,'village-forge').setDisplaySize(700,Math.round(760*this.textures.get('village-forge').getSourceImage().height/this.textures.get('village-forge').getSourceImage().width)).setOrigin(.5,1).setDepth(1020);
-    this.add.image(2070,1010,'village-market').setDisplaySize(500,Math.round(520*this.textures.get('village-market').getSourceImage().height/this.textures.get('village-market').getSourceImage().width)).setOrigin(.5,1).setDepth(1010);
+    this.add.image(980,1015,'village-forge').setDisplaySize(585,Math.round(585*this.textures.get('village-forge').getSourceImage().height/this.textures.get('village-forge').getSourceImage().width)).setOrigin(.5,1).setDepth(1020);
+    this.add.image(2050,1010,'village-market').setDisplaySize(430,Math.round(430*this.textures.get('village-market').getSourceImage().height/this.textures.get('village-market').getSourceImage().width)).setOrigin(.5,1).setDepth(1010);
 
     // Composition 03: rebuild the right side to match the master layout.
     // The river is a natural vertical channel at the far right; the bridge crosses it horizontally.
@@ -182,8 +182,8 @@ export class CrystalVillageScene extends Phaser.Scene{
     // Master-reference infill pass: occupy the large empty southern half with the
     // same functional zones visible in the reference, without changing the validated river/bridge.
     // Southwest = second civic/workshop building; southeast = market cluster.
-    placeSized('village-workshop',1090,1450,500,1440);
-    placeSized('village-market',1810,1425,380,1415,true);
+    placeSized('village-workshop',1050,1435,430,1425);
+    placeSized('village-market',1950,1430,340,1420,true);
 
     // South entrance mirrors the reference's lower access. Keep it well inside the
     // paved footprint so the later path/dock layer can connect to it cleanly.
@@ -365,6 +365,31 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',12,1015,1515,62,1510,true);
     placeKit('village-nexaKit',9,2085,1515,62,1510);
 
+    // Master 17: functional zoning from the actual reference.
+    // NW = forge/tools; NE = open market; SW = workshop; SE = cloth/general stall.
+    // Use larger readable props, grouped by function instead of scattering tiny objects.
+    placeKit('village-marketForgeKit',7,735,1035,155,1030);
+    placeKit('village-marketForgeKit',9,825,1080,105,1075);
+    placeKit('village-marketForgeKit',11,900,1090,125,1085);
+
+    placeKit('village-marketForgeKit',5,2160,1015,180,1010);
+    placeKit('village-marketForgeKit',6,2250,1060,175,1055);
+    placeKit('village-marketForgeKit',4,2325,1090,115,1085);
+
+    placeKit('village-marketForgeKit',10,865,1455,145,1450);
+    placeKit('village-marketForgeKit',3,930,1490,95,1485);
+
+    placeKit('village-marketForgeKit',6,2110,1440,175,1435);
+    placeKit('village-marketForgeKit',5,2200,1480,155,1475);
+    placeKit('village-marketForgeKit',8,2270,1490,105,1485);
+
+    // Cyan civic posts in the Master sit outside the monument ring at diagonal shoulders.
+    // Make these readable at gameplay scale instead of numerous tiny cyan specks.
+    placeKit('village-nexaKit',6,1215,1015,96,1010);
+    placeKit('village-nexaKit',6,1885,1015,96,1010,true);
+    placeKit('village-nexaKit',10,1215,1415,90,1410,true);
+    placeKit('village-nexaKit',10,1885,1415,90,1410);
+
     // Master 16: the reference transitions from plaza stone into dense organic
     // borders much earlier. Build broad asymmetrical garden pockets around the
     // lower half of the civic core while preserving the north/south/east/west lanes.
@@ -413,7 +438,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 16',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 17 · PROPORÇÃO + ZONAS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
