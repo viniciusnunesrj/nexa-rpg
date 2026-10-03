@@ -24,7 +24,8 @@ const ASSETS={
   ambientKit:'/assets/aurora/nature/vila-kit-ambiental-01.png',
   nexaKit:'/assets/aurora/nature/vila-kit-nexa-iluminacao-01.png',
   marketForgeKit:'/assets/aurora/nature/vila-kit-mercado-forja-01.png',
-  cliff:'/assets/aurora/nature/vila-paredao-rochoso-01.png'
+  cliff:'/assets/aurora/nature/vila-paredao-rochoso-01.png',
+  structureKit:'/assets/aurora/nature/vila-kit-relevo-rotas-agua-01.png'
 } as const;
 
 export class CrystalVillageScene extends Phaser.Scene{
@@ -106,6 +107,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     registerKitFrames('village-ambientKit');
     registerKitFrames('village-nexaKit');
     registerKitFrames('village-marketForgeKit');
+    registerKitFrames('village-structureKit');
 
     const placeKit=(key:string,frame:number,x:number,y:number,width:number,depth:number,flipX=false)=>{
       const img=this.add.image(x,y,key,String(frame)).setOrigin(.5,1).setDepth(depth);
@@ -194,7 +196,6 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-bridge',2860,1120,760,1120);
 
     // Large vegetation masses soften the perimeter and hide joins between relief pieces.
-    placeSized('village-tree',430,1120,360,1110);
     placeSized('village-tree',2410,720,330,710,true);
     placeSized('village-tree',2370,1940,360,1930);
 
@@ -992,8 +993,6 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-ambientKit',2,2490,830,270,820,true);
     placeKit('village-ambientKit',4,690,1510,235,1500,true);
     placeKit('village-ambientKit',8,2410,1510,235,1500);
-    placeSized('village-tree',550,960,225,950,true);
-    placeSized('village-tree',2520,970,215,960);
 
     // 43 — North-to-centre hierarchy: paired cyan/warm landmarks lead from the
     // gate into the monument without filling the ceremonial avenue.
@@ -1053,7 +1052,6 @@ export class CrystalVillageScene extends Phaser.Scene{
     // 46 — Southwest route cleanup by visual framing: emphasize the diagonal
     // ascent with small markers and move visual mass to its outer shoulder.
     placeKit('village-ambientKit',8,250,1480,250,1470,true);
-    placeSized('village-tree',320,1590,205,1580);
     placeKit('village-nexaKit',4,515,1510,72,1505);
     placeKit('village-marketForgeKit',9,610,1580,72,1575,true);
     placeKit('village-nexaKit',10,710,1680,70,1675);
@@ -1070,8 +1068,6 @@ export class CrystalVillageScene extends Phaser.Scene{
     // clean central opening beneath the gate, matching the Master's framed exit.
     placeKit('village-ambientKit',8,900,2230,300,2220);
     placeKit('village-ambientKit',2,2200,2230,300,2220,true);
-    placeSized('village-tree',800,2350,230,2340,true);
-    placeSized('village-tree',2300,2350,230,2340);
     placeKit('village-nexaKit',12,1110,2280,88,2275);
     placeKit('village-nexaKit',9,1990,2280,88,2275,true);
 
@@ -1081,6 +1077,54 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-ambientKit',5,2470,1280,105,1270,true);
     placeKit('village-nexaKit',4,2440,1550,72,1545);
     placeKit('village-nexaKit',8,2440,1780,76,1775,true);
+
+    // Master 48-51: structural route rebuild using the dedicated relief/water kit.
+    // Unlike the previous decoration passes, these pieces establish actual exits,
+    // elevation changes and destination silhouettes from the Master reference.
+
+    // 48 — Northwest elevated exit. Frames 2 + 1 form a raised terrace and a
+    // readable stair connection beside/behind the forge; frame 3 continues the
+    // route toward the upper-left map boundary.
+    placeKit('village-structureKit',2,420,700,470,690);
+    placeKit('village-structureKit',1,610,845,310,835);
+    const northwestRamp=placeKit('village-structureKit',3,285,545,390,535);
+    northwestRamp.setAngle(-5);
+
+    // North continuation behind the gate. A restrained raised path makes the arch
+    // read as a transition to another zone instead of a decorative back wall.
+    placeKit('village-structureKit',2,1550,355,440,345);
+    placeKit('village-structureKit',3,1550,190,330,180);
+
+    // 49 — Northeast headwater. Use the generated source, waterfall and basin as
+    // one vertical geological event. The existing animated river remains beneath.
+    placeKit('village-structureKit',7,2760,390,500,380);
+    placeKit('village-structureKit',8,2800,610,430,600);
+    placeKit('village-structureKit',9,2820,760,420,750);
+
+    // 49 — East bridge destination. Frame 10 creates dry land beyond the bridge
+    // and clearly communicates that the route continues off-map to the east.
+    const eastExit=placeKit('village-structureKit',10,3130,1125,520,1115);
+    eastExit.setFlipX(false);
+
+    // 50 — Southwest relief sequence. Build the missing reference logic:
+    // upper terrace -> stair -> lower terrace -> second descent -> dock.
+    placeKit('village-structureKit',4,360,1450,520,1440);
+    placeKit('village-structureKit',1,500,1590,300,1580);
+    placeKit('village-structureKit',2,520,1735,390,1725);
+    placeKit('village-structureKit',11,590,1885,300,1875);
+    placeKit('village-structureKit',12,315,2160,300,2155);
+
+    // 50 — Southeast secondary route beside the canyon. This is deliberately
+    // offset from the south gate so the village no longer has only one lower exit.
+    placeKit('village-structureKit',2,2210,1900,390,1890,true);
+    placeKit('village-structureKit',11,2290,2070,285,2060,true);
+    const southeastRamp=placeKit('village-structureKit',3,2410,2240,360,2230,true);
+    southeastRamp.setAngle(5);
+
+    // 51 — South continuation. Preserve the gate itself, but extend terrain past
+    // it so the arch visually leads somewhere beyond the current village.
+    placeKit('village-structureKit',10,1550,2130,430,2120);
+    placeKit('village-structureKit',3,1550,2350,350,2340);
 
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
@@ -1167,8 +1211,6 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-tree',2050,1600,270,1590);
 
     // Keep the north approach readable but visually enclosed, as in the Master.
-    placeSized('village-tree',790,700,250,690,true);
-    placeSized('village-tree',2290,720,260,710);
 
     // Larger organic shoulders replace the remaining 'objects sprinkled on stone'
     // feeling. They sit behind/alongside commerce and never cover the civic cross.
@@ -1234,7 +1276,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 47 · LIMITE DO KIT ATUAL',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 51 · ROTAS E RELEVO ESTRUTURAIS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
