@@ -114,12 +114,31 @@ export class CrystalVillageScene extends Phaser.Scene{
       return img;
     };
 
-    // Opaque river bed: the current water PNG has translucent edge pixels, so the
-    // brown world ground was leaking through at every repeated tile boundary.
-    // A solid deep-water layer underneath prevents any terrain from appearing in-channel.
-    this.add.rectangle(2860,1200,610,2400,0x07566b,1).setDepth(-83);
-    this.water=this.add.tileSprite(2860,1200,610,2400,'village-water').setDepth(-82);
+    // Master 33: organic east river. Keep the validated Aurora water texture, but
+    // stop drawing it as a perfect rectangle. The mask widens around the bridge,
+    // narrows through the rocky shoulders and opens again toward the south basin.
+    const eastRiverPoints=[
+      new Phaser.Geom.Point(2675,0),new Phaser.Geom.Point(3200,0),
+      new Phaser.Geom.Point(3200,2400),new Phaser.Geom.Point(2585,2400),
+      new Phaser.Geom.Point(2605,2200),new Phaser.Geom.Point(2550,2010),
+      new Phaser.Geom.Point(2595,1810),new Phaser.Geom.Point(2545,1600),
+      new Phaser.Geom.Point(2590,1390),new Phaser.Geom.Point(2525,1200),
+      new Phaser.Geom.Point(2570,1010),new Phaser.Geom.Point(2540,820),
+      new Phaser.Geom.Point(2610,620),new Phaser.Geom.Point(2580,420),
+      new Phaser.Geom.Point(2640,220)
+    ];
+    const drawEastRiver=(g:Phaser.GameObjects.Graphics)=>{
+      g.beginPath();g.moveTo(eastRiverPoints[0].x,eastRiverPoints[0].y);
+      eastRiverPoints.slice(1).forEach(p=>g.lineTo(p.x,p.y));
+      g.closePath();g.fillPath();
+    };
+    const eastRiverBed=this.add.graphics().setDepth(-83);
+    eastRiverBed.fillStyle(0x07566b,1);drawEastRiver(eastRiverBed);
+    this.water=this.add.tileSprite(2860,1200,680,2400,'village-water').setDepth(-82);
     this.water.setTileScale(.58);
+    const eastRiverMask=this.make.graphics({x:0,y:0});
+    eastRiverMask.fillStyle(0xffffff);drawEastRiver(eastRiverMask);
+    this.water.setMask(eastRiverMask.createGeometryMask());
 
     // The Master has a second body of water in the southwest, directly below the
     // stone descent and around the dock. Without it the new pier reads as if it
@@ -706,6 +725,24 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',8,2480,1850,78,1845);
     placeKit('village-ambientKit',7,2420,1990,165,1980);
 
+    // Master 33: rebuild the west bank as a readable rock/vegetation cadence.
+    // These sit entirely on dry ground and deliberately leave the bridge mouth open.
+    placeKit('village-ambientKit',8,2490,470,230,460,true);
+    placeKit('village-ambientKit',4,2475,620,195,610);
+    placeKit('village-ambientKit',2,2500,790,205,780,true);
+    placeKit('village-ambientKit',7,2470,1450,190,1440);
+    placeKit('village-ambientKit',8,2490,1730,215,1720,true);
+    placeKit('village-ambientKit',4,2470,2100,230,2090);
+    placeKit('village-nexaKit',4,2495,560,70,555);
+    placeKit('village-nexaKit',8,2490,1900,76,1895,true);
+
+    // Reveal the southwest level change instead of burying it under foliage:
+    // small edge accents lead the eye from workshop -> upper stair -> lower stair -> pier.
+    placeKit('village-marketForgeKit',9,690,1690,72,1685);
+    placeKit('village-nexaKit',10,820,1775,66,1770,true);
+    placeKit('village-ambientKit',5,455,1800,105,1790);
+    placeKit('village-marketForgeKit',1,545,1905,72,1900);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -858,7 +895,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 32 · RIO E SUBIDA SUDOESTE',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 33 · RIO ORGÂNICO E RELEVO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
