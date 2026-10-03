@@ -586,6 +586,58 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',4,930,2050,100,2045);
     placeKit('village-nexaKit',4,2170,2050,100,2045,true);
 
+    // Master 30: destination pass — make the village read as a real place.
+    // Add recognizable districts and strong foreground silhouettes while keeping
+    // the validated plaza, gates, bridge and central travel spine untouched.
+
+    // Forge district: dense work-yard punctuation and warm civic activity.
+    placeKit('village-marketForgeKit',6,760,930,180,925);
+    placeKit('village-marketForgeKit',5,900,920,145,915,true);
+    placeKit('village-marketForgeKit',9,1040,960,92,955);
+    placeKit('village-ambientKit',7,670,1050,165,1040,true);
+    placeKit('village-nexaKit',10,820,1110,78,1105);
+
+    // Market district: layered stalls / goods cadence instead of one isolated shop.
+    placeKit('village-marketForgeKit',6,2200,900,180,895,true);
+    placeKit('village-marketForgeKit',5,2350,950,145,945);
+    placeKit('village-marketForgeKit',9,2070,970,92,965,true);
+    placeKit('village-ambientKit',7,2430,1050,165,1040);
+    placeKit('village-nexaKit',10,2280,1110,78,1105,true);
+
+    // Civic plaza perimeter: four compact light/tech stations create the
+    // Master's deliberate circular rhythm without filling the playable ring.
+    placeKit('village-marketForgeKit',3,1030,1220,86,1215);
+    placeKit('village-marketForgeKit',3,2070,1220,86,1215,true);
+    placeKit('village-nexaKit',4,1160,1510,88,1505);
+    placeKit('village-nexaKit',4,1940,1510,88,1505,true);
+
+    // Lower-left quarter: visually connect workshop -> stairs -> dock.
+    placeKit('village-marketForgeKit',5,700,1570,150,1565);
+    placeKit('village-ambientKit',7,590,1660,175,1650);
+    placeKit('village-nexaKit',6,760,1810,92,1805);
+    placeSized('village-tree',600,1880,220,1870);
+
+    // Lower-right quarter: make the secondary market feel seated in terrain.
+    placeKit('village-marketForgeKit',6,2360,1540,150,1535,true);
+    placeKit('village-ambientKit',7,2490,1640,175,1630,true);
+    placeKit('village-nexaKit',6,2330,1810,92,1805,true);
+    placeSized('village-tree',2490,1880,220,1870,true);
+
+    // South gate forecourt: strong paired ruins and cyan markers create the
+    // Master's lower-frame destination while leaving the centre line open.
+    placeKit('village-ambientKit',4,1220,2220,235,2210);
+    placeKit('village-ambientKit',4,1880,2220,235,2210,true);
+    placeKit('village-nexaKit',8,1330,2240,100,2235);
+    placeKit('village-nexaKit',8,1770,2240,100,2235,true);
+    placeKit('village-marketForgeKit',3,1390,2160,84,2155);
+    placeKit('village-marketForgeKit',3,1710,2160,84,2155,true);
+
+    // Bridge approach: a compact fortified threshold before the water.
+    placeKit('village-nexaKit',10,2580,1130,92,1125);
+    placeKit('village-nexaKit',10,2580,1390,92,1385,true);
+    placeKit('village-marketForgeKit',9,2500,1200,82,1195);
+    placeKit('village-marketForgeKit',9,2500,1320,82,1315,true);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -738,7 +790,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 29 · ESTRUTURA VIVA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 30 · DISTRITOS VIVOS',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
