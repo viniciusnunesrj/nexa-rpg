@@ -911,6 +911,68 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-marketForgeKit',3,1300,1540,78,1535);
     placeKit('village-marketForgeKit',3,1800,1540,78,1535,true);
 
+    // Master 39-41: bundled composition pass.
+    // Focus on the remaining large reference relationships rather than adding
+    // random scatter: plaza enclosure, harbor legibility, river canyon and south gate.
+
+    // 39 — Civic ring: strengthen the four diagonal shoulders around the monument
+    // with low elements only. The cardinal routes and monument silhouette stay open.
+    placeKit('village-ambientKit',5,1070,1120,120,1110);
+    placeKit('village-ambientKit',7,2030,1120,120,1110,true);
+    placeKit('village-ambientKit',5,1100,1435,120,1425,true);
+    placeKit('village-ambientKit',7,2000,1435,120,1425);
+    placeKit('village-nexaKit',6,1200,1080,82,1075);
+    placeKit('village-nexaKit',6,1900,1080,82,1075,true);
+    placeKit('village-nexaKit',10,1210,1465,78,1460,true);
+    placeKit('village-nexaKit',10,1890,1465,78,1460);
+
+    // 39 — Commercial frontage: make the two upper districts read as actual
+    // forge/market courts from the default zoom instead of vegetation clusters.
+    placeKit('village-marketForgeKit',7,650,960,185,955);
+    placeKit('village-marketForgeKit',11,800,1010,145,1005);
+    placeKit('village-marketForgeKit',9,950,1060,92,1055,true);
+    placeKit('village-marketForgeKit',5,2150,960,190,955,true);
+    placeKit('village-marketForgeKit',6,2320,1010,180,1005);
+    placeKit('village-marketForgeKit',4,2440,1060,110,1055,true);
+
+    // 40 — Harbor terraces: keep the future boat basin visually open while making
+    // the dock, lower stair and upper stair read as one deliberate route.
+    placeKit('village-ambientKit',3,300,1650,175,1640);
+    placeKit('village-ambientKit',4,385,1740,155,1730,true);
+    placeKit('village-nexaKit',4,470,1810,70,1805);
+    placeKit('village-marketForgeKit',10,585,1845,82,1840);
+    placeKit('village-ambientKit',5,760,1920,105,1910,true);
+    placeKit('village-nexaKit',12,690,2020,76,2015);
+
+    // 40 — South avenue: create stronger stepped garden shoulders near the gate.
+    // Keep a wide clean strip around x=1550 for movement and visual hierarchy.
+    placeKit('village-ambientKit',8,1050,2150,265,2140);
+    placeKit('village-ambientKit',2,2050,2150,265,2140,true);
+    placeKit('village-ambientKit',4,1180,2280,230,2270,true);
+    placeKit('village-ambientKit',8,1920,2280,230,2270);
+    placeKit('village-nexaKit',8,1320,2180,92,2175);
+    placeKit('village-nexaKit',8,1780,2180,92,2175,true);
+
+    // 41 — River canyon: build a continuous dry-bank cadence from headwater to
+    // lower ravine. These x positions stay west of the masked channel.
+    placeKit('village-ambientKit',4,2440,300,250,290,true);
+    placeKit('village-ambientKit',8,2470,760,195,750);
+    placeKit('village-ambientKit',2,2450,960,165,950,true);
+    placeKit('village-ambientKit',7,2460,1500,170,1490);
+    placeKit('village-ambientKit',4,2450,1810,195,1800,true);
+    placeKit('village-ambientKit',8,2430,2220,250,2210);
+    placeKit('village-nexaKit',12,2460,870,74,865);
+    placeKit('village-nexaKit',9,2450,2020,78,2015,true);
+
+    // 41 — Outer western silhouette: the reference has a heavy cliff/forest wall
+    // balancing the river canyon on the opposite side.
+    placeKit('village-ambientKit',8,250,620,300,610);
+    placeSized('village-tree',330,790,245,780,true);
+    placeKit('village-ambientKit',2,260,1120,285,1110,true);
+    placeSized('village-tree',330,1300,235,1290);
+    placeKit('village-ambientKit',4,250,1450,260,1440);
+    placeKit('village-nexaKit',4,430,1260,78,1255);
+
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
     // readable. Pull the strongest foliage away from the lower shop facades and
@@ -1063,7 +1125,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 38 · CONVERGÊNCIA VISUAL',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 41 · COMPOSIÇÃO AVANÇADA',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
