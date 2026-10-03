@@ -31,6 +31,7 @@ export class CrystalVillageScene extends Phaser.Scene{
   private label!:Phaser.GameObjects.Text;
   private water?:Phaser.GameObjects.TileSprite;
   private southwestWater?:Phaser.GameObjects.TileSprite;
+  private southwestWaterBed?:Phaser.GameObjects.Graphics;
   private zoom=0.82;
 
   constructor(){super('CrystalVillageScene');}
@@ -100,17 +101,32 @@ export class CrystalVillageScene extends Phaser.Scene{
     // stone descent and around the dock. Without it the new pier reads as if it
     // were sitting on dry dirt. Build this as an independent irregular inlet so
     // it does not alter the validated east river.
-    this.southwestWater=this.add.tileSprite(380,2070,760,660,'village-water').setDepth(-82);
+    // Extend the inlet farther east so it reads as the lower-left coastal basin
+    // seen in the Master, rather than a narrow blue wedge beside the dock.
+    this.southwestWaterBed=this.add.graphics().setDepth(-83);
+    this.southwestWaterBed.fillStyle(0x07566b,1);
+    this.southwestWaterBed.beginPath();
+    this.southwestWaterBed.moveTo(0,1710);
+    this.southwestWaterBed.lineTo(330,1710);
+    this.southwestWaterBed.lineTo(590,1810);
+    this.southwestWaterBed.lineTo(770,1990);
+    this.southwestWaterBed.lineTo(1030,2180);
+    this.southwestWaterBed.lineTo(1220,2400);
+    this.southwestWaterBed.lineTo(0,2400);
+    this.southwestWaterBed.closePath();
+    this.southwestWaterBed.fillPath();
+
+    this.southwestWater=this.add.tileSprite(560,2055,1120,690,'village-water').setDepth(-82);
     this.southwestWater.setTileScale(.58);
     const southwestWaterMask=this.make.graphics({x:0,y:0});
     southwestWaterMask.fillStyle(0xffffff);
     southwestWaterMask.beginPath();
-    southwestWaterMask.moveTo(0,1740);
-    southwestWaterMask.lineTo(360,1740);
-    southwestWaterMask.lineTo(610,1840);
-    southwestWaterMask.lineTo(760,2050);
-    southwestWaterMask.lineTo(700,2260);
-    southwestWaterMask.lineTo(900,2400);
+    southwestWaterMask.moveTo(0,1710);
+    southwestWaterMask.lineTo(330,1710);
+    southwestWaterMask.lineTo(590,1810);
+    southwestWaterMask.lineTo(770,1990);
+    southwestWaterMask.lineTo(1030,2180);
+    southwestWaterMask.lineTo(1220,2400);
     southwestWaterMask.lineTo(0,2400);
     southwestWaterMask.closePath();
     southwestWaterMask.fillPath();
@@ -153,9 +169,12 @@ export class CrystalVillageScene extends Phaser.Scene{
     // a real change of level instead of another flat decoration. The rocky ledge
     // defines the terrace, the stair is the deliberate descent and the pier anchors
     // the village to the water-side edge. Major Composition 19 landmarks stay fixed.
-    placeSized('village-ledge',650,1785,760,1765);
-    placeSized('village-stairs',850,1815,300,1805);
-    placeSized('village-pier',520,2050,620,2040);
+    // Match the Master's southwest sequence: civic building -> terrace edge -> broad
+    // stair -> lower landing -> dock. Keep the stair close to the workshop instead
+    // of isolated in the middle of the southern dirt field.
+    placeSized('village-ledge',650,1745,760,1725);
+    placeSized('village-stairs',760,1835,350,1825);
+    placeSized('village-pier',500,2040,650,2030);
 
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
@@ -184,7 +203,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 02',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 03',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
