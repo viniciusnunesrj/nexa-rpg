@@ -198,6 +198,15 @@ export class CrystalVillageScene extends Phaser.Scene{
     // of isolated in the middle of the southern dirt field.
     placeSized('village-ledge',650,1745,760,1725);
     placeSized('village-stairs',760,1835,350,1825);
+
+    // Master 32: the reference has a second climbing leg after the dock stair.
+    // Reuse the same architectural stair language as a smaller upper flight so
+    // the southwest route reads as a continuous ascent instead of a dead end.
+    const upperSouthwestStair=placeSized('village-stairs',585,1650,285,1640);
+    upperSouthwestStair.setAngle(-7);
+    placeKit('village-nexaKit',10,690,1600,72,1595);
+    placeKit('village-ambientKit',7,500,1605,135,1595,true);
+
     placeSized('village-pier',500,2040,650,2030);
 
     // Southwest Master density: clusters frame the stair/dock and southern
@@ -574,9 +583,9 @@ export class CrystalVillageScene extends Phaser.Scene{
 
     // Waterfront: strengthen the Master's cliff/technology cadence around the
     // bridge entrance, but never place opaque art across the water itself.
-    placeKit('village-ambientKit',4,2540,900,220,890,true);
-    placeKit('village-nexaKit',6,2580,1010,100,1005);
-    placeKit('village-marketForgeKit',3,2570,1320,105,1315,true);
+    placeKit('village-ambientKit',4,2440,900,190,890,true);
+    placeKit('village-nexaKit',6,2470,1010,88,1005);
+    placeKit('village-marketForgeKit',3,2470,1320,92,1315,true);
     placeKit('village-ambientKit',7,2510,1510,185,1500);
     placeKit('village-nexaKit',6,2480,1580,95,1575,true);
 
@@ -621,7 +630,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-marketForgeKit',6,2360,1540,150,1535,true);
     placeKit('village-ambientKit',7,2490,1640,175,1630,true);
     placeKit('village-nexaKit',6,2330,1810,92,1805,true);
-    placeSized('village-tree',2490,1880,220,1870,true);
+    placeSized('village-tree',2380,1880,200,1870,true);
 
     // South gate forecourt: strong paired ruins and cyan markers create the
     // Master's lower-frame destination while leaving the centre line open.
@@ -633,8 +642,8 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-marketForgeKit',3,1710,2160,84,2155,true);
 
     // Bridge approach: a compact fortified threshold before the water.
-    placeKit('village-nexaKit',10,2580,1130,92,1125);
-    placeKit('village-nexaKit',10,2580,1390,92,1385,true);
+    placeKit('village-nexaKit',10,2470,1130,82,1125);
+    placeKit('village-nexaKit',10,2470,1390,82,1385,true);
     placeKit('village-marketForgeKit',9,2500,1200,82,1195);
     placeKit('village-marketForgeKit',9,2500,1320,82,1315,true);
 
@@ -677,10 +686,10 @@ export class CrystalVillageScene extends Phaser.Scene{
 
     // Waterfront shoulder: build a denser rocky/tech frame beside the bridge,
     // never over the water surface.
-    placeKit('village-ambientKit',2,2640,820,210,810,true);
-    placeKit('village-nexaKit',4,2630,950,95,945);
-    placeKit('village-ambientKit',8,2630,1530,220,1520);
-    placeKit('village-nexaKit',4,2600,1660,95,1655,true);
+    placeKit('village-ambientKit',2,2440,820,180,810,true);
+    placeKit('village-nexaKit',4,2470,950,82,945);
+    placeKit('village-ambientKit',8,2440,1530,190,1520);
+    placeKit('village-nexaKit',4,2470,1660,82,1655,true);
 
     // Outer west shoulder mirrors the Master's cliff garden and helps remove
     // the remaining large empty dirt patches.
@@ -688,6 +697,14 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeSized('village-tree',520,1040,235,1030,true);
     placeKit('village-ambientKit',4,500,1440,250,1430,true);
     placeSized('village-tree',570,1570,225,1560);
+
+    // Master 32: river cleanup. Keep all trunks/props on dry ground and form a
+    // clearer rocky west-bank cadence. Nothing below crosses x=2520, so the
+    // water channel remains visually clean.
+    placeKit('village-ambientKit',4,2460,700,170,690);
+    placeKit('village-ambientKit',2,2450,1760,185,1750,true);
+    placeKit('village-nexaKit',8,2480,1850,78,1845);
+    placeKit('village-ambientKit',7,2420,1990,165,1980);
 
     // Master 22: restore the Master's middle-scale breathing room.
     // The reference is dense at the perimeter, but the civic ring itself stays
@@ -841,7 +858,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 31 · SILHUETA E CIRCULAÇÃO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 32 · RIO E SUBIDA SUDOESTE',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
