@@ -30,6 +30,7 @@ export class CrystalVillageScene extends Phaser.Scene{
   private keys!:Record<'W'|'A'|'S'|'D',Phaser.Input.Keyboard.Key>;
   private label!:Phaser.GameObjects.Text;
   private water?:Phaser.GameObjects.TileSprite;
+  private southwestWater?:Phaser.GameObjects.TileSprite;
   private zoom=0.82;
 
   constructor(){super('CrystalVillageScene');}
@@ -94,6 +95,26 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.add.rectangle(2860,1200,610,2400,0x07566b,1).setDepth(-83);
     this.water=this.add.tileSprite(2860,1200,610,2400,'village-water').setDepth(-82);
     this.water.setTileScale(.58);
+
+    // The Master has a second body of water in the southwest, directly below the
+    // stone descent and around the dock. Without it the new pier reads as if it
+    // were sitting on dry dirt. Build this as an independent irregular inlet so
+    // it does not alter the validated east river.
+    this.southwestWater=this.add.tileSprite(380,2070,760,660,'village-water').setDepth(-82);
+    this.southwestWater.setTileScale(.58);
+    const southwestWaterMask=this.make.graphics({x:0,y:0});
+    southwestWaterMask.fillStyle(0xffffff);
+    southwestWaterMask.beginPath();
+    southwestWaterMask.moveTo(0,1740);
+    southwestWaterMask.lineTo(360,1740);
+    southwestWaterMask.lineTo(610,1840);
+    southwestWaterMask.lineTo(760,2050);
+    southwestWaterMask.lineTo(700,2260);
+    southwestWaterMask.lineTo(900,2400);
+    southwestWaterMask.lineTo(0,2400);
+    southwestWaterMask.closePath();
+    southwestWaterMask.fillPath();
+    this.southwestWater.setMask(southwestWaterMask.createGeometryMask());
 
     // Relief follows the outside perimeter instead of cutting through the plaza.
     placeSized('village-cliff',720,500,1200,470);
@@ -163,7 +184,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 01',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 02',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
@@ -177,6 +198,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.player.setDepth(this.player.y);
     this.label.setPosition(this.player.x,this.player.y-38);
     this.water && (this.water.tilePositionY-=.18);
+    this.southwestWater && (this.southwestWater.tilePositionY-=.14);
     this.cameras.main.setZoom(Phaser.Math.Linear(this.cameras.main.zoom,this.zoom,.12));
   }
 }
