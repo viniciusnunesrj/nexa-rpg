@@ -130,6 +130,19 @@ export class CrystalVillageScene extends Phaser.Scene{
     };
     registerWaterfallFrames();
 
+    // Master 65: split the dedicated northeast cliff artwork into independent banks.
+    // The source PNG contains a broad left shelf and a narrow right wall separated
+    // by transparency; registering crops lets us widen the canyon without scaling
+    // or moving the two geological masses as one object.
+    const registerNortheastCliffBanks=()=>{
+      const tex=this.textures.get('village-northeastWaterfallCliff');
+      const src=tex.getSourceImage();
+      const split=Math.floor(src.width*.705);
+      if(!tex.has('left-bank')) tex.add('left-bank',0,0,0,split,src.height);
+      if(!tex.has('right-bank')) tex.add('right-bank',0,split,0,src.width-split,src.height);
+    };
+    registerNortheastCliffBanks();
+
     const placeKit=(key:string,frame:number,x:number,y:number,width:number,depth:number,flipX=false)=>{
       const img=this.add.image(x,y,key,String(frame)).setOrigin(.5,1).setDepth(depth);
       img.setDisplaySize(width,Math.round(width*img.frame.height/img.frame.width));
@@ -1108,16 +1121,37 @@ export class CrystalVillageScene extends Phaser.Scene{
     // North continuation behind the gate. A restrained raised path makes the arch
     // read as a transition to another zone instead of a decorative back wall.
 
-    // Master 64: dry northeast cliff validation.
-    // Validate geology before reintroducing waterfall FX. Pull the single cliff
-    // mass up/left so its upper shelf merges into terrain and its lower prong no
-    // longer reads as an island placed in the river.
-    const northeastCliff=placeSized('village-northeastWaterfallCliff',2865,720,1160,710);
-    northeastCliff.setDepth(735);
+    // Master 65: split northeast canyon, still dry for structural validation.
+    // Left and right rock masses are now independent crops of the approved PNG.
+    // This creates a real central throat instead of a U-shaped object sitting in water.
+    const cliffTex=this.textures.get('village-northeastWaterfallCliff');
+    const leftFrame=cliffTex.get('left-bank');
+    const rightFrame=cliffTex.get('right-bank');
 
-    // Intentionally no waterfall ribbons, foam or extra water overlay in this pass.
-    // The existing animated river remains untouched so we can judge only the
-    // terrain silhouette, canyon mouth and relationship with the northeast bank.
+    // Left shelf begins on dry ground and terminates at the waterfall throat.
+    // Raising it also hides the previous exposed upper-water seam behind terrain.
+    const northeastLeft=this.add.image(2700,650,'village-northeastWaterfallCliff','left-bank')
+      .setOrigin(.5,1)
+      .setDisplaySize(790,Math.round(790*leftFrame.height/leftFrame.width))
+      .setDepth(735);
+
+    // Right wall is pushed toward/outside the world edge. Only its inner cliff face
+    // remains visible, leaving a substantially wider water corridor between banks.
+    const northeastRight=this.add.image(3195,705,'village-northeastWaterfallCliff','right-bank')
+      .setOrigin(.5,1)
+      .setDisplaySize(470,Math.round(470*rightFrame.height/rightFrame.width))
+      .setDepth(736);
+
+    // Dry top closure: reuse the broad shelf crop behind both banks so the camera
+    // never reveals an isolated patch of river above the future waterfall source.
+    const northeastTop=this.add.image(2940,300,'village-northeastWaterfallCliff','left-bank')
+      .setOrigin(.5,1)
+      .setDisplaySize(720,Math.round(720*leftFrame.height/leftFrame.width))
+      .setDepth(728)
+      .setCrop(0,0,leftFrame.width,Math.round(leftFrame.height*.43));
+
+    // No waterfall/foam FX yet. First validate the dry canyon silhouette and the
+    // widened gap; the animated fall will be introduced only after this geometry holds.
 
     // 49 — East bridge destination. Frame 10 creates dry land beyond the bridge
     // and clearly communicates that the route continues off-map to the east.
@@ -1310,7 +1344,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 64 · VALIDAÇÃO DO PAREDÃO SECO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · MASTER 65 · CÂNION NORDESTE DIVIDIDO',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
