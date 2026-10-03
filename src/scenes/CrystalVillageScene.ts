@@ -314,6 +314,31 @@ export class CrystalVillageScene extends Phaser.Scene{
     placeKit('village-nexaKit',5,735,1005,68,1000);
     placeKit('village-nexaKit',5,2165,1000,68,995,true);
 
+    // Master 14: tighten the civic core around the monument. In the Master the
+    // circular shrine is framed by vegetation and cyan civic furniture, so the
+    // plaza reads as a designed hub instead of a large empty stone sheet.
+    // Everything stays outside the monument ring and the cardinal walking cross.
+    placeKit('village-ambientKit',3,1080,1060,115,1050,true);
+    placeKit('village-ambientKit',5,1160,1010,92,1000);
+    placeKit('village-ambientKit',7,1940,1015,92,1005,true);
+    placeKit('village-ambientKit',3,2020,1070,112,1060);
+    placeKit('village-ambientKit',5,1110,1390,92,1380,true);
+    placeKit('village-ambientKit',7,1990,1390,92,1380);
+
+    // Small NEXA fixtures form the four diagonal shoulders visible around the
+    // Master monument. They deliberately avoid x=1550/y=1210 circulation lines.
+    placeKit('village-nexaKit',9,1265,1015,62,1010);
+    placeKit('village-nexaKit',12,1835,1015,62,1010,true);
+    placeKit('village-nexaKit',9,1265,1415,62,1410,true);
+    placeKit('village-nexaKit',12,1835,1415,62,1410);
+
+    // Commerce-side clutter is pushed against façades, matching the dense,
+    // lived-in perimeter of the reference without scattering props in walkways.
+    placeKit('village-marketForgeKit',1,720,1140,78,1135);
+    placeKit('village-marketForgeKit',3,805,1165,72,1160,true);
+    placeKit('village-marketForgeKit',4,2180,1135,78,1130,true);
+    placeKit('village-marketForgeKit',2,2260,1160,72,1155);
+
     // Vegetation is intentionally concentrated against relief/building edges,
     // leaving the central circulation axes open as in the master composition.
     placeSized('village-tree',900,1410,245,1400,true);
@@ -341,7 +366,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 13',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 14',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
