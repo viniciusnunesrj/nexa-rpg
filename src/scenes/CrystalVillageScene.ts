@@ -21,6 +21,9 @@ const ASSETS={
   stairs:'/assets/aurora/nature/vila-escadaria-pedra-01.png',
   ledge:'/assets/aurora/nature/vila-desnivel-rochoso-01.png',
   pier:'/assets/aurora/nature/vila-pier-sudoeste-01.png',
+  ambientKit:'/assets/aurora/nature/vila-kit-ambiental-01.png',
+  nexaKit:'/assets/aurora/nature/vila-kit-nexa-iluminacao-01.png',
+  marketForgeKit:'/assets/aurora/nature/vila-kit-mercado-forja-01.png',
   cliff:'/assets/aurora/nature/vila-paredao-rochoso-01.png'
 } as const;
 
@@ -203,7 +206,7 @@ export class CrystalVillageScene extends Phaser.Scene{
     this.input.on('wheel',(_p:Phaser.Input.Pointer,_g:unknown,_dx:number,dy:number)=>{
       this.zoom=Phaser.Math.Clamp(this.zoom-dy*.001,0.48,1.35);
     });
-    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 03',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
+    this.add.text(18,18,'VILA DAS RUÍNAS CRISTALINAS · COMPOSIÇÃO 19 · SUDOESTE MASTER 04',{fontFamily:'monospace',fontSize:'14px',color:'#e9feff',backgroundColor:'#061019dd',padding:{x:10,y:7}}).setScrollFactor(0).setDepth(100001);
   }
 
   update(){
